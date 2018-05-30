@@ -35,6 +35,6 @@ class Server(metaclass=Singleton):
 	
 	def close(self):
 		self.sock.close()
-	
+
 	def get_map_size(self):
 		self.__write("msz")
