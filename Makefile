@@ -6,7 +6,9 @@ RM	= rm -f
 
 SRCS	= ./srcs/main.c \
 	  ./srcs/parse.c \
-	  ./srcs/utils.c 
+	  ./srcs/utils.c \
+	  ./srcs/set_socket.c \
+	  ./srcs/server.c
 
 OBJS	= $(SRCS:.c=.o)
 

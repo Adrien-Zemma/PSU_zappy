@@ -8,9 +8,24 @@
 #ifndef PARSE_H_
 	#define PARSE_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+	#include <string.h>
+	#include <sys/types.h>
+	#include <sys/socket.h>
+	#include <netdb.h>
+	#include <stdlib.h>
+	#include <time.h>
+	#include <unistd.h>
+	#include <netinet/in.h>
+	#include <arpa/inet.h>
+	#include <string.h>
+	#include <stdio.h>
+	#include <sys/types.h>
+	#include <dirent.h>
+	#include <sys/types.h>
+	#include <sys/stat.h>
+	#include <fcntl.h>
+	#include <sys/types.h>
+	#include <sys/wait.h>
 
 typedef struct	s_parse
 {
