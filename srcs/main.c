@@ -12,7 +12,8 @@ int main(int ac, char **av)
 	t_parse	*parse = parse_args(av);
 
 	if (!parse || ac < 12) {
-		free(parse->teams);
+		if (parse && parse->teams)
+			free(parse->teams);
 		free(parse);
 		return (84);
 	}
