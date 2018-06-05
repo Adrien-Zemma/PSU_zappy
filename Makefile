@@ -5,14 +5,17 @@ CC	= gcc
 RM	= rm -f
 
 SRCS	= ./server/srcs/commands.c \
+	  ./server/srcs/getnextline.c \
 	  ./server/srcs/main.c \
 	  ./server/srcs/parse.c \
+	  ./server/srcs/server.c \
+	  ./server/srcs/set_socket.c \
 	  ./server/srcs/utils.c 
 
 OBJS	= $(SRCS:.c=.o)
 
 CFLAGS = -I ./server/incs/
-CFLAGS += -W -Wall -Wextra -g3
+CFLAGS += -W -Wall -Wextra
 
 all: $(NAME)
 
