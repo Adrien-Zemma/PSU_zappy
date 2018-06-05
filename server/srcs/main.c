@@ -5,6 +5,7 @@
 ** Main C file
 */
 
+#include "commands.h"
 #include "parse.h"
 
 int main(int ac, char **av)
@@ -17,6 +18,7 @@ int main(int ac, char **av)
 		free(parse);
 		return (84);
 	}
+	init_commands();
 	free_tab(parse->teams);
 	free(parse);
 	return (0);
