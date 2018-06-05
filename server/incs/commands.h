@@ -15,7 +15,6 @@ typedef struct	command_s
 {
 	char	*name;
 	void	(*ptrFnct)(void *, void *, char *);
-	size_t	max_args;
 }		command_t;
 
 command_t	**init_commands();

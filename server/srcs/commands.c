@@ -40,3 +40,11 @@ command_t	*append_command(char *name, void (*ptrFnct)(void *, void *, char *), s
 	node->max_args = max_args;
 	return node;
 }
+
+void		parse_command(command_t **command, char *cmd)
+{
+	printf("Received [%s]\n", cmd);
+	for (int i = 0; command[i]; i++)
+		if (strncmp(command[i]->name, cmd, strlen(command[i]->name)) == 0)
+			command[i]->ptrFnct(NULL, NULL, NULL);
+}
