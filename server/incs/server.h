@@ -12,6 +12,8 @@
 #include "commands.h"
 #include <string.h>
 
+typedef struct command_s command_t;
+
 typedef	struct client_s
 {
 	int	fd;
@@ -25,6 +27,7 @@ typedef	struct server_s
 	command_t	**command;
 	client_t	**clients;
 	int	nb_client;
+	t_parse	*parse;
 }	server_t;
 
 int	set_socket(t_parse *parse, server_t *server);

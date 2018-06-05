@@ -24,6 +24,7 @@ int	set_accept(server_t *server)
 		sizeof(client_t *) * (1 + server->nb_client));
 	server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
 	server->clients[server->nb_client] = NULL;
+	server->clients[server->nb_client - 1]->fd = tmp;
 	printf("add a new connect %d\n", server->nb_fd);
 	return (0);	
 }
