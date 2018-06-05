@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct	command_s
 {
@@ -18,6 +19,6 @@ typedef struct	command_s
 }		command_t;
 
 command_t	**init_commands();
-command_t	*append_command(char *name, void (*ptrFnct)(void *, void *, char *), size_t max_args);
+command_t	*append_command(char *name, void (*ptrFnct)(void *, void *, char *));
 
 #endif /* !COMMANDS_H_ */

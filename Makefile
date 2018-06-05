@@ -10,12 +10,14 @@ SRCS	= ./server/srcs/commands.c \
 	  ./server/srcs/parse.c \
 	  ./server/srcs/server.c \
 	  ./server/srcs/set_socket.c \
-	  ./server/srcs/utils.c 
+	  ./server/srcs/utils.c 	\
+	  ./server/srcs/accept.c	\
+	  ./server/srcs/read_command.c
 
 OBJS	= $(SRCS:.c=.o)
 
 CFLAGS = -I ./server/incs/
-CFLAGS += -W -Wall -Wextra
+CFLAGS += -W -Wall -Wextra -g3
 
 all: $(NAME)
 

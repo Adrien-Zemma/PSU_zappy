@@ -13,7 +13,10 @@ int main(int ac, char **av)
 {
 	t_parse	*parse = parse_args(av);
 	server_t	*server = malloc(sizeof(server_t));
-	
+	server->clients = malloc(sizeof(client_t *) * 1);
+
+	server->clients[0] = NULL;
+	server->nb_client = 0;
 	server->fds = malloc(sizeof(int) * 1);
 	server->nb_fd = 0;
 	if (!parse || ac < 12) {

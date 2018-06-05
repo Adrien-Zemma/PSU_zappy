@@ -29,31 +29,11 @@ int	big_fd(server_t *server)
 
 int	good_select(fd_set readfds, server_t *server)
 {
-	int	tmp;
-	struct	sockaddr_in	s_sin_client;
-	socklen_t	s_sin_size = sizeof(s_sin_client);
-	
-	if (FD_ISSET(server->fd, &readfds)){
-		tmp = accept(server->fd, (struct sockaddr *)&s_sin_client, &s_sin_size);
-		if (tmp == -1)
-			perror("accept :");
-		server->fds[server->nb_fd] = tmp;
-		server->nb_fd++;
-		server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
-		printf("add a new connect %d\n", server->nb_fd);
-		return (0);
-	}
+	if (FD_ISSET(server->fd, &readfds))
+		return (set_accept(server));
 	for (int i = 0; i < server->nb_fd; i++){
 		if (FD_ISSET(server->fds[i], &readfds)){
-			int	check = i;
-			char	*str = getnextline(server->fds[i]);
-			if (str == NULL)
-				return (0);
-			for (int j = 0; j < server->nb_fd; j++){
-				if (j == check)
-					j++;
-				dprintf(server->fds[j], "he say: %s", str);
-			}
+			read_command(server->fds[i], server);
 		}
 	}
 	return (0);
@@ -65,12 +45,8 @@ int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 		
 	FD_ZERO(&readfds);
 	FD_SET(server->fd, &readfds);
-	for (int i = 0; i < server->nb_fd; i++){
-		printf("set fd\n");
+	for (int i = 0; i < server->nb_fd; i++)
 		FD_SET(server->fds[i], &readfds);
-	}
-	printf("%d\n", best_fd);
-	printf("%d\n", server->fd);
 	if (select((server->fd > best_fd ? server->fd : best_fd) + 1, &readfds,
 		NULL, NULL, NULL) != -1){
 		if (good_select(readfds, server) == 84)
