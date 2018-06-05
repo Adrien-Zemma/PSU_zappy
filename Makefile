@@ -1,16 +1,17 @@
-NAME	= server
+NAME	= zappy_server
 
 CC	= gcc
 
 RM	= rm -f
 
-SRCS	= ./srcs/main.c \
-	  ./srcs/parse.c \
-	  ./srcs/utils.c 
+SRCS	= ./server/srcs/commands.c \
+	  ./server/srcs/main.c \
+	  ./server/srcs/parse.c \
+	  ./server/srcs/utils.c 
 
 OBJS	= $(SRCS:.c=.o)
 
-CFLAGS = -I ./incs/
+CFLAGS = -I ./server/incs/
 CFLAGS += -W -Wall -Wextra -g3
 
 all: $(NAME)
