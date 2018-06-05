@@ -8,7 +8,8 @@ SRCS	= ./srcs/main.c \
 	  ./srcs/parse.c \
 	  ./srcs/utils.c \
 	  ./srcs/set_socket.c \
-	  ./srcs/server.c
+	  ./srcs/server.c	\
+	  ./srcs/getnextline.c
 
 OBJS	= $(SRCS:.c=.o)
 
