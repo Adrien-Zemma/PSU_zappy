@@ -10,6 +10,7 @@
 
 #include "parse.h"
 #include "commands.h"
+#include "map.h"
 #include <string.h>
 
 typedef struct command_s command_t;
@@ -26,6 +27,7 @@ typedef	struct server_s
 	int	nb_fd;
 	command_t	**command;
 	client_t	**clients;
+	tile_t		***map;
 	
 	int	nb_client;
 	t_parse	*parse;

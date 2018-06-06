@@ -23,4 +23,7 @@ typedef struct	tile {
 	int	thystam;
 }		tile_t;
 
+tile_t	***init_map(int weight, int height);
+void	free_map(tile_t ***map);
+
 #endif /* !MAP_H_ */
