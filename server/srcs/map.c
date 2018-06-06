@@ -54,8 +54,10 @@ void	free_map(tile_t ***map)
 		for (int j = 0; map[i][j]; j++)
 			free(map[i][j]);
 		free(map[i]);
+		map[i] = NULL;
 	}
 	free(map);
+	map = NULL;
 }
 
 int main(int ac, char **av)
@@ -68,7 +70,8 @@ int main(int ac, char **av)
 		return 1;
 	for (int i = 0; map[i]; i++) {
 		for (int j = 0; map[i][j]; j++)
-			printf("%d=>", map[i][j]->linemate);
+			printf("%d%s", map[i][j]->linemate, (!map[i][j + 1] ? "" : "=>"));
+		printf("\n");
 	}
 	free_map(map);
 }

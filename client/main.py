@@ -5,17 +5,19 @@ from server.Server import Server
 from server.Threads import ThreadRead, ThreadWrite
 
 def main():
-	serv = Server(8081)
+	serv = Server(args.port)
 	th1 = ThreadRead(serv.sock, serv.queue_read)
 	th2 = ThreadWrite(serv.sock, serv.queue_write)
 	th1.start()
 	th2.start()
 	print("Threads started")
 	while serv.is_connected:
+		print("Please select a command")
 		cwd = input("Command to send: ")
 		th2.write_command(cwd)
 		cmd = th1.get_command()
-		print("Command from serv: " + cmd)
+		if cmd is not None:
+			print("Command from serv: " + cmd)
 	print("Main finished")
 
 if __name__ == '__main__':

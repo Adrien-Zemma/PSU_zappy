@@ -7,13 +7,6 @@
 
 #include "commands.h"
 
-void	test(void *a, void *b ,char *cc)
-{
-	(void)a;
-	(void)b;
-	(void)cc;
-}
-
 command_t	**init_commands(void)
 {
 	const int	i = 1;
