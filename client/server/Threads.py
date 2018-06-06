@@ -2,41 +2,38 @@ import threading
 import time
 import socket
 import queue
-from .Server import Server
 
 class ThreadRead(threading.Thread):
 	"""
 	A thread that will read on a socket
 	"""
-	def __init__(self, socket, queue):
+	def __init__(self, socket):
 		"""
 		Constructor.
 		@param socket socket to read
 		@param queue queue synchronization commands
 		"""
 		threading.Thread.__init__(self)
-		self.queue = queue
+		self.queue = queue.Queue()
 		self.socket = socket
 
 	
 	def _read(self):
 		buff = ""
-		serv = Server(8081)
 		while True:
 			data = self.socket.recv(1)
 			if data:
 				buff += data.decode('utf-8')
 			else:
-				serv.is_connected = False
 				return None
 			if buff.find('\n') != -1:
 				buff = buff.replace('\n', '')
 				break
 		return buff
 	
-	def get_command(self):
+	def get_command(self, status: bool = True):
 		try:
-			data = self.queue.get(False)
+			data = self.queue.get(status)
 			self.queue.task_done()
 		except queue.Empty:
 			data = None
@@ -57,14 +54,14 @@ class ThreadWrite(threading.Thread):
 	"""
 	A thread that will write on a socket
 	"""
-	def __init__(self, socket, queue):
+	def __init__(self, socket):
 		"""
 		Constructor.
 		@param socket socket to read
 		@param queue queue synchronization commands
 		"""
 		threading.Thread.__init__(self)
-		self.queue = queue
+		self.queue = queue.Queue()
 		self.socket = socket
 
 	
@@ -81,9 +78,8 @@ class ThreadWrite(threading.Thread):
 	
 	def write_command(self, cmd):
 		self.queue.put(cmd)
-		return cmd
 
-	def get_command(self):
+	def __get_command(self):
 		cmd = self.queue.get()
 		self.queue.task_done()
 		return cmd
@@ -93,5 +89,5 @@ class ThreadWrite(threading.Thread):
 		Thread run method. Read command from server socket
 		"""
 		while True:
-			cmd = self.get_command()
+			cmd = self.__get_command()
 			self.__write(cmd)
