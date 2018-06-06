@@ -59,19 +59,3 @@ void	free_map(tile_t ***map)
 	free(map);
 	map = NULL;
 }
-
-int main(int ac, char **av)
-{
-	if (ac != 3)
-		return 1;
-	srand(time(NULL));
-	tile_t ***map = init_map(atoi(av[1]), atoi(av[2]));
-	if (!map)
-		return 1;
-	for (int i = 0; map[i]; i++) {
-		for (int j = 0; map[i][j]; j++)
-			printf("%d%s", map[i][j]->linemate, (!map[i][j + 1] ? "" : "=>"));
-		printf("\n");
-	}
-	free_map(map);
-}
