@@ -27,6 +27,7 @@ int main(int ac, char **av)
 	server->clients[0] = NULL;
 	server->nb_client = 0;
 	server->fds = malloc(sizeof(int) * 1);
+	server->map = init_map(parse->width, parse->height);
 	server->nb_fd = 0;
 	init_commands();
 	if (set_socket(parse, server) == 84)
