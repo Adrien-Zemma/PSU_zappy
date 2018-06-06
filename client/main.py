@@ -6,18 +6,11 @@ from server.Threads import ThreadRead, ThreadWrite
 
 def main():
 	serv = Server(args.port)
-	th1 = ThreadRead(serv.sock, serv.queue_read)
-	th2 = ThreadWrite(serv.sock, serv.queue_write)
-	th1.start()
-	th2.start()
 	print("Threads started")
-	while serv.is_connected:
-		print("Please select a command")
-		cwd = input("Command to send: ")
-		th2.write_command(cwd)
-		cmd = th1.get_command()
-		if cmd is not None:
-			print("Command from serv: " + cmd)
+	serv.start_threads()
+
+	print(serv.get_map_size())
+	serv.join_threads()
 	print("Main finished")
 
 if __name__ == '__main__':

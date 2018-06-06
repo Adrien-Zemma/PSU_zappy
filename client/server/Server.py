@@ -1,6 +1,7 @@
 import socket
 
 from queue import Queue
+from .Threads import ThreadRead, ThreadWrite
 
 class Singleton(type):
     _instances = {}
@@ -14,14 +15,14 @@ class Server(metaclass=Singleton):
 		self._ip = "localhost"
 		self._port = port
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.queue_read = Queue()
-		self.queue_write = Queue()
 		self.is_connected = True
 		try:
 			self.sock.connect((self._ip, self._port))
 		except socket.error as msg:
 			print("Caught exception socket.error : %s" % msg)
 			exit(84)
+		self.readTh = ThreadRead(self.sock)
+		self.writeTh = ThreadWrite(self.sock)
 		print("Connection on {}".format(self._port))
 
 	def __str__(self):
@@ -36,3 +37,25 @@ class Server(metaclass=Singleton):
 			if sent == 0:
 				raise RuntimeError("socket connection broken")
 			totalsent += sent
+	
+	def start_threads(self):
+		self.readTh.start()
+		self.writeTh.start()
+
+	def join_threads(self):
+		self.readTh.join()
+		self.writeTh.join()
+	
+	def get_map_size(self):
+		self.writeTh.write_command("msz")
+		cmd = self.readTh.get_command()
+		return cmd.split(' ')[1:]
+	
+	def teams_name(self):
+		names = []
+		self.writeTh.write_command("tna")
+		cmd = self.readTh.get_command()
+		while cmd is not None:
+			names.append(cmd)
+			cmd = self.readTh.get_command()
+		return names
