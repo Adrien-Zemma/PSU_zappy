@@ -27,6 +27,7 @@ void	read_command(int c1, server_t *server)
 	}
 	if (!state && check != -1)
 		dprintf(server->clients[check]->fd, "ko\n");
+<<<<<<< HEAD
 }
 
 void	map_size(server_t *server, client_t *client, char *str)
@@ -40,4 +41,6 @@ void	all_team(server_t *server, client_t *client, char *str)
 	str = str;
 	for (int i = 0; server->parse->teams[i] != NULL; i++)
 		dprintf(client->fd, "tna %s\n", server->parse->teams[i]);
+=======
+>>>>>>> a6a6d84b2bf7babe244ea9a1a803fc0625d337b1
 }
