@@ -26,6 +26,7 @@ typedef	struct server_s
 	int	nb_fd;
 	command_t	**command;
 	client_t	**clients;
+	
 	int	nb_client;
 	t_parse	*parse;
 }	server_t;

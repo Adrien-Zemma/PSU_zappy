@@ -15,7 +15,7 @@ command_t	**init_commands(void)
 	if (!node)
 		return NULL;
 	node[0] = append_command("msz", map_size);
-	node[1] = append_command("tna", all_team);
+	node[1] = append_command("tna", names_team);
 	node[i] = NULL;
 	return node;
 
