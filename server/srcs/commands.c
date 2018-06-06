@@ -16,12 +16,13 @@ void	test(void *a, void *b ,char *cc)
 
 command_t	**init_commands(void)
 {
-	const int	i = 1;
+	const int	i = 2;
 	command_t	**node = malloc(sizeof(command_t *) * (i + 1));
 	
 	if (!node)
 		return NULL;
 	node[0] = append_command("msz", map_size);
+	node[1] = append_command("tna", all_team);
 	node[i] = NULL;
 	return node;
 

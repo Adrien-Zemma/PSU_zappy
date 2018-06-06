@@ -25,4 +25,5 @@ typedef struct	command_s
 command_t	**init_commands(void);
 command_t	*append_command(char *name, void (*ptrFnct)(server_t *, client_t *, char *));
 void	map_size(server_t *server, client_t *client, char *str);
+void	all_team(server_t *server, client_t *client, char *str);
 #endif /* !COMMANDS_H_ */
