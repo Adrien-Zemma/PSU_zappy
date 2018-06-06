@@ -1,7 +1,7 @@
 import threading
 import time
 import socket
-
+import queue
 from .Server import Server
 
 class ThreadRead(threading.Thread):
@@ -35,9 +35,12 @@ class ThreadRead(threading.Thread):
 		return buff
 	
 	def get_command(self):
-		cmd = self.queue.get()
-		self.queue.task_done()
-		return cmd
+		try:
+			data = self.queue.get(False)
+			self.queue.task_done()
+		except queue.Empty:
+			data = None
+		return data
 
 	def run(self):
 		"""

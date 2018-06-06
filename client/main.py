@@ -4,26 +4,20 @@ from queue import Queue
 from server.Server import Server
 from server.Threads import ThreadRead, ThreadWrite
 
-def dump_queue(q):
-	print("Gonna parse q: ")
-	for elem in list(q.queue):
-		print("\t- " + elem)
-
 def main():
-	serv = Server(8081)
+	serv = Server(args.port)
 	th1 = ThreadRead(serv.sock, serv.queue_read)
 	th2 = ThreadWrite(serv.sock, serv.queue_write)
 	th1.start()
 	th2.start()
 	print("Threads started")
 	while serv.is_connected:
+		print("Please select a command")
+		cwd = input("Command to send: ")
+		th2.write_command(cwd)
 		cmd = th1.get_command()
-		print("From main : " + cmd)
-		print("Send " + cmd + " to serv")
-		th2.write_command(cmd)
-		if cmd is None:
-			th1.join()
-			th2.join()
+		if cmd is not None:
+			print("Command from serv: " + cmd)
 	print("Main finished")
 
 if __name__ == '__main__':

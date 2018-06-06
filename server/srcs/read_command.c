@@ -10,7 +10,8 @@
 void	read_command(int c1, server_t *server)
 {
 	char	*str = getnextline(c1);
-	int	check;
+	int	check = -1;
+	int	state = 0;
 	
 	if (str == NULL)
 		return ;
@@ -19,9 +20,13 @@ void	read_command(int c1, server_t *server)
 			check = i;
 	}
 	for (int j = 0; server->command[j]; j++) {
-		if (strncmp(server->command[j]->name, str, strlen(server->command[j]->name)) == 0)
+		if (strncmp(server->command[j]->name, str, strlen(server->command[j]->name)) == 0) {
 			server->command[j]->ptrFnct(server, server->clients[check], str);
+			state = 1;
+		}
 	}
+	if (!state && check != -1)
+		dprintf(server->clients[check]->fd, "ko\n");
 }
 
 void	map_size(server_t *server, client_t *client, char *str)
