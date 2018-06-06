@@ -24,6 +24,8 @@ class Server(metaclass=Singleton):
 		self.readTh = ThreadRead(self.sock)
 		self.writeTh = ThreadWrite(self.sock)
 		print("Connection on {}".format(self._port))
+		self.x = None
+		self.y = None
 
 	def __str__(self):
 		return self._ip + ":" + str(self._port)
@@ -39,17 +41,31 @@ class Server(metaclass=Singleton):
 			totalsent += sent
 	
 	def start_threads(self):
-		self.readTh.start()
 		self.writeTh.start()
+		self.readTh.start()
 
 	def join_threads(self):
 		self.readTh.join()
 		self.writeTh.join()
 	
+	def get_map(self):
+		m = []
+		i = 0
+		self.writeTh.write_command("mct")
+		for i in range(self.y):
+			line = []
+			for j in range(self.x):
+				cmd = self.readTh.get_command().split(' ')[3:]
+				line.append(cmd)
+			m.append(line)
+		return m
+
 	def get_map_size(self):
 		self.writeTh.write_command("msz")
-		cmd = self.readTh.get_command()
-		return cmd.split(' ')[1:]
+		cmd = self.readTh.get_command().split(' ')[1:]
+		self.x = int(cmd[0])
+		self.y = int(cmd[1])
+		return cmd
 	
 	def teams_name(self):
 		names = []

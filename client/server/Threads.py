@@ -46,8 +46,6 @@ class ThreadRead(threading.Thread):
 		cmd = self._read()
 		while cmd:
 			self.queue.put(cmd)
-			print("Put in list : [{}]".format(cmd))
-			time.sleep(1)
 			cmd = self._read()
 
 class ThreadWrite(threading.Thread):
@@ -69,7 +67,6 @@ class ThreadWrite(threading.Thread):
 		if msg[-1:] != '\n':
 			msg += "\n"
 		totalsent = 0
-		print("Hey!")
 		while totalsent < len(msg):
 			sent = self.socket.send(msg[totalsent:].encode("Utf8"))
 			if sent == 0:

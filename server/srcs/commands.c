@@ -19,7 +19,6 @@ command_t	**init_commands(void)
 	node[2] = append_command("mct", map_content);
 	node[i] = NULL;
 	return node;
-
 }
 
 command_t	*append_command(char *name, void (*ptrFnct)(server_t *, client_t *, char *))

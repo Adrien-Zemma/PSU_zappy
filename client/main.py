@@ -6,10 +6,10 @@ from server.Threads import ThreadRead, ThreadWrite
 
 def main():
 	serv = Server(args.port)
-	print("Threads started")
 	serv.start_threads()
-
-	print(serv.get_map_size())
+	print("Threads started")
+	serv.get_map_size()
+	print(serv.get_map())
 	serv.join_threads()
 	print("Main finished")
 

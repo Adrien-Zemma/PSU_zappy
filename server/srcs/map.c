@@ -7,7 +7,7 @@
 
 #include "map.h"
 
-void	gen_tile(tile_t **node)
+static void	gen_tile(tile_t **node)
 {
 	(*node)->linemate = ADD_MINERAL(0, 2);
 	(*node)->deraumere = ADD_MINERAL(0, 2);
@@ -17,7 +17,7 @@ void	gen_tile(tile_t **node)
 	(*node)->thystam = ADD_MINERAL(0, 2);
 }
 
-tile_t	**gen_line(int w)
+static tile_t	**gen_line(int w)
 {
 	tile_t	**node = malloc(sizeof(tile_t *) * (w + 1));
 
