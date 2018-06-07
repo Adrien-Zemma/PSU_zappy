@@ -1,8 +1,17 @@
 import argparse
 
+from queue import Queue
+from server.Server import Server
+from server.Threads import ThreadRead, ThreadWrite
+
 def main():
-	print("Hello")
-	pass
+	serv = Server(args.port)
+	serv.start_threads()
+	print("Threads started")
+	serv.get_map_size()
+	print(serv.get_map())
+	serv.join_threads()
+	print("Main finished")
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(add_help=False)
