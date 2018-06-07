@@ -7,6 +7,22 @@
 
 #include "server.h"
 
+int	set_client(server_t *server)
+{
+	server->clients[server->nb_client - 1]->food = 1;
+	server->clients[server->nb_client - 1]->linemate = 0;
+	server->clients[server->nb_client - 1]->demaumere = 0;
+	server->clients[server->nb_client - 1]->sibur = 0;
+	server->clients[server->nb_client - 1]->mendiane = 0;
+	server->clients[server->nb_client - 1]->phiras = 0;
+	server->clients[server->nb_client - 1]->thystame = 0;
+	server->clients[server->nb_client - 1]->level = 1;
+	server->clients[server->nb_client - 1]->id = server->nb_client;
+	server->clients[server->nb_client - 1]->posX = ADD_MINERAL(0, server->parse->width);
+	server->clients[server->nb_client - 1]->posY = ADD_MINERAL(0, server->parse->height);
+	return (0);
+}
+
 int	set_accept(server_t *server)
 {
 	int	tmp;
@@ -25,6 +41,5 @@ int	set_accept(server_t *server)
 	server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
 	server->clients[server->nb_client] = NULL;
 	server->clients[server->nb_client - 1]->fd = tmp;
-	printf("add a new connect %d\n", server->nb_fd);
-	return (0);	
+	return (set_client(server));
 }

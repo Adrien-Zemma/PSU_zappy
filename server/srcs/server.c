@@ -14,7 +14,6 @@ int	check_big_fd(server_t *server)
 		if (server->fds[i] > big_fd)
 			big_fd = server->fds[i];
 	}
-	printf("the big fd is : %d\n", big_fd);
 	return (big_fd);
 }
 
@@ -43,6 +42,7 @@ int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 {
 	int	best_fd = big_fd(server);
 		
+	parse = parse;
 	FD_ZERO(&readfds);
 	FD_SET(server->fd, &readfds);
 	for (int i = 0; i < server->nb_fd; i++)

@@ -18,6 +18,17 @@ typedef struct command_s command_t;
 typedef	struct client_s
 {
 	int	fd;
+	int	food;
+	int	linemate;
+	int	demaumere;
+	int	sibur;
+	int	mendiane;
+	int	phiras;
+	int	thystame;
+	int	level;
+	int	posX;
+	int	posY;
+	int	id;
 }	client_t;
 
 typedef	struct server_s
