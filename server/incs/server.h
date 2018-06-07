@@ -38,5 +38,6 @@ char	*getnextline(int fd);
 int	start_server(t_parse *parse, server_t *server);
 int	set_accept(server_t *server);
 void	read_command(int c1, server_t *server);
+char	*parse_command(char *command, char c, int nb);
 #endif /* SERVER */
 

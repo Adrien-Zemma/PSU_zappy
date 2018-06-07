@@ -9,13 +9,10 @@
 
 void	tile_content(server_t *server, client_t *client, char *str)
 {
-	(void)str;
-	for (int i = 0; server->map[i]; i++) {
-		for (int j = 0; server->map[i][j]; j++) {
-			dprintf(client->fd, "bct %d %d %d %d %d %d %d %d %d\n",
-			i, j, 0, server->map[i][j]->linemate, server->map[i][j]->deraumere,
-			server->map[i][j]->sibur, server->map[i][j]->mendiane,
-			server->map[i][j]->phiras, server->map[i][j]->thystam);
-		}
-	}
+	int	x = atoi(parse_command(str, ' ', 1));
+	int	y = atoi(parse_command(str, ' ', 2));
+
+	if (x >= server->parse->width || y >= server->parse->height)
+		return;
+	draw_tile(server->map, client->fd, x, y);
 }

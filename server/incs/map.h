@@ -21,6 +21,7 @@ typedef struct	tile {
 	int	mendiane;
 	int	phiras;
 	int	thystam;
+	int	food;
 }		tile_t;
 
 tile_t	***init_map(int weight, int height);
