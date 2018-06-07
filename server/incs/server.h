@@ -29,6 +29,7 @@ typedef	struct client_s
 	int	posX;
 	int	posY;
 	int	id;
+	int	orientation;
 }	client_t;
 
 typedef	struct server_s

@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-void	player_level(server_t *server, client_t *client, char *str)
+void	player_position(server_t *server, client_t *client, char *str)
 {
 	int	id;
 	
@@ -15,15 +15,15 @@ void	player_level(server_t *server, client_t *client, char *str)
 		str++;
 	if (*str == '#')
 		str++;
-	else{
-		printf("Error level player\n");
+	else {
+		printf("error player position\n");
 		return ;
 	}
 	id = atoi(str);
 	for (int i = 0; server->clients[i] != NULL; i++){
 		if (server->clients[i]->id == id)
-			dprintf(client->fd,
-				"plv %d %d", id, server->clients[i]->level);
+			dprintf(client->fd, "ppo %d %d %d\n",
+			id, server->clients[i]->posX,
+			server->clients[i]->posY);
 	}
-	dprintf(client->fd, "\n");
 }
