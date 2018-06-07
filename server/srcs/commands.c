@@ -9,7 +9,7 @@
 
 command_t	**init_commands(void)
 {
-	const int	i = 6;
+	const int	i = 7;
 	command_t	**node = malloc(sizeof(command_t *) * (i + 1));
 	
 	if (!node)
@@ -20,6 +20,7 @@ command_t	**init_commands(void)
 	node[3] = append_command("bct", tile_content);
 	node[4] = append_command("plv #", player_level);
 	node[5] = append_command("pin #", player_inventory);
+	node[6] = append_command("ppo #", player_position);
 	node[i] = NULL;
 	return node;
 }

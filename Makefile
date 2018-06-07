@@ -9,6 +9,7 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/commands/map_size.c \
 	  ./server/srcs/commands/player_inventory.c \
 	  ./server/srcs/commands/player_level.c \
+	  ./server/srcs/commands/player_position.c \
 	  ./server/srcs/commands/teams_name.c \
 	  ./server/srcs/commands/tile_content.c \
 	  ./server/srcs/commands.c \

@@ -22,7 +22,7 @@ void	player_inventory(server_t *server, client_t *client, char *str)
 	id = atoi(str);
 	for (int i = 0; server->clients[i] != NULL; i++){
 		if (server->clients[i]->id == id)
-			dprintf(client->fd, "pin %d %d %d %d %d %d %d %d %d %d",
+			dprintf(client->fd, "pin %d %d %d %d %d %d %d %d %d %d\n",
 			id, server->clients[i]->posX, server->clients[i]->posY,
 			server->clients[i]->food, server->clients[i]->linemate,
 			server->clients[i]->demaumere, server->clients[i]->sibur,
