@@ -27,4 +27,5 @@ command_t	*append_command(char *name, void (*ptrFnct)(server_t *, client_t *, ch
 void	map_size(server_t *server, client_t *client, char *str);
 void	names_team(server_t *server, client_t *client, char *str);
 void	map_content(server_t *server, client_t *client, char *str);
+void	tile_content(server_t *server, client_t *client, char *str);
 #endif /* !COMMANDS_H_ */
