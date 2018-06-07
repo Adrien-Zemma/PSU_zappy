@@ -9,7 +9,7 @@
 
 command_t	**init_commands(void)
 {
-	const int	i = 3;
+	const int	i = 4;
 	command_t	**node = malloc(sizeof(command_t *) * (i + 1));
 	
 	if (!node)
@@ -17,6 +17,7 @@ command_t	**init_commands(void)
 	node[0] = append_command("msz", map_size);
 	node[1] = append_command("tna", names_team);
 	node[2] = append_command("mct", map_content);
+	node[3] = append_command("bct", tile_content);
 	node[i] = NULL;
 	return node;
 }

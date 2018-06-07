@@ -15,6 +15,7 @@ static void	gen_tile(tile_t **node)
 	(*node)->mendiane = ADD_MINERAL(0, 2);
 	(*node)->phiras = ADD_MINERAL(0, 2);
 	(*node)->thystam = ADD_MINERAL(0, 2);
+	(*node)->food = ADD_MINERAL(0, 2);
 }
 
 static tile_t	**gen_line(int w)
