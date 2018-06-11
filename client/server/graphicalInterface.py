@@ -27,7 +27,6 @@ class GraphicalInterface(Server, threading.Thread):
 		self._map = [[[{}]]]
 		self.buildWindow()
 		self.buildItem()
-		self._mapContent = [[{}]]
 		self._mapContent = self.get_map()
 		self.buildMapItem()
 
