@@ -30,6 +30,7 @@ typedef	struct client_s
 	int	posY;
 	int	id;
 	int	orientation;
+	char	*team;
 }	client_t;
 
 typedef	struct server_s
@@ -40,7 +41,6 @@ typedef	struct server_s
 	command_t	**command;
 	client_t	**clients;
 	tile_t		***map;
-	
 	int	nb_client;
 	t_parse	*parse;
 }	server_t;
