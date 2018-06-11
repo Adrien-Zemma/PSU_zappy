@@ -8,7 +8,7 @@ def main():
 	serv = Server(args.port)
 	serv.start_threads()
 	print("Threads started")
-	serv.get_map_size()
+	print (serv.get_map_size())
 	print(serv.get_map())
 	serv.join_threads()
 	print("Main finished")
