@@ -16,8 +16,8 @@ void	forwardY(server_t *server, client_t *client)
 			client->posY++;
 	}
 	if (client->orientation == 4){
-		if (client->poxX == 0)
-			client->poxX = server->parse->width - 1;
+		if (client->posX == 0)
+			client->posX = server->parse->width - 1;
 		else
 			client->posX++;
 	}		
@@ -34,9 +34,9 @@ void	forward(server_t *server, client_t *client, char *str)
 	}
 	if (client->orientation == 2){
 		if (client->posX == server->parse->width -1)
-			client->poxX = 0;
+			client->posX = 0;
 		else
-			client->poxX++;
+			client->posX++;
 	}
 	forwardY(server, client);
 }
