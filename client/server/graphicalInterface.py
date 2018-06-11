@@ -4,19 +4,32 @@ import sys
 from .Server import Server
 from .Threads import ThreadRead
 
-
 class GraphicalInterface(Server, threading.Thread):
 	def __init__(self, port, ip="localhost"):
-        	super().__init__(port, ip)
-        	threading.Thread.__init__(self)
-        	self.readTh = ThreadRead(self._sock)
-        	self.readTh.start()
-        	cmd = self.get_map_size()
-        	self.x = int(cmd[0])
-        	self.y = int(cmd[1])
+		super().__init__(port, ip)
+		threading.Thread.__init__(self)
+		self.readTh = ThreadRead(self._sock)
+		self.readTh.start()
+		self.manageConnection()
+		self.x = None
+		self.y = None
 
 	def _write(self, msg):
 		super(GraphicalInterface, self).write(msg)
+
+	def manageConnection(self):
+		cmd = self.readTh.get_command()
+		if cmd == "WELCOME":
+			print("Welcome from server")
+			self._write("TEAM graphique")
+			print("Team id:")
+			print(self.readTh.get_command())
+			print("Map size")
+			cmd = self.readTh.get_command()
+			print(cmd)
+			self.x = cmd[0]
+			self.y = cmd[1]
+			print("Setted coords")
 
 	def run(self):
 		print("Hi UI")
