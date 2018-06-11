@@ -3,3 +3,4 @@ bin_tek
 *.o
 zappy_server
 q.txt
+.idea
