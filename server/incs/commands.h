@@ -33,4 +33,7 @@ void		draw_tile(tile_t ***map, int fd, int i, int j);
 void	player_level(server_t *server, client_t *client, char *str);
 void	player_inventory(server_t *server, client_t *client, char *str);
 void	player_position(server_t *server, client_t *client, char *str);
+void	forward(server_t *server, client_t *client, char *str);
+void	right(server_t *server, client_t *client, char *str);
+
 #endif /* !COMMANDS_H_ */
