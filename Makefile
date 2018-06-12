@@ -5,6 +5,7 @@ CC	= gcc
 RM	= rm -f
 
 SRCS	= ./server/srcs/accept.c \
+	  ./server/srcs/commands/inventory.c \
 	  ./server/srcs/commands/map_content.c \
 	  ./server/srcs/commands/map_size.c \
 	  ./server/srcs/commands/player_inventory.c \

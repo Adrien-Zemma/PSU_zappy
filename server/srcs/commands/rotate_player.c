@@ -39,9 +39,47 @@ void	forward(server_t *server, client_t *client, char *str)
 			client->posX++;
 	}
 	forwardY(server, client);
+	dprintf(client->fd, "ok\n");
 }
 
 void	right(server_t *server, client_t *client, char *str)
 {
-	
+	str = str;
+	server = server;
+	switch (client->orientation) {
+		case 1:
+			client->orientation = 2;
+			break ;
+		case 2:
+			client->orientation = 3;
+			break ;
+		case 3:
+			client->orientation = 4;
+			break ;
+		case 4:
+			client->orientation = 1;
+			break ;
+	}
+	dprintf(client->fd, "ok\n");	
+}
+
+void	left(server_t *server, client_t *client, char *str)
+{
+	str = str;
+	server = server;
+	switch(client->orientation) {
+		case 1:
+			client->orientation = 4;
+			break;
+		case 2:
+			client->orientation = 1;
+			break;
+		case 3:
+			client->orientation = 2;
+			break;
+		case 4:
+			client->orientation = 3;
+			break;
+	}
+	dprintf(client->fd, "ok\n");
 }
