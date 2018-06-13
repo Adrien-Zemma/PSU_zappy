@@ -3,27 +3,13 @@ import socket
 from queue import Queue
 from .Threads import ThreadRead
 
-
-class Singleton(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
-        return cls._instances[cls]
-
-
-class Server(metaclass=Singleton):
-	
-	called = False
+class Server():
 
 	def __init__(self, port, ip = "localhost"):
 		self._ip = ip
 		self._port = port
-		if not Server.called:
-			self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			self.connect()
-			Server.called = True
+		self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.connect()
 	
 	def connect(self):
         	try:

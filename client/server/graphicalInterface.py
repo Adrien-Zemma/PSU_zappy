@@ -10,48 +10,39 @@ class GraphicalInterface(Server, threading.Thread):
 		threading.Thread.__init__(self)
 		self.readTh = ThreadRead(self._sock)
 		self.readTh.start()
-		self.manageConnection()
 		self.x = None
 		self.y = None
-
-	def _write(self, msg):
-		super(GraphicalInterface, self).write(msg)
+		self.manageConnection()
 
 	def manageConnection(self):
 		cmd = self.readTh.get_command()
 		if cmd == "WELCOME":
-			print("Welcome from server")
-			self._write("TEAM graphique")
-			print("Team id:")
-			print(self.readTh.get_command())
-			print("Map size")
-			cmd = self.readTh.get_command()
-			print(cmd)
-			self.x = cmd[0]
-			self.y = cmd[1]
+			self.write("GRAPHIC")
+			_ = self.readTh.get_command()
+			cmd = self.readTh.get_command().split(' ')
+			self.x = int(cmd[0])
+			self.y = int(cmd[1])
 			print("Setted coords")
 
 	def run(self):
-		print("Hi UI")
-		print("Map;")
 		print(self.get_map())
-		print("Teams:")
 		print(self.teams_name())
 		print(self.get_tile(0, 0))
 		print(self.get_tile(1, 1))
 
 	def get_map_size(self):
-        	self._write("msz")
+        	self.write("msz")
         	cmd = self.readTh.get_command().split(' ')[1:]
         	return cmd
 
 	def get_map(self):
 		m = []
-		self._write("mct")
+		print("Asking to write")
+		self.write("mct")
 		for _ in range(self.y):
 			line = []
 			for _ in range(self.x):
-				cmd = self.readTh.get_command().split(' ')[3:]
+				cmd = self.readTh.get_command(True, None).split(' ')[3:]
 				try:
         	        		line.append({
         	                		"food": cmd[0],
@@ -70,7 +61,7 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def teams_name(self):
 		names = []
-		self._write("tna")
+		self.write("tna")
 		cmd = self.readTh.get_command()
 		while cmd is not None:
 			try:
@@ -82,7 +73,7 @@ class GraphicalInterface(Server, threading.Thread):
 		return names
 	
 	def get_tile(self, x:str, y:str):
-		self._write("bct " + str(x) + " " + str(y))
+		self.write("bct " + str(x) + " " + str(y))
 		cmd = self.readTh.get_command().split(' ')[3:]
 		try:
         	    	return {
