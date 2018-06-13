@@ -61,8 +61,8 @@ def getMap():
 class Drawer():
 	def __init__(self, x, y):
 		random.seed()
-		self._winSizeX = 1080
-		self._winSizeY = 1920
+		self._winSizeY = 1080
+		self._winSizeX = 1920
 		self._sizeX = x
 		self._sizeY = y
 		self._spriteSize = 100
@@ -98,31 +98,21 @@ class Drawer():
 			dic = {}
 			dic["name"] = key
 			dic["sprite"] = self._items[key]
-			tmpX = (x * self._spriteSize * self._scale) + random.randint(0, (self._spriteSize * 0.8) * self._scale) + self._shiftX + self._spriteSize
-			tmpY = (y * self._spriteSize * self._scale) + random.randint(0, (self._spriteSize * 0.8) * self._scale) + self._shiftY
-			tmp2X = tmpX - tmpY
-			tmp2Y = (tmpX + tmpY) / 2
-			dic["x"] = tmp2X
-			dic["y"] = tmp2Y
+			tmpX = (x * self._spriteSize * self._scale) + random.randint(0, (self._spriteSize * 0.8) * self._scale) + self._spriteSize
+			tmpY = (y * self._spriteSize * self._scale) + random.randint(0, (self._spriteSize * 0.8) * self._scale) 
+			dic["x"] = tmpX - tmpY
+			dic["y"] = (tmpX + tmpY) / 2
 			tmp.append(dic)
 		return tmp
 	
 	def buildWindow(self):
-		self._window = pygame.display.set_mode((self._winSizeY, self._winSizeX))
+		self._window = pygame.display.set_mode((self._winSizeX, self._winSizeY))
 		self._background = pygame.image.load("back.jpg").convert()
 		self._window.blit(self._background, (0, 0))
-		tmp1 = math.sqrt((self._spriteSize * self._scale * self._spriteSize * self._scale) * 2)
-		tmp2 = math.sqrt((self._sizeX * self._sizeX) + (self._sizeY * self._sizeY))
 
-		tmp3 = (self._winSizeX - (tmp1 * tmp2))
-		tmp4 = (self._winSizeY - (tmp1 * tmp2))
-
-		self._shiftX = (tmp3 - tmp4) * -1
-		self._shiftY = (tmp3 + tmp4) / 2
 		
-		
-		print (self._shiftX)
-		print (self._shiftY)
+		self._shiftX = self._winSizeX / 10 * 4.5
+		self._shiftY = (self._winSizeY - (self._spriteSize * 2 * self._sizeY)) / 2 + self._spriteSize*2
 		
 	def buildItem(self):
 		self._items = {}
@@ -149,10 +139,10 @@ class Drawer():
 				self.drawCase(self._map[y][x], self._mapContent[y][x], x, y)
 
 	def drawCase(self, case, caseContent, x, y):
-		tmpX = (x * self._spriteSize) + self._shiftX
-		tmpY = (y * self._spriteSize) + self._shiftY
-		tmp2X = tmpX - tmpY
-		tmp2Y = (tmpX + tmpY) / 2
+		tmpX = (x * self._spriteSize)
+		tmpY = (y * self._spriteSize)
+		tmp2X = (tmpX - tmpY) + self._shiftX
+		tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY
 		self._window.blit(self._items["case"], (tmp2X, tmp2Y))
 		self.fillCase(case, caseContent)
 
@@ -161,10 +151,10 @@ class Drawer():
 			for unvalue in range(value):
 				self._window.blit(
 					case[key][unvalue]["sprite"],
-					(case[key][unvalue]["x"],
-					case[key][unvalue]["y"])
+					(case[key][unvalue]["x"] + self._shiftX,
+					case[key][unvalue]["y"] + self._shiftY)
 				)
 
 if __name__ == '__main__':
-	draw = Drawer(6, 6)
+	draw = Drawer(3, 3)
 	draw.start()
