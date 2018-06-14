@@ -6,9 +6,9 @@ from server.IA import Ia
 
 def main():
     ui = GraphicalInterface(args.port)
-    ia = Ia("poulain", args.port)
+    #ia = Ia("poulain", args.port)
     ui.start()
-    ia.start()
+    #ia.start()
     # ia.join()
     # ui.join()
     print("Main finished")

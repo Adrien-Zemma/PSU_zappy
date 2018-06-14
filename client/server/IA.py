@@ -12,7 +12,7 @@ class Ia(Server, threading.Thread):
 		self.team_id = None
 		self.map_size = None
 		self.orientation = 0
-		self.manageConnection()
+		#self.manageConnection()
 
 	def manageConnection(self):
 		cmd = self.readTh.get_command()

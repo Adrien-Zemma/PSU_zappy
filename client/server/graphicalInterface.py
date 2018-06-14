@@ -60,6 +60,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self.readTh.start()
 		self._sizeX = None
 		self._sizeY = None
+		self._mapContent = [[{}]]
 		self.manageConnection()
 		random.seed()
 		self._winSizeY = 1080
@@ -68,7 +69,6 @@ class GraphicalInterface(Server, threading.Thread):
 		self._scale = 1
 		self._maxItemPerCase = 100
 		self._spriteSize = self._spriteSize * self._scale
-		self._mapContent = self.get_map()
 		self._map = Map(x = self._sizeX, y = self._sizeY, spriteSize = self._spriteSize, maxItem = self._maxItemPerCase)
 		self.buildWindow()
 		self.buildItem()
@@ -77,11 +77,37 @@ class GraphicalInterface(Server, threading.Thread):
 	def manageConnection(self):
 		cmd = self.readTh.get_command()
 		if cmd == "WELCOME":
-			self.write("team graphique")
-			cmd = self.readTh.get_command().split(' ')
+			self.write("GRAPHIC")
+			cmd = self.readTh.get_command().split(' ')[1:]
 			self._sizeX = int(cmd[0])
 			self._sizeY = int(cmd[1])
-			print("Setted coords")
+			print("Time :", self.readTh.get_command().split(' ')[1:])
+			m = []
+			for _ in range(self._sizeY):
+				line = []
+				for _ in range(self._sizeX):
+					cmd = self.readTh.get_command().split(' ')[3:]
+					try:
+        	        			line.append({
+        	        	        		"food": int(cmd[0]),
+        	        	        		"linemate": int(cmd[1]),
+        	        	        		"deraumere": int(cmd[2]),
+        	        	        		"sibur": int(cmd[3]),
+        	        	        		"mendiane": int(cmd[4]),
+        	        	        		"phiras": int(cmd[5]),
+        	        	        		"thystame": int(cmd[6]),
+        	        			})
+					except IndexError:
+						print("Error while creating line from construct map", file=sys.stderr)
+						exit(84)
+				m.append(line)
+			self._mapContent = m
+			cmd = self.readTh.get_command()
+			while cmd is not None:
+				self.teams.append(cmd.split(' ')[1:][0])
+				cmd = self.readTh.get_command()
+			print("Teams: ", self.teams)
+			
 
 	def run(self):
 		self.drawMap()
@@ -171,7 +197,11 @@ class GraphicalInterface(Server, threading.Thread):
 		print(self._mapContent)
 		for y in range(self._sizeY):
 			for x in range(self._sizeX):
-				self.drawCase(self._map.content[y][x], self._mapContent[y][x], x, y)
+				try:
+					self.drawCase(self._map.content[y][x], self._mapContent[y][x], x, y)
+				except IndexError:
+					print("Can't find index for ", y, x)
+					exit(1)
 
 	def drawCase(self, Tile, caseContent, x, y):
 		tmpX = (x * self._spriteSize)

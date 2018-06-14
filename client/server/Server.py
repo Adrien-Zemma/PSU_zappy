@@ -8,6 +8,7 @@ class Server():
 	def __init__(self, port, ip = "localhost"):
 		self._ip = ip
 		self._port = port
+		self.teams = []
 		self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.connect()
 		self.readTh = ThreadRead(self._sock)

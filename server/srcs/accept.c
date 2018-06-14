@@ -39,7 +39,7 @@ int	set_accept(server_t *server)
 	str = getnextline(tmp);
 	if (!str)
 		return (0);
-	if (strcmp(str, "team graphique") == 0) {
+	if (strcmp(str, "GRAPHIC") == 0) {
 		printf("add graphique client\n");
 		server->fds[server->nb_fd] = tmp;
 		server->nb_fd++;
