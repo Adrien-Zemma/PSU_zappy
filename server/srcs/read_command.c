@@ -19,6 +19,8 @@ void	read_command(int c1, server_t *server)
 		if (server->clients[i]->fd == c1)
 			check = i;
 	}
+	printf("Client[%d]: %s\n", c1, str);
+	fflush(NULL);
 	for (int j = 0; server->command[j]; j++) {
 		if (strncmp(server->command[j]->name, str, strlen(server->command[j]->name)) == 0) {
 			server->command[j]->ptrFnct(server, server->clients[check], str);

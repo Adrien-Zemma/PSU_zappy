@@ -35,5 +35,7 @@ void	player_inventory(server_t *server, client_t *client, char *str);
 void	player_position(server_t *server, client_t *client, char *str);
 void	forward(server_t *server, client_t *client, char *str);
 void	right(server_t *server, client_t *client, char *str);
+void	left(server_t *server, client_t *client, char *str);
+void	inventory(server_t *server, client_t *client, char *str);
 
 #endif /* !COMMANDS_H_ */

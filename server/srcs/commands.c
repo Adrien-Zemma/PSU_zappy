@@ -9,7 +9,7 @@
 
 command_t	**init_commands(void)
 {
-	const int	i = 9;
+	const int	i = 11;
 	command_t	**node = malloc(sizeof(command_t *) * (i + 1));
 	
 	if (!node)
@@ -23,6 +23,8 @@ command_t	**init_commands(void)
 	node[6] = append_command("ppo #", player_position);
 	node[7] = append_command("Forward", forward);
 	node[8] = append_command("Right", right);
+	node[9] = append_command("Left", left);
+	node[10] = append_command("inventory", inventory);
 	node[i] = NULL;
 	return node;
 }
