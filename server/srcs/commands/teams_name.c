@@ -9,6 +9,7 @@
 
 void	names_team(server_t *server, client_t *client, char *str)
 {
-	(void)str;
-	dprintf(client->fd, "msz %d %d\n", server->parse->width, server->parse->height);
+	str = str;
+	for (int i = 0; server->parse->teams[i] != NULL; i++)
+		dprintf(client->fd, "tna %s\n", server->parse->teams[i]);
 }

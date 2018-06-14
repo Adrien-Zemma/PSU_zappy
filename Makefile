@@ -5,9 +5,14 @@ CC	= gcc
 RM	= rm -f
 
 SRCS	= ./server/srcs/accept.c \
+	  ./server/srcs/commands/inventory.c \
 	  ./server/srcs/commands/map_content.c \
 	  ./server/srcs/commands/map_size.c \
-	  ./server/srcs/commands/name_teams.c \
+	  ./server/srcs/commands/player_inventory.c \
+	  ./server/srcs/commands/player_level.c \
+	  ./server/srcs/commands/player_position.c \
+	  ./server/srcs/commands/rotate_player.c \
+	  ./server/srcs/commands/teams_name.c \
 	  ./server/srcs/commands/tile_content.c \
 	  ./server/srcs/commands.c \
 	  ./server/srcs/getnextline.c \
@@ -22,7 +27,7 @@ SRCS	= ./server/srcs/accept.c \
 OBJS	= $(SRCS:.c=.o)
 
 CFLAGS = -I ./server/incs/
-CFLAGS += -W -Wall -Wextra
+CFLAGS += -W -Wall -Wextra -g3
 
 all: $(NAME)
 

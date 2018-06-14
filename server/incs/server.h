@@ -18,6 +18,19 @@ typedef struct command_s command_t;
 typedef	struct client_s
 {
 	int	fd;
+	int	food;
+	int	linemate;
+	int	demaumere;
+	int	sibur;
+	int	mendiane;
+	int	phiras;
+	int	thystame;
+	int	level;
+	int	posX;
+	int	posY;
+	int	id;
+	int	orientation;
+	char	*team;
 }	client_t;
 
 typedef	struct server_s
@@ -28,7 +41,6 @@ typedef	struct server_s
 	command_t	**command;
 	client_t	**clients;
 	tile_t		***map;
-	
 	int	nb_client;
 	t_parse	*parse;
 }	server_t;
