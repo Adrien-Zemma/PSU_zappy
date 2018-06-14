@@ -5,7 +5,52 @@ import pygame
 
 from .Server import Server
 from .Threads import ThreadRead
-from pygame.locals import *
+
+class MaterialCoord():
+	def __init__(self, **kwargs):
+		try:
+			self.name = kwargs.get('name')
+			self.spriteSize = kwargs.get('spriteSize')
+			self.maxItem = kwargs.get('maxItem')
+			self.x = kwargs.get('x')
+			self.y = kwargs.get('y')
+		except KeyError:
+			print("Cant find index for Tile")
+		self.coords = []
+		self.buildCoordOfItems(self.x, self.y)
+
+	def buildCoordOfItems(self, x, y):
+		for _ in range(self.maxItem):
+			tmpX = (x * self.spriteSize) + random.randint(0, (self.spriteSize * 0.8)) + self.spriteSize
+			tmpY = (y * self.spriteSize) + random.randint(0, (self.spriteSize * 0.8))
+			tmpIsoX = tmpX - tmpY
+			tmpIsoY = (tmpX + tmpY) / 2
+			self.coords.append((tmpIsoX, tmpIsoY))
+
+class Tile():
+	def __init__(self, maxItem, spriteSize, x, y):
+		self.content = {
+        	        "food" : MaterialCoord(name = "food", maxItem = maxItem, spriteSize = spriteSize, x = x, y = y),
+        	        "sibur": MaterialCoord(name = "sibur", maxItem = maxItem, spriteSize = spriteSize, x = x, y = y),
+        	        "phiras": MaterialCoord(name = "phiras", maxItem = maxItem, spriteSize = spriteSize, x = x, y = y),
+        	        "thystame": MaterialCoord(name = "thystame", maxItem = maxItem, spriteSize = spriteSize, x = x, y = y),
+        	        "linemate": MaterialCoord(name = "linemate", maxItem = maxItem, spriteSize = spriteSize, x = x, y = y),
+        	        "mendiane": MaterialCoord(name = "mendiane", maxItem = maxItem, spriteSize = spriteSize, x = x, y = y),
+        	        "deraumere": MaterialCoord(name = "deraumere", maxItem = maxItem, spriteSize = spriteSize, x = x, y = y),
+		}
+		
+
+class Map():
+	def __init__(self, **kwargs):
+		self.x = kwargs.get('x')
+		self.y = kwargs.get('y')
+		self.maxItem = kwargs.get('maxItem')
+		self.spriteSize = kwargs.get('spriteSize')
+		self.content = [[]]
+		for y in range(self.y):
+			self.content.append([])
+			for x in range(self.x):
+				self.content[y].append(Tile(self.maxItem, self.spriteSize, x, y))
 
 class GraphicalInterface(Server, threading.Thread):
 
@@ -22,11 +67,12 @@ class GraphicalInterface(Server, threading.Thread):
 		self._spriteSize = 100
 		self._scale = 1
 		self._maxItemPerCase = 100
-		self._map = [[{}]]
+		self._spriteSize = self._spriteSize * self._scale
+		self._mapContent = self.get_map()
+		self._map = Map(x = self._sizeX, y = self._sizeY, spriteSize = self._spriteSize, maxItem = self._maxItemPerCase)
 		self.buildWindow()
 		self.buildItem()
-		self._mapContent = self.get_map()
-		self.buildMapItem()
+		print (self._map)
 
 	def manageConnection(self):
 		cmd = self.readTh.get_command()
@@ -57,13 +103,13 @@ class GraphicalInterface(Server, threading.Thread):
 				cmd = self.readTh.get_command().split(' ')[3:]
 				try:
         	        		line.append({
-        	                		"food": cmd[0],
-        	                		"linemate": cmd[1],
-        	                		"deraumere": cmd[2],
-        	                		"sibur": cmd[3],
-        	                		"mendiane": cmd[4],
-        	                		"phiras": cmd[5],
-        	                		"thystame": cmd[6],
+        	                		"food": int(cmd[0]),
+        	                		"linemate": int(cmd[1]),
+        	                		"deraumere": int(cmd[2]),
+        	                		"sibur": int(cmd[3]),
+        	                		"mendiane": int(cmd[4]),
+        	                		"phiras": int(cmd[5]),
+        	                		"thystame": int(cmd[6]),
         	        		})
 				except IndexError:
 					print("Error while creating line from construct map", file=sys.stderr)
@@ -101,36 +147,6 @@ class GraphicalInterface(Server, threading.Thread):
 			print("Error while getting tile", file=sys.stderr)
 			exit(84)
 	
-	def buildMapItem(self):
-		for y in range(self._sizeY):
-			self._map.append([])
-			for x in range(self._sizeX):
-				self._map[y].append([])
-				self._map[y][x] = {
-					"linemate":[],
-					"deraumere":[],
-					"sibur":[],
-					"mendiane":[],
-					"phiras":[],
-					"thystame":[],
-					"food":[]
-				}
-			for key, _ in self._map[y][x].items():
-				self._map[y][x][key] = self.buildCaseItem(key, x, y)
-	
-	def buildCaseItem(self, key, x, y):
-		tmp = []
-		for _ in range(self._maxItemPerCase):
-			dic = {}
-			dic["name"] = key
-			dic["sprite"] = self._items[key]
-			tmpX = (x * self._spriteSize * self._scale) + random.randint(0, (self._spriteSize * self._scale * 0.8) * self._scale) + self._spriteSize * self._scale
-			tmpY = (y * self._spriteSize * self._scale) + random.randint(0, (self._spriteSize * self._scale * 0.8) * self._scale) 
-			dic["x"] = tmpX - tmpY
-			dic["y"] = (tmpX + tmpY) / 2
-			tmp.append(dic)
-		return tmp
-	
 	def buildWindow(self):
 		self._window = pygame.display.set_mode((self._winSizeX, self._winSizeY))
 		self._background = pygame.image.load("back.jpg").convert()
@@ -152,23 +168,28 @@ class GraphicalInterface(Server, threading.Thread):
 		self._items["thystame"] =  pygame.image.load("items/thystame.png").convert_alpha()
 
 	def drawMap(self):
+		print(self._mapContent)
 		for y in range(self._sizeY):
 			for x in range(self._sizeX):
-				self.drawCase(self._map[y][x], self._mapContent[y][x], x, y)
+				self.drawCase(self._map.content[y][x], self._mapContent[y][x], x, y)
 
-	def drawCase(self, case, caseContent, x, y):
+	def drawCase(self, Tile, caseContent, x, y):
 		tmpX = (x * self._spriteSize)
 		tmpY = (y * self._spriteSize)
 		tmp2X = (tmpX - tmpY) + self._shiftX
 		tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY
 		self._window.blit(self._items["case"], (tmp2X, tmp2Y))
-		self.fillCase(case, caseContent)
+		self.fillCase(Tile, caseContent)
 
-	def fillCase(self, case, caseContent):
+	def fillCase(self, Tile, caseContent):
 		for key, value in caseContent.items():
 			for unvalue in range(value):
-				self._window.blit(
-					case[key][unvalue]["sprite"],
-					(case[key][unvalue]["x"] + self._shiftX,
-					case[key][unvalue]["y"] + self._shiftY)
-				)
+				try:	
+					self._window.blit(
+						self._items[Tile.content[key].name],
+						(Tile.content[key].coords[unvalue][0] + self._shiftX,
+							Tile.content[key].coords[unvalue][1] + self._shiftY)
+					)
+				except IndexError:
+					print("Can't find index at case[", key, "][", unvalue, "]")
+					exit(0)

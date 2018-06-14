@@ -230,7 +230,7 @@ def getMap():
             ],
         ]
 
-		
+class 
 
 class Drawer():
 	def __init__(self, x, y):
