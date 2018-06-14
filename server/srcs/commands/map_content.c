@@ -15,10 +15,11 @@ void	draw_tile(tile_t ***map, int fd, int i, int j)
 		map[i][j]->phiras, map[i][j]->thystam);
 }
 
-void	map_content(server_t *server, client_t *client, char *str)
+int	map_content(server_t *server, client_t *client, char *str)
 {
 	(void)str;
 	for (int i = 0; server->map[i]; i++)
 		for (int j = 0; server->map[i][j]; j++)
 			draw_tile(server->map, client->fd, i, j);
+	return OK;
 }

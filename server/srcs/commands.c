@@ -29,7 +29,7 @@ command_t	**init_commands(void)
 	return node;
 }
 
-command_t	*append_command(char *name, void (*ptrFnct)(server_t *, client_t *, char *))
+command_t	*append_command(char *name, int (*ptrFnct)(server_t *, client_t *, char *))
 {
 	command_t	*node = malloc(sizeof(command_t));
 	

@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-void	player_level(server_t *server, client_t *client, char *str)
+int	player_level(server_t *server, client_t *client, char *str)
 {
 	int	id;
 	
@@ -17,7 +17,7 @@ void	player_level(server_t *server, client_t *client, char *str)
 		str++;
 	else{
 		printf("Error level player\n");
-		return ;
+		return BAD_PARAM;
 	}
 	id = atoi(str);
 	for (int i = 0; server->clients[i] != NULL; i++){
@@ -26,4 +26,5 @@ void	player_level(server_t *server, client_t *client, char *str)
 				"plv %d %d", id, server->clients[i]->level);
 	}
 	dprintf(client->fd, "\n");
+	return OK;
 }

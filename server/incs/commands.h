@@ -14,28 +14,32 @@
 #include "server.h"
 #include "map.h"
 
+#define OK 0
+#define BAD_PARAM 1
+#define KO 2
+
 typedef struct server_s server_t;
 typedef struct client_s client_t;
 
 typedef struct	command_s
 {
 	char	*name;
-	void	(*ptrFnct)(server_t *, client_t *, char *);
+	int	(*ptrFnct)(server_t *, client_t *, char *);
 }		command_t;
 
 command_t	**init_commands(void);
-command_t	*append_command(char *name, void (*ptrFnct)(server_t *, client_t *, char *));
-void		map_size(server_t *server, client_t *client, char *str);
-void		names_team(server_t *server, client_t *client, char *str);
-void		map_content(server_t *server, client_t *client, char *str);
-void		tile_content(server_t *server, client_t *client, char *str);
+command_t	*append_command(char *name, int (*ptrFnct)(server_t *, client_t *, char *));
+int		map_size(server_t *server, client_t *client, char *str);
+int		names_team(server_t *server, client_t *client, char *str);
+int		map_content(server_t *server, client_t *client, char *str);
+int		tile_content(server_t *server, client_t *client, char *str);
 void		draw_tile(tile_t ***map, int fd, int i, int j);
-void	player_level(server_t *server, client_t *client, char *str);
-void	player_inventory(server_t *server, client_t *client, char *str);
-void	player_position(server_t *server, client_t *client, char *str);
-void	forward(server_t *server, client_t *client, char *str);
-void	right(server_t *server, client_t *client, char *str);
-void	left(server_t *server, client_t *client, char *str);
-void	inventory(server_t *server, client_t *client, char *str);
+int	player_level(server_t *server, client_t *client, char *str);
+int	player_inventory(server_t *server, client_t *client, char *str);
+int	player_position(server_t *server, client_t *client, char *str);
+int	forward(server_t *server, client_t *client, char *str);
+int	right(server_t *server, client_t *client, char *str);
+int	left(server_t *server, client_t *client, char *str);
+int	inventory(server_t *server, client_t *client, char *str);
 
 #endif /* !COMMANDS_H_ */

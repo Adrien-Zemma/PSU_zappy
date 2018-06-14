@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-void	player_position(server_t *server, client_t *client, char *str)
+int	player_position(server_t *server, client_t *client, char *str)
 {
 	int	id;
 	
@@ -17,7 +17,7 @@ void	player_position(server_t *server, client_t *client, char *str)
 		str++;
 	else {
 		printf("error player position\n");
-		return ;
+		return BAD_PARAM;
 	}
 	id = atoi(str);
 	for (int i = 0; server->clients[i] != NULL; i++){
@@ -26,4 +26,5 @@ void	player_position(server_t *server, client_t *client, char *str)
 			id, server->clients[i]->posX,
 			server->clients[i]->posY);
 	}
+	return OK;
 }

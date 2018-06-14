@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-void	forwardY(server_t *server, client_t *client)
+int	forwardY(server_t *server, client_t *client)
 {
 	if (client->orientation == 3){
 		if (client->posY == server->parse->height - 1)
@@ -20,10 +20,11 @@ void	forwardY(server_t *server, client_t *client)
 			client->posX = server->parse->width - 1;
 		else
 			client->posX++;
-	}		
+	}
+	return OK;
 }
 
-void	forward(server_t *server, client_t *client, char *str)
+int	forward(server_t *server, client_t *client, char *str)
 {
 	str = str;
 	if (client->orientation == 1){
@@ -40,12 +41,13 @@ void	forward(server_t *server, client_t *client, char *str)
 	}
 	forwardY(server, client);
 	dprintf(client->fd, "ok\n");
+	return OK;
 }
 
-void	right(server_t *server, client_t *client, char *str)
+int	right(server_t *server, client_t *client, char *str)
 {
-	str = str;
-	server = server;
+	(void)str;
+	(void)server;
 	switch (client->orientation) {
 		case 1:
 			client->orientation = 2;
@@ -61,12 +63,13 @@ void	right(server_t *server, client_t *client, char *str)
 			break ;
 	}
 	dprintf(client->fd, "ok\n");	
+	return OK;
 }
 
-void	left(server_t *server, client_t *client, char *str)
+int	left(server_t *server, client_t *client, char *str)
 {
-	str = str;
-	server = server;
+	(void)str;
+	(void)server;
 	switch(client->orientation) {
 		case 1:
 			client->orientation = 4;
@@ -82,4 +85,5 @@ void	left(server_t *server, client_t *client, char *str)
 			break;
 	}
 	dprintf(client->fd, "ok\n");
+	return OK;
 }
