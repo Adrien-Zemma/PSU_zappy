@@ -25,6 +25,13 @@ int	set_client(server_t *server, char *str)
 	return (0);
 }
 
+void	print_graph_infos(server_t *server, client_t *client)
+{
+	map_size(server, client, NULL);
+	map_content(server, client, NULL);
+	names_team(server, client, NULL);
+}
+
 int	set_accept(server_t *server)
 {
 	int	tmp;
@@ -50,6 +57,7 @@ int	set_accept(server_t *server)
 		server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
 		server->clients[server->nb_client] = NULL;
 		server->clients[server->nb_client - 1]->fd = tmp;
+		print_graph_infos(server, server->clients[server->nb_client - 1]);
 		dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
 		return (0);
 	}
