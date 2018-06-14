@@ -35,4 +35,3 @@ class Ia(Server, threading.Thread):
 
 	def run(self):
 		print("Hi IA")
-		self.forward()

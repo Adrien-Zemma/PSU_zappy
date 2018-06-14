@@ -13,12 +13,12 @@ class GraphicalInterface(Server, threading.Thread):
 		super().__init__(port, ip)
 		threading.Thread.__init__(self)
 		self.readTh.start()
+		self._sizeX = None
+		self._sizeY = None
 		self.manageConnection()
 		random.seed()
 		self._winSizeY = 1080
 		self._winSizeX = 1920
-		self._sizeX = None
-		self._sizeY = None
 		self._spriteSize = 100
 		self._scale = 1
 		self._maxItemPerCase = 100
