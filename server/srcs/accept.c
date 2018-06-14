@@ -37,8 +37,10 @@ int	set_accept(server_t *server)
 		perror("accept :");
 	dprintf(tmp, "WELCOME\n");
 	str = getnextline(tmp);
+	if (!str)
+		return (0);
 	if (strcmp(str, "team graphique") == 0) {
-		dprintf(tmp, "add graphique client\n");
+		printf("add graphique client\n");
 		server->fds[server->nb_fd] = tmp;
 		server->nb_fd++;
 		server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
@@ -48,6 +50,7 @@ int	set_accept(server_t *server)
 		server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
 		server->clients[server->nb_client] = NULL;
 		server->clients[server->nb_client - 1]->fd = tmp;
+		dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
 		return (0);
 	}
 	server->fds[server->nb_fd] = tmp;

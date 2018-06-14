@@ -6,9 +6,10 @@ import queue
 
 class ThreadRead(threading.Thread):
 	def __init__(self, socket):
-        	threading.Thread.__init__(self)
-        	self.queue = queue.Queue()
-        	self.socket = socket
+		threading.Thread.__init__(self)
+		self.queue = queue.Queue()
+		self.socket = socket
+		self.loop = True
 
 	def _read(self):
         	buff = ""
@@ -36,7 +37,7 @@ class ThreadRead(threading.Thread):
 		Thread run method. Read command from server socket
 		"""
 		cmd = self._read()
-		while cmd:
+		while self.loop and cmd:
         		print("Putting [" + cmd + "] in queue")
         		self.queue.put(cmd)
         		cmd = self._read()

@@ -8,7 +8,6 @@ class GraphicalInterface(Server, threading.Thread):
 	def __init__(self, port, ip="localhost"):
 		super().__init__(port, ip)
 		threading.Thread.__init__(self)
-		self.readTh = ThreadRead(self._sock)
 		self.readTh.start()
 		self.x = None
 		self.y = None
@@ -17,8 +16,7 @@ class GraphicalInterface(Server, threading.Thread):
 	def manageConnection(self):
 		cmd = self.readTh.get_command()
 		if cmd == "WELCOME":
-			self.write("GRAPHIC")
-			_ = self.readTh.get_command()
+			self.write("team graphique")
 			cmd = self.readTh.get_command().split(' ')
 			self.x = int(cmd[0])
 			self.y = int(cmd[1])
@@ -26,9 +24,8 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def run(self):
 		print(self.get_map())
-		print(self.teams_name())
-		print(self.get_tile(0, 0))
-		print(self.get_tile(1, 1))
+		self.readTh.loop = False
+		self.readTh.join()
 
 	def get_map_size(self):
         	self.write("msz")

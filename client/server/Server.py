@@ -10,6 +10,7 @@ class Server():
 		self._port = port
 		self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.connect()
+		self.readTh = ThreadRead(self._sock)
 	
 	def connect(self):
         	try:
