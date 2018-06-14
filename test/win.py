@@ -3,60 +3,234 @@ import random
 import math
 from pygame.locals import *
 
-		
-
 def getMap():
 	return [
-		[
-			{"linemate":0, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1}
-		],
-		[
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1}
+            [
+                {"linemate": 0, "deraumere": 1, "sibur": 1,
+                	"mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+
+            ],
+            [
+                {"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+            ],
+            [
+                {"linemate": 0, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+            ],
+            [
+                {"linemate": 0, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+
+            ],
+            [
+                {"linemate": 0, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+
+            ],
+            [
+                {"linemate": 0, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+            ],
+            [
+                {"linemate": 0, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+            ],
+            [
+                {"linemate": 0, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+            ],
+            [
+                {"linemate": 0, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+            ],
+            [
+                {"linemate": 0, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+             			{"linemate": 1, "deraumere": 1, "sibur": 1,
+                 "mendiane": 1, "phiras": 1, 'thystame': 1, "food": 1},
+            ],
+        ]
+
 		
-		],
-		[
-			{"linemate":0, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1}
-		],
-		[
-			{"linemate":0, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1}
-		],
-		[
-			{"linemate":0, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1}
-		],
-		[
-			{"linemate":0, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1},
-			{"linemate":1, "deraumere":1, "sibur":1, "mendiane":1, "phiras":1, 'thystame':1, "food":1}
-		],
-		]
 
 class Drawer():
 	def __init__(self, x, y):
@@ -98,8 +272,8 @@ class Drawer():
 			dic = {}
 			dic["name"] = key
 			dic["sprite"] = self._items[key]
-			tmpX = (x * self._spriteSize * self._scale) + random.randint(0, (self._spriteSize * 0.8) * self._scale) + self._spriteSize
-			tmpY = (y * self._spriteSize * self._scale) + random.randint(0, (self._spriteSize * 0.8) * self._scale) 
+			tmpX = (x * self._spriteSize * self._scale) + random.randint(0, (self._spriteSize * self._scale * 0.8) * self._scale) + self._spriteSize * self._scale
+			tmpY = (y * self._spriteSize * self._scale) + random.randint(0, (self._spriteSize * self._scale * 0.8) * self._scale) 
 			dic["x"] = tmpX - tmpY
 			dic["y"] = (tmpX + tmpY) / 2
 			tmp.append(dic)
@@ -130,8 +304,6 @@ class Drawer():
 		getMap()
 		self.drawMap()
 		pygame.display.flip()
-		while (1):
-			i = i + 1
 
 	def drawMap(self):
 		for y in range(self._sizeY):
@@ -156,5 +328,6 @@ class Drawer():
 				)
 
 if __name__ == '__main__':
-	draw = Drawer(3, 3)
-	draw.start()
+	draw = Drawer(10, 10)
+	while (1):
+		draw.start()
