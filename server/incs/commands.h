@@ -20,6 +20,7 @@
 
 typedef struct server_s server_t;
 typedef struct client_s client_t;
+typedef struct tile tile_t;
 
 typedef struct	command_s
 {
