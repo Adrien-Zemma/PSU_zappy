@@ -1,10 +1,11 @@
-import threading
+import os
 import sys
 import random
 import pygame
+import threading
 
 from .Server import Server
-from .Threads import ThreadRead
+from .Threads import ThreadRead		
 
 class MaterialCoord():
 	def __init__(self, **kwargs):
@@ -63,6 +64,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self._mapContent = [[{}]]
 		self.manageConnection()
 		random.seed()
+		pygame.init()
 		self._winSizeY = 1080
 		self._winSizeX = 1920
 		self._spriteSize = 100
@@ -107,7 +109,6 @@ class GraphicalInterface(Server, threading.Thread):
 				self.teams.append(cmd.split(' ')[1:][0])
 				cmd = self.readTh.get_command()
 			print("Teams: ", self.teams)
-			
 
 	def run(self):
 		self.drawMap()
@@ -184,14 +185,14 @@ class GraphicalInterface(Server, threading.Thread):
 		
 	def buildItem(self):
 		self._items = {}
-		self._items["case"] = pygame.image.load("ground2.png").convert_alpha()
-		self._items["food"] = pygame.image.load("items/food.png").convert_alpha()
-		self._items["linemate"] =  pygame.image.load("items/linemate.png").convert_alpha()
-		self._items["deraumere"] =  pygame.image.load("items/deraumere.png").convert_alpha()
-		self._items["sibur"] =  pygame.image.load("items/sibur.png").convert_alpha()
-		self._items["mendiane"] =  pygame.image.load("items/mendiane.png").convert_alpha()
-		self._items["phiras"] =  pygame.image.load("items/phiras.png").convert_alpha()
-		self._items["thystame"] =  pygame.image.load("items/thystame.png").convert_alpha()
+		self._items["case"] = pygame.image.load(os.path.abspath("assets/ground2.png")).convert_alpha()
+		self._items["food"] = pygame.image.load(os.path.abspath("assets/items/food.png")).convert_alpha()
+		self._items["linemate"] =  pygame.image.load(os.path.abspath("assets/items/linemate.png")).convert_alpha()
+		self._items["deraumere"] =  pygame.image.load(os.path.abspath("assets/items/deraumere.png")).convert_alpha()
+		self._items["sibur"] =  pygame.image.load(os.path.abspath("items/sibur.png")).convert_alpha()
+		self._items["mendiane"] =  pygame.image.load(os.path.abspath("items/mendiane.png")).convert_alpha()
+		self._items["phiras"] =  pygame.image.load(os.path.abspath("items/phiras.png")).convert_alpha()
+		self._items["thystame"] =  pygame.image.load(os.path.abspath("items/thystame.png")).convert_alpha()
 
 	def drawMap(self):
 		print(self._mapContent)
