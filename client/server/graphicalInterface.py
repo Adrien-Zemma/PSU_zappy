@@ -74,7 +74,26 @@ class GraphicalInterface(Server, threading.Thread):
 		self._map = Map(x = self._sizeX, y = self._sizeY, spriteSize = self._spriteSize, maxItem = self._maxItemPerCase)
 		self.buildWindow()
 		self.buildItem()
+		self._hud = self.Hud(self)
 		print (self._map)
+
+	class Hud():
+		def __init__(self, graphical):
+			self._fontsize = 25
+			self._graph = graphical
+			self._font = pygame.font.Font(os.path.abspath("assets/font/Android.ttf"), self._fontsize)
+
+		def drawHud(self):
+			self.drawTeams()
+
+		def drawTeams(self):
+			teams = self._graph.teams_name()
+			tmp = ""
+			for el in teams:
+				tmp += (el + " ")
+			label = self._font.render(tmp, 1, (0, 0, 0))
+			self._graph._window.blit(label, ((self._graph._winSizeX / 2) - (len(tmp) / 2) ,100))
+			
 
 	def manageConnection(self):
 		cmd = self.readTh.get_command()
@@ -112,10 +131,11 @@ class GraphicalInterface(Server, threading.Thread):
 			print("Teams: ", self.teams)
 
 	def run(self):
-		self.drawMap()
-		pygame.display.flip()
+		
 		while True:
-			pass
+			self.drawMap()
+			self._hud.drawHud()
+			pygame.display.flip()
 
 	def get_map_size(self):
         	self.write("msz")
