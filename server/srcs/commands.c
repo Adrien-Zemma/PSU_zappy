@@ -9,7 +9,7 @@
 
 command_t	**init_commands(void)
 {
-	const int	i = 14;
+	const int	i = 15;
 	command_t	**node = malloc(sizeof(command_t *) * (i + 1));
 
 	if (!node)
@@ -28,6 +28,7 @@ command_t	**init_commands(void)
 	node[11] = append_command("Look", look);
 	node[12] = append_command("Broadcast", broadcast);
 	node[13] = append_command("Take", take_object);
+	node[14] = append_command("Connect_nbr", nb_connect);
 	node[i] = NULL;
 	return node;
 }

@@ -45,5 +45,6 @@ int	inventory(server_t *server, client_t *client, char *str);
 int	look(server_t *server, client_t *client, char *str);
 int	broadcast(server_t *server, client_t *client, char *str);
 int	take_object(server_t *server, client_t *client, char *str);
+int	nb_connect(server_t *server, client_t *client, char *str);
 
 #endif /* !COMMANDS_H_ */

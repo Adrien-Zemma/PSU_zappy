@@ -62,7 +62,7 @@ int	set_accept(server_t *server)
 		return (0);
 	}
 	for (int i = 0; server->parse->teams[i] != NULL; i++){
-		if (strcmp(server->parse->teams[i], str) == 0){
+		if (strncmp(server->parse->teams[i], str, strlen(server->parse->teams[i])) == 0){
 			server->fds[server->nb_fd] = tmp;
 			server->nb_fd++;
 			server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));

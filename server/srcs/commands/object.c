@@ -57,3 +57,4 @@ int	take_object(server_t *server, client_t *client, char *str)
 		}
 	return (take_other_object(server, client, str));
 }
+

@@ -10,6 +10,7 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/commands/look.c \
 	  ./server/srcs/commands/map_content.c \
 	  ./server/srcs/commands/map_size.c \
+	  ./server/srcs/commands/nb_connect.c \
 	  ./server/srcs/commands/object.c \
 	  ./server/srcs/commands/player_inventory.c \
 	  ./server/srcs/commands/player_level.c \
