@@ -7,6 +7,42 @@
 
 #include "map.h"
 
+void	append_player(tile_t **tile, client_t *client)
+{
+	int i;
+
+	for (i = 0; (*tile)->clients[i]; i++);
+	(*tile)->clients = realloc((*tile)->clients, sizeof(client_t *) * (i + 2));
+	(*tile)->clients[i] = client;
+	(*tile)->clients[i + 1] = NULL;
+}
+
+void	reorganize_players(client_t ***clients, int index)
+{
+	int i;
+
+	for (i = 0; (*clients)[i]; i++);
+	if (index > i)
+		return;
+	index++;
+	for (; (*clients)[index]; index++) {
+		(*clients)[index - 1] = (*clients)[index];
+	}
+	*clients = realloc(*clients, sizeof(client_t *) * (index));
+	(*clients)[index - 1] = NULL;
+}
+
+int	remove_player(tile_t **tile, client_t *client)
+{
+	int i;
+
+	for (i = 0; (*tile)->clients[i] && (*tile)->clients[i] != client; i++);
+	if (!(*tile)->clients[i])
+		return KO;
+	reorganize_players(&(*tile)->clients, i);
+	return OK;
+}
+
 static void	gen_tile(tile_t **node)
 {
 	(*node)->linemate = ADD_MINERAL(0, 2);
@@ -16,6 +52,8 @@ static void	gen_tile(tile_t **node)
 	(*node)->phiras = ADD_MINERAL(0, 2);
 	(*node)->thystam = ADD_MINERAL(0, 2);
 	(*node)->food = ADD_MINERAL(0, 2);
+	(*node)->clients = malloc(sizeof(client_t *) * 1);
+	(*node)->clients[0] = NULL;
 }
 
 static tile_t	**gen_line(int w)

@@ -12,17 +12,22 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "server.h"
+
 #define ADD_MINERAL(a, b)  (rand() % (b - a) + a)
 
+typedef struct client_s client_t;
+
 typedef struct	tile {
-	int	linemate;
-	int	deraumere;
-	int	sibur;
-	int	mendiane;
-	int	phiras;
-	int	thystam;
-	int	food;
-}		tile_t;
+	int		linemate;
+	int		deraumere;
+	int		sibur;
+	int		mendiane;
+	int		phiras;
+	int		thystam;
+	int		food;
+	client_t	**clients;
+}			tile_t;
 
 tile_t	***init_map(int weight, int height);
 void	free_map(tile_t ***map);
