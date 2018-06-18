@@ -28,42 +28,41 @@ int	big_fd(server_t *server)
 
 int	good_select(fd_set readfds, server_t *server)
 {
+	int	ret = 0;
+
 	if (FD_ISSET(server->fd, &readfds))
 		return (set_accept(server));
 	for (int i = 0; i < server->nb_fd; i++){
 		if (FD_ISSET(server->fds[i], &readfds)){
 			read_command(server->fds[i], server);
+			ret = 1;
 		}
 	}
-	return (0);
+	return (ret);
 }
 
 int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 {
 	int	best_fd = big_fd(server);
-	float	time_client;
-	struct timeval	tv;
+	struct timeval	*tv = get_select_timeout(server);
+	int		ret;
 
 	parse = parse;
 	FD_ZERO(&readfds);
 	FD_SET(server->fd, &readfds);
-	for (int i = 0; server->clients[i] != NULL; i++){
-		if (i == 0)
-			time_client = server->clients[i]->command->time;
-		else if (time_client > server->clients[i]->command->time)
-			time_client = server->clients[i]->command->time;
-	}
-	tv.tv_sec = time_client;
-	tv.tv_usec = 0;
 	for (int i = 0; i < server->nb_fd; i++)
 		FD_SET(server->fds[i], &readfds);
-	if (select((server->fd > best_fd ? server->fd : best_fd) + 1, &readfds,
-		NULL, NULL, &tv) != -1){
-		if (good_select(readfds, server) == 84)
-			return (84);
-	}
+	if (tv)
+		ret = select((server->fd > best_fd ? server->fd : best_fd) + 1, &readfds, NULL, NULL, tv);
 	else
-		perror("select: ");
+		ret = select((server->fd > best_fd ? server->fd : best_fd) + 1, &readfds, NULL, NULL, NULL);
+	if (ret == -1) {
+		perror("select");
+		return (84);
+	}
+	if (good_select(readfds, server) == 84)
+		return (84);
+	remove_time_clients(server, tv);
 	return (0);
 }
 

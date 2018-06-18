@@ -8,10 +8,10 @@
 #ifndef SERVER_H_
 	#define SERVER_H_
 
-#include "parse.h"
-#include "commands.h"
-#include "map.h"
-#include <string.h>
+	#include "parse.h"
+	#include "commands.h"
+	#include "map.h"
+	#include <string.h>
 
 typedef struct command_s command_t;
 typedef struct	tile tile_t;
@@ -53,4 +53,7 @@ int	start_server(t_parse *parse, server_t *server);
 int	set_accept(server_t *server);
 void	read_command(int c1, server_t *server);
 char	*parse_command(char *command, char c, int nb);
-#endif /* SERVER */
+struct timeval	*get_select_timeout(server_t *server);
+void	remove_time_clients(server_t *server, struct timeval *tv);
+
+#endif /* !SERVER */
