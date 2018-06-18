@@ -25,8 +25,6 @@ void	read_command(int c1, server_t *server)
 {
 	char	*str = getnextline(c1);
 	int	check = 0;
-	int	state = 0;
-	int	i = 0;
 
 	if (str == NULL)
 		return ;

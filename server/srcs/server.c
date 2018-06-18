@@ -47,7 +47,6 @@ int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 	struct timeval	*tv = get_select_timeout(server);
 	double		backup_time = tv ? tv->tv_sec : 0;
 	int		ret;
-	clock_t		clk;
 
 	parse = parse;
 	FD_ZERO(&readfds);
@@ -55,7 +54,6 @@ int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 	for (int i = 0; i < server->nb_fd; i++)
 		FD_SET(server->fds[i], &readfds);
 	printf("--- SELECT %f ---\n", backup_time);
-	clk = clock();
 	if (tv)
 		ret = select((server->fd > best_fd ? server->fd : best_fd) + 1, &readfds, NULL, NULL, tv);
 	else
@@ -66,7 +64,6 @@ int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 	}
 	printf("--- END SELECT ---\n");
 	if (ret != 0) {
-		//printf("%ld:%ld\n", tv->tv_sec, tv->tv_usec);
 		backup_time = tv ? tv->tv_sec : 0;
 		printf("backup_time: %f\n", backup_time);
 	}
