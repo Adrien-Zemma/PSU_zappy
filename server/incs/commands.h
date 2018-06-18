@@ -42,5 +42,6 @@ int	forward(server_t *server, client_t *client, char *str);
 int	right(server_t *server, client_t *client, char *str);
 int	left(server_t *server, client_t *client, char *str);
 int	inventory(server_t *server, client_t *client, char *str);
+int	look(server_t *server, client_t *client, char *str);
 
 #endif /* !COMMANDS_H_ */

@@ -1,10 +1,11 @@
-import threading
+import os
 import sys
 import random
 import pygame
+import threading
 
 from .Server import Server
-from .Threads import ThreadRead
+from .Threads import ThreadRead		
 
 class MaterialCoord():
 	def __init__(self, **kwargs):
@@ -63,6 +64,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self._mapContent = [[{}]]
 		self.manageConnection()
 		random.seed()
+		pygame.init()
 		self._winSizeY = 1080
 		self._winSizeX = 1920
 		self._spriteSize = 100
@@ -81,12 +83,13 @@ class GraphicalInterface(Server, threading.Thread):
 			cmd = self.readTh.get_command().split(' ')[1:]
 			self._sizeX = int(cmd[0])
 			self._sizeY = int(cmd[1])
-			print("Time :", self.readTh.get_command().split(' ')[1:])
-			m = []
-			for _ in range(self._sizeY):
+			m = []	
+			for y in range(self._sizeY):
 				line = []
-				for _ in range(self._sizeX):
-					cmd = self.readTh.get_command().split(' ')[3:]
+				for x in range(self._sizeX):
+					cmd = self.readTh.get_command().split(' ')
+					print(x," ", y ," ", cmd, flush = True)
+					cmd = cmd[3:]
 					try:
         	        			line.append({
         	        	        		"food": int(cmd[0]),
@@ -98,7 +101,7 @@ class GraphicalInterface(Server, threading.Thread):
         	        	        		"thystame": int(cmd[6]),
         	        			})
 					except IndexError:
-						print("Error while creating line from construct map", file=sys.stderr)
+						print("Error while creating line from construct map manage connection", file=sys.stderr)
 						exit(84)
 				m.append(line)
 			self._mapContent = m
@@ -107,7 +110,6 @@ class GraphicalInterface(Server, threading.Thread):
 				self.teams.append(cmd.split(' ')[1:][0])
 				cmd = self.readTh.get_command()
 			print("Teams: ", self.teams)
-			
 
 	def run(self):
 		self.drawMap()
@@ -175,7 +177,7 @@ class GraphicalInterface(Server, threading.Thread):
 	
 	def buildWindow(self):
 		self._window = pygame.display.set_mode((self._winSizeX, self._winSizeY))
-		self._background = pygame.image.load("back.jpg").convert()
+		self._background = pygame.image.load(os.path.abspath("assets/back.jpg")).convert()
 		self._window.blit(self._background, (0, 0))
 
 		
@@ -184,17 +186,16 @@ class GraphicalInterface(Server, threading.Thread):
 		
 	def buildItem(self):
 		self._items = {}
-		self._items["case"] = pygame.image.load("ground2.png").convert_alpha()
-		self._items["food"] = pygame.image.load("items/food.png").convert_alpha()
-		self._items["linemate"] =  pygame.image.load("items/linemate.png").convert_alpha()
-		self._items["deraumere"] =  pygame.image.load("items/deraumere.png").convert_alpha()
-		self._items["sibur"] =  pygame.image.load("items/sibur.png").convert_alpha()
-		self._items["mendiane"] =  pygame.image.load("items/mendiane.png").convert_alpha()
-		self._items["phiras"] =  pygame.image.load("items/phiras.png").convert_alpha()
-		self._items["thystame"] =  pygame.image.load("items/thystame.png").convert_alpha()
+		self._items["case"] = pygame.image.load(os.path.abspath("assets/ground2.png")).convert_alpha()
+		self._items["food"] = pygame.image.load(os.path.abspath("assets/items/food.png")).convert_alpha()
+		self._items["linemate"] =  pygame.image.load(os.path.abspath("assets/items/linemate.png")).convert_alpha()
+		self._items["deraumere"] =  pygame.image.load(os.path.abspath("assets/items/deraumere.png")).convert_alpha()
+		self._items["sibur"] =  pygame.image.load(os.path.abspath("assets/items/sibur.png")).convert_alpha()
+		self._items["mendiane"] =  pygame.image.load(os.path.abspath("assets/items/mendiane.png")).convert_alpha()
+		self._items["phiras"] =  pygame.image.load(os.path.abspath("assets/items/phiras.png")).convert_alpha()
+		self._items["thystame"] =  pygame.image.load(os.path.abspath("assets/items/thystame.png")).convert_alpha()
 
 	def drawMap(self):
-		print(self._mapContent)
 		for y in range(self._sizeY):
 			for x in range(self._sizeX):
 				try:
