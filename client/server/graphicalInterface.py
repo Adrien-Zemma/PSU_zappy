@@ -75,14 +75,24 @@ class GraphicalInterface(Server, threading.Thread):
 		self.buildWindow()
 		self.buildItem()
 		self._hud = self.Hud(self)
-		print (self._map)
 
 	class Hud():
 		def __init__(self, graphical):
+			self._hasDraw = False
 			self._fontsize = 25
+			self._winSizeX = 800
+			self._winSizeY = 600
 			self._graph = graphical
 			self._font = pygame.font.Font(os.path.abspath("assets/font/Android.ttf"), self._fontsize)
 
+		class Block():
+			def __init__(self):
+				self.name = ""
+				self.inventory = []
+				self.level = 0
+				self.food = 0
+				i = 0;
+			
 		def drawHud(self):
 			self.drawTeams()
 
@@ -91,7 +101,7 @@ class GraphicalInterface(Server, threading.Thread):
 			tmp = ""
 			for el in teams:
 				tmp += (el + " ")
-			label = self._font.render(tmp, 1, (0, 0, 0))
+			label = self._font.render(tmp, 1, (255, 255, 255))
 			self._graph._window.blit(label, ((self._graph._winSizeX / 2) - (len(tmp) / 2) ,100))
 			
 
@@ -131,10 +141,18 @@ class GraphicalInterface(Server, threading.Thread):
 			print("Teams: ", self.teams)
 
 	def run(self):
-		
-		while True:
+		status = True
+		while status:
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					status = False
+				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_i:
+						self._hud.start()
+					elif event.key == pygame.K_ESCAPE:
+						status = False
 			self.drawMap()
-			self._hud.drawHud()
+			#self._hud.drawHud()
 			pygame.display.flip()
 
 	def get_map_size(self):
