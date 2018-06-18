@@ -32,7 +32,7 @@ typedef	struct client_s
 	int	id;
 	int	orientation;
 	char	*team;
-	float	time;
+	command_t	*command;
 }	client_t;
 
 typedef	struct server_s

@@ -28,7 +28,6 @@ void	read_command(int c1, server_t *server)
 	int	state = 0;
 	int	i = 0;
 
-
 	if (str == NULL)
 		return ;
 	for (int i = 0; server->clients[i] != NULL; i++){
@@ -39,8 +38,9 @@ void	read_command(int c1, server_t *server)
 	fflush(NULL);
 	for (int j = 0; server->command[j]; j++) {
 		if (strncmp(server->command[j]->name, str, strlen(server->command[j]->name)) == 0) {
-			state = server->command[j]->ptrFnct(server, server->clients[check], str);
-			manage_error(c1, state, &i);
+			server->clients[check]->command = server->command[j];
+			// state = server->command[j]->ptrFnct(server, server->clients[check], str);
+			// manage_error(c1, state, &i);
 		}
 	}
 	if (!i)

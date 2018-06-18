@@ -41,14 +41,24 @@ int	good_select(fd_set readfds, server_t *server)
 int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 {
 	int	best_fd = big_fd(server);
+	float	time_client;
+	struct timeval	tv;
 
 	parse = parse;
 	FD_ZERO(&readfds);
 	FD_SET(server->fd, &readfds);
+	for (int i = 0; server->clients[i] != NULL; i++){
+		if (i == 0)
+			time_client = server->clients[i]->command->time;
+		else if (time_client > server->clients[i]->command->time)
+			time_client = server->clients[i]->command->time;
+	}
+	tv.tv_sec = time_client;
+	tv.tv_usec = 0;
 	for (int i = 0; i < server->nb_fd; i++)
 		FD_SET(server->fds[i], &readfds);
 	if (select((server->fd > best_fd ? server->fd : best_fd) + 1, &readfds,
-		NULL, NULL, NULL) != -1){
+		NULL, NULL, &tv) != -1){
 		if (good_select(readfds, server) == 84)
 			return (84);
 	}

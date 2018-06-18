@@ -27,13 +27,14 @@ int	forwardY(server_t *server, client_t *client)
 int	forward(server_t *server, client_t *client, char *str)
 {
 	str = str;
-	if (client->orientation == 1){
+
+	if (client->orientation == 1) {
 		if (client->posY == 0)
 			client->posY = server->parse->height - 1;
 		else
 			client->posY--;
 	}
-	if (client->orientation == 2){
+	if (client->orientation == 2) {
 		if (client->posX == server->parse->width -1)
 			client->posX = 0;
 		else
@@ -62,7 +63,7 @@ int	right(server_t *server, client_t *client, char *str)
 			client->orientation = 1;
 			break ;
 	}
-	dprintf(client->fd, "ok\n");	
+	dprintf(client->fd, "ok\n");
 	return OK;
 }
 

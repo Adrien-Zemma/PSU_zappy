@@ -22,6 +22,7 @@ int	set_client(server_t *server, char *str)
 	server->clients[server->nb_client - 1]->posX = ADD_MINERAL(0, server->parse->width);
 	server->clients[server->nb_client - 1]->posY = ADD_MINERAL(0, server->parse->height);
 	server->clients[server->nb_client - 1]->orientation = ADD_MINERAL(1, 5);
+	server->clients[server->nb_client - 1]->command = NULL;
 	return (0);
 }
 
