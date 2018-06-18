@@ -5,9 +5,13 @@ CC	= gcc
 RM	= rm -f
 
 SRCS	= ./server/srcs/accept.c \
+	  ./server/srcs/commands/broadcast.c \
 	  ./server/srcs/commands/inventory.c \
+	  ./server/srcs/commands/look.c \
 	  ./server/srcs/commands/map_content.c \
 	  ./server/srcs/commands/map_size.c \
+	  ./server/srcs/commands/nb_connect.c \
+	  ./server/srcs/commands/object.c \
 	  ./server/srcs/commands/player_inventory.c \
 	  ./server/srcs/commands/player_level.c \
 	  ./server/srcs/commands/player_position.c \
@@ -26,13 +30,13 @@ SRCS	= ./server/srcs/accept.c \
 
 OBJS	= $(SRCS:.c=.o)
 
-CFLAGS = -I ./server/incs/
-CFLAGS += -W -Wall -Wextra -g3
+CFLAGS = -I./server/incs/
+CFLAGS += -W -Wall -Wextra
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	 $(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
+	 $(CC) $(OBJS) -o $(NAME)
 
 clean:
 	$(RM) $(OBJS)

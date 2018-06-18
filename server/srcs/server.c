@@ -41,7 +41,7 @@ int	good_select(fd_set readfds, server_t *server)
 int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 {
 	int	best_fd = big_fd(server);
-		
+
 	parse = parse;
 	FD_ZERO(&readfds);
 	FD_SET(server->fd, &readfds);

@@ -28,6 +28,7 @@ int	set_client(server_t *server, char *str)
 void	print_graph_infos(server_t *server, client_t *client)
 {
 	map_size(server, client, NULL);
+	dprintf(client->fd, "sgt %d\n", server->parse->freq);
 	map_content(server, client, NULL);
 	names_team(server, client, NULL);
 }
@@ -47,7 +48,6 @@ int	set_accept(server_t *server)
 	if (!str)
 		return (0);
 	if (strcmp(str, "GRAPHIC") == 0) {
-		printf("add graphique client\n");
 		server->fds[server->nb_fd] = tmp;
 		server->nb_fd++;
 		server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
@@ -58,19 +58,24 @@ int	set_accept(server_t *server)
 		server->clients[server->nb_client] = NULL;
 		server->clients[server->nb_client - 1]->fd = tmp;
 		print_graph_infos(server, server->clients[server->nb_client - 1]);
-		dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
 		return (0);
 	}
-	server->fds[server->nb_fd] = tmp;
-	server->nb_fd++;
-	server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
-	server->nb_client++;
-	server->clients = realloc(server->clients,
-		sizeof(client_t *) * (1 + server->nb_client));
-	server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
-	server->clients[server->nb_client] = NULL;
-	server->clients[server->nb_client - 1]->fd = tmp;
-	dprintf(tmp, "%d\n", server->nb_client);
-	dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
-	return (set_client(server, str));
+	for (int i = 0; server->parse->teams[i] != NULL; i++){
+		if (strncmp(server->parse->teams[i], str, strlen(server->parse->teams[i])) == 0){
+			server->fds[server->nb_fd] = tmp;
+			server->nb_fd++;
+			server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
+			server->nb_client++;
+			server->clients = realloc(server->clients,
+				sizeof(client_t *) * (1 + server->nb_client));
+			server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
+			server->clients[server->nb_client] = NULL;
+			server->clients[server->nb_client - 1]->fd = tmp;
+			dprintf(tmp, "%d\n", server->nb_client);
+			dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
+			return (set_client(server, str));
+		}
+	}
+	dprintf(tmp, "ko\n");
+	return (0);
 }
