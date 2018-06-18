@@ -43,15 +43,19 @@ int	good_select(fd_set readfds, server_t *server)
 
 int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 {
-	int	best_fd = big_fd(server);
+	int		best_fd = big_fd(server);
 	struct timeval	*tv = get_select_timeout(server);
+	double		backup_time = tv ? tv->tv_sec : 0;
 	int		ret;
+	clock_t		clk;
 
 	parse = parse;
 	FD_ZERO(&readfds);
 	FD_SET(server->fd, &readfds);
 	for (int i = 0; i < server->nb_fd; i++)
 		FD_SET(server->fds[i], &readfds);
+	printf("--- SELECT %f ---\n", backup_time);
+	clk = clock();
 	if (tv)
 		ret = select((server->fd > best_fd ? server->fd : best_fd) + 1, &readfds, NULL, NULL, tv);
 	else
@@ -60,9 +64,15 @@ int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 		perror("select");
 		return (84);
 	}
+	printf("--- END SELECT ---\n");
+	if (ret != 0) {
+		//printf("%ld:%ld\n", tv->tv_sec, tv->tv_usec);
+		backup_time = tv ? tv->tv_sec : 0;
+		printf("backup_time: %f\n", backup_time);
+	}
+	remove_time_clients(server, backup_time);
 	if (good_select(readfds, server) == 84)
 		return (84);
-	remove_time_clients(server, tv);
 	return (0);
 }
 

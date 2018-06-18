@@ -9,13 +9,13 @@
 
 int	forwardY(server_t *server, client_t *client)
 {
-	if (client->orientation == 3){
+	if (client->orientation == 3) {
 		if (client->posY == server->parse->height - 1)
 			client->posY = 0;
 		else
 			client->posY++;
 	}
-	if (client->orientation == 4){
+	if (client->orientation == 4) {
 		if (client->posX == 0)
 			client->posX = server->parse->width - 1;
 		else

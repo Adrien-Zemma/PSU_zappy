@@ -54,6 +54,8 @@ int	set_accept(server_t *server);
 void	read_command(int c1, server_t *server);
 char	*parse_command(char *command, char c, int nb);
 struct timeval	*get_select_timeout(server_t *server);
-void	remove_time_clients(server_t *server, struct timeval *tv);
+void	remove_time_clients(server_t *server, double last_time);
+void	manage_error(int fd, int state, int *check);
+command_t	*copy_cmd(command_t *command, char *name);
 
 #endif /* !SERVER */
