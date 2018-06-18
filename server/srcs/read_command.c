@@ -27,7 +27,8 @@ void	read_command(int c1, server_t *server)
 	int	check = 0;
 	int	state = 0;
 	int	i = 0;
-	
+
+
 	if (str == NULL)
 		return ;
 	for (int i = 0; server->clients[i] != NULL; i++){

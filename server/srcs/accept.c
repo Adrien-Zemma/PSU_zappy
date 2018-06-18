@@ -61,16 +61,22 @@ int	set_accept(server_t *server)
 		dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
 		return (0);
 	}
-	server->fds[server->nb_fd] = tmp;
-	server->nb_fd++;
-	server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
-	server->nb_client++;
-	server->clients = realloc(server->clients,
-		sizeof(client_t *) * (1 + server->nb_client));
-	server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
-	server->clients[server->nb_client] = NULL;
-	server->clients[server->nb_client - 1]->fd = tmp;
-	dprintf(tmp, "%d\n", server->nb_client);
-	dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
-	return (set_client(server, str));
+	for (int i = 0; server->parse->teams[i] != NULL; i++){
+		if (strcmp(server->parse->teams[i], str) == 0){
+			server->fds[server->nb_fd] = tmp;
+			server->nb_fd++;
+			server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
+			server->nb_client++;
+			server->clients = realloc(server->clients,
+				sizeof(client_t *) * (1 + server->nb_client));
+			server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
+			server->clients[server->nb_client] = NULL;
+			server->clients[server->nb_client - 1]->fd = tmp;
+			dprintf(tmp, "%d\n", server->nb_client);
+			dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
+			return (set_client(server, str));
+		}
+	}
+	dprintf(tmp, "ko\n");
+	return (0);
 }
