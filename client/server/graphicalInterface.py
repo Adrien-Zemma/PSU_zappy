@@ -2,6 +2,7 @@ import os
 import sys
 import random
 import pygame
+from .Commands import Commands
 import threading
 
 from .Server import Server
@@ -75,6 +76,66 @@ class GraphicalInterface(Server, threading.Thread):
 		self.buildWindow()
 		self.buildItem()
 		self._hud = self.Hud(self)
+		self._commendes = Commands(commands= {
+			"pex" : self.expultionCmd,
+			"pbc" : self.broadcastCmd,
+			"pic" : self.incantationStartCmd,
+			"pie" : self.incantationEndCmd,
+			"pfk" : self.Cmd,
+			"pdr" : self.resourceDropCmd,
+			"pgt" : self.resourcesCollectedCmd,
+			"pdi" : self.deathCmd,
+			"enw" : self.Cmd,
+			"eht" : self.eggHatchingCmd,
+			"ebo" : self.Cmd,
+			"edi" : self.eggDeathCmd,
+			"seg" : self.endGameCmd,
+			"smg" : self.incomingMessageCmd,
+			"suc" : self.unknowCommandCmd,
+			"sbp" : self.commandParamCmd
+		})
+	def Cmd(self):
+		pass
+	def expultionCmd(self):
+		pass
+	def broadcastCmd(self):
+		pass
+	def incantationStartCmd(self):
+		pass
+	def incantationEndCmd(self):
+		pass
+	def eggStartCmd(self):
+		pass
+	def resourceDropCmd(self):
+		pass
+	def resourcesCollectedCmd(self):
+		pass
+	def deathCmd(self):
+		pass
+	def eggDeathCmd(self):
+		pass
+	def eggHatchingCmd(self):
+		pass
+	def playerConnectToEggCmd(self):
+		pass
+	def endGameCmd(self):
+		pass
+	def commandParamCmd(self):
+		pass
+	def unknowCommandCmd(self):
+		pass
+	def incomingMessageCmd(self):
+		pass
+
+	class Player():
+		def __init__(self):
+			self._id = -1
+			self._posX = 0
+			self._posY = 0
+			self._level = 0
+			self._inventory = []
+			self._incanting = False
+			self._orientaton = ""
 
 	class Hud():
 		def __init__(self, graphical):
@@ -153,7 +214,7 @@ class GraphicalInterface(Server, threading.Thread):
 					elif event.key == pygame.K_ESCAPE:
 						status = False
 			self.drawMap()
-			#self._hud.drawHud()
+			self._hud.drawHud()
 			pygame.display.flip()
 
 	def get_map_size(self):
