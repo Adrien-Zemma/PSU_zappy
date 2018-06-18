@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-static void broadcast_client(tile ***map, client_t original, client_t target, char *msg)
+static void broadcast_client(tile_t ***map, client_t *original, client_t *target, char *msg)
 {
 	dprintf(target->fd, "message %d, %s\n", 0, msg);
 }
