@@ -9,9 +9,9 @@
 
 command_t	**init_commands(void)
 {
-	const int	i = 11;
+	const int	i = 12;
 	command_t	**node = malloc(sizeof(command_t *) * (i + 1));
-	
+
 	if (!node)
 		return NULL;
 	node[0] = append_command("msz", map_size);
@@ -25,6 +25,7 @@ command_t	**init_commands(void)
 	node[8] = append_command("Right", right);
 	node[9] = append_command("Left", left);
 	node[10] = append_command("inventory", inventory);
+	node[11] = append_command("Look", look);
 	node[i] = NULL;
 	return node;
 }
@@ -32,7 +33,7 @@ command_t	**init_commands(void)
 command_t	*append_command(char *name, int (*ptrFnct)(server_t *, client_t *, char *))
 {
 	command_t	*node = malloc(sizeof(command_t));
-	
+
 	if (!node)
 		return NULL;
 	node->name = name;
