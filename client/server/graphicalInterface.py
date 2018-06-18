@@ -83,7 +83,8 @@ class GraphicalInterface(Server, threading.Thread):
 			cmd = self.readTh.get_command().split(' ')[1:]
 			self._sizeX = int(cmd[0])
 			self._sizeY = int(cmd[1])
-			m = []	
+			print("Frequence: ", self.readTh.get_command().split(' ')[1:])
+			m = []
 			for y in range(self._sizeY):
 				line = []
 				for x in range(self._sizeX):
@@ -112,10 +113,9 @@ class GraphicalInterface(Server, threading.Thread):
 			print("Teams: ", self.teams)
 
 	def run(self):
-		self.drawMap()
-		pygame.display.flip()
 		while True:
-			pass
+			self.drawMap()
+			pygame.display.flip()
 
 	def get_map_size(self):
         	self.write("msz")
