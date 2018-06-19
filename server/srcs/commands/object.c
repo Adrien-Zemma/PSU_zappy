@@ -34,6 +34,9 @@ int	take_other_object(server_t *server, client_t *client, char *str)
 			server->map[client->posY][client->posX]->thystam--;
 			client->thystame++;
 		}
+	// for (int i = 0; server->clients[i] != NULL; i++)
+	// 	if (server->clients[i]->id == -1)
+	// 		dprintf(server->client->fd, "pgt %d ")
 	return OK;
 }
 

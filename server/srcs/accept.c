@@ -59,6 +59,7 @@ int	set_accept(server_t *server)
 		server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
 		server->clients[server->nb_client] = NULL;
 		server->clients[server->nb_client - 1]->fd = tmp;
+		server->clients[server->nb_client - 1]->id = -1;
 		print_graph_infos(server, server->clients[server->nb_client - 1]);
 		return (0);
 	}
