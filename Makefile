@@ -20,6 +20,7 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/commands/tile_content.c \
 	  ./server/srcs/commands/gnp.c \
 	  ./server/srcs/commands/get_player_pos.c	\
+	  ./server/srcs/commands/connection.c	\
 	  ./server/srcs/commands.c \
 	  ./server/srcs/getnextline.c \
 	  ./server/srcs/main.c \
@@ -35,7 +36,7 @@ SRCS	= ./server/srcs/accept.c \
 OBJS	= $(SRCS:.c=.o)
 
 CFLAGS = -I./server/incs/
-CFLAGS += -W -Wall -Wextra
+CFLAGS += -W -Wall -Wextra -g3
 LDLIBS = -lm
 
 all: $(NAME)
