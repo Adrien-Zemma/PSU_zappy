@@ -7,6 +7,27 @@
 
 #include "server.h"
 
+static void	remove_client(server_t *server, int fd)
+{
+	size_t	i = 0;
+	size_t	j = 0;
+
+	server->nb_client--;
+	server->nb_fd--;
+	for (; server->clients[i] && server->clients[j]; i++) {
+		if (server->clients[j]->fd == fd)
+			j++;
+		if (!server->clients[j])
+			break;
+		server->clients[i] = server->clients[j];
+		server->fds[i] = server->fds[j];
+		j++;
+	}
+	server->clients[server->nb_client] = NULL;
+	server->clients = realloc(server->clients, sizeof(client_t *) * (server->nb_client + 1));
+	server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd));
+}
+
 void	manage_error(int fd, int state, int *check)
 {
 	if (state != BAD_PARAM && state != KO)
@@ -26,8 +47,10 @@ void	read_command(int c1, server_t *server)
 	char	*str = getnextline(c1);
 	int	check = 0;
 
-	if (str == NULL)
+	if (str == NULL) {
+		remove_client(server, c1);
 		return ;
+	}
 	for (int i = 0; server->clients[i] != NULL; i++){
 		if (server->clients[i]->fd == c1)
 			check = i;

@@ -64,5 +64,6 @@ command_t	**queue_init();
 void		queue_append(command_t ***queue, command_t *command);
 command_t	*queue_get(command_t ***queue);
 command_t	*queue_pop(command_t ***queue);
+int		send_connection(client_t **targets, client_t *origin);
 
 #endif /* !SERVER */
