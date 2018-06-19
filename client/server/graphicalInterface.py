@@ -81,7 +81,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self.buildItem()
 		self.buildPlayer()
 		self._hud = self.Hud(self)
-		self._commands = Commands(commands= {
+		self._commendes = Commands(commands= {
 			"pex" : self.expultionCmd,
 			"pbc" : self.broadcastCmd,
 			"pic" : self.incantationStartCmd,
@@ -194,7 +194,6 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def buildPlayer(self):
 		nb = int(self.get_number_player()[0])
-		print(nb)
 		for item in range(nb):
 			pos = self.getPlayerPosition(item + 1)
 			self._playerList.append(
@@ -308,9 +307,6 @@ class GraphicalInterface(Server, threading.Thread):
 	def run(self):
 		status = True
 		while status:
-			cmd = self.readTh.get_command(False)
-			if cmd is not None:
-				self._commands.parse(cmd)
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					status = False
@@ -390,18 +386,12 @@ class GraphicalInterface(Server, threading.Thread):
         	self.write("msz")
         	cmd = self.readTh.get_command().split(' ')[1:]
         	return cmd
-		
-	
-	def get_player_pos(self, id:int):
-        	self.write("ppo" + str(id))
-        	return self.readTh.get_command().split(' ')[1:]
 	
 	def get_number_player(self):
 		self.write("gnp")
-		tmp = self.readTh.get_command()
-		print (tmp)
-		tmp.split(' ')[1:]
-		return tmp 
+		tmp = self.readTh.get_command().split(' ')[1:]
+		print(tmp)
+		return tmp
 
 	def get_map(self):
 		m = []
