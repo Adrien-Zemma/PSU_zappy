@@ -398,8 +398,9 @@ class GraphicalInterface(Server, threading.Thread):
 	
 	def get_number_player(self):
 		self.write("gnp")
-		tmp = self.readTh.get_command().split(' ')[1:]
+		tmp = self.readTh.get_command()
 		print (tmp)
+		tmp.split(' ')[1:]
 		return tmp 
 
 	def get_map(self):
