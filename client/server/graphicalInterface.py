@@ -269,6 +269,9 @@ class GraphicalInterface(Server, threading.Thread):
         	self.write("msz")
         	cmd = self.readTh.get_command().split(' ')[1:]
         	return cmd
+	def get_number_player(self):
+        	self.write("gnp")
+        	return self.readTh.get_command().split(' ')[1:]
 
 	def get_map(self):
 		m = []
