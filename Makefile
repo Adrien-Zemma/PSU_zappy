@@ -26,7 +26,7 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/read_command.c \
 	  ./server/srcs/server.c \
 	  ./server/srcs/set_socket.c \
-	  ./server/srcs/utils.c 
+	  ./server/srcs/utils.c
 
 OBJS	= $(SRCS:.c=.o)
 
