@@ -55,7 +55,6 @@ class Map():
 				self.content[y].append(Tile(self.maxItem, self.spriteSize, x, y))
 
 class GraphicalInterface(Server, threading.Thread):
-
 	def __init__(self, port, ip="localhost"):
 		super().__init__(port, ip)
 		threading.Thread.__init__(self)
@@ -73,6 +72,9 @@ class GraphicalInterface(Server, threading.Thread):
 		self._scale = 1
 		self._maxItemPerCase = 100
 		self._fontsize = 24
+		self._playerList = []
+		self._eggList = []
+		self._buildPlayer()
 		self._font = pygame.font.Font(os.path.abspath("assets/font/Android.ttf"), self._fontsize)
 		self._spriteSize = self._spriteSize * self._scale
 		self._map = Map(x = self._sizeX, y = self._sizeY, spriteSize = self._spriteSize, maxItem = self._maxItemPerCase)
@@ -97,6 +99,7 @@ class GraphicalInterface(Server, threading.Thread):
 			"suc" : self.unknowCommandCmd,
 			"sbp" : self.commandParamCmd
 		})
+
 	def Cmd(self):
 		pass
 	def expultionCmd(self):
@@ -130,6 +133,9 @@ class GraphicalInterface(Server, threading.Thread):
 	def incomingMessageCmd(self):
 		pass
 
+	def buildPlayer(self):
+		pass
+
 	class Player():
 		def __init__(self):
 			self._id = -1
@@ -137,8 +143,14 @@ class GraphicalInterface(Server, threading.Thread):
 			self._posY = 0
 			self._level = 0
 			self._inventory = []
+			self._isAlive = True
+			self._isApplause = False
 			self._incanting = False
 			self._orientaton = ""
+	class Egg():
+		def __init__(self):
+			self._posX = 0
+			self._posY = 0
 
 	class Hud():
 		def __init__(self, graphical):
@@ -219,12 +231,12 @@ class GraphicalInterface(Server, threading.Thread):
 		elif event.key == pygame.K_DOWN:
 			self._shiftY /= 0.9
 		elif event.key == pygame.K_LEFT:
-			self._shiftX *= 0.9
-		elif event.key == pygame.K_RIGHT:
 			self._shiftX /= 0.9
+		elif event.key == pygame.K_RIGHT:
+			self._shiftX *= 0.9
 		return True
+
 	def run(self):
-		
 		status = True
 		while status:
 			for event in pygame.event.get():
@@ -234,9 +246,24 @@ class GraphicalInterface(Server, threading.Thread):
 					status = self.manageKeys(event)
 			self._window.blit(self._background, (0, 0))
 			self.drawMap()
+			self.drawChara()
 			self._hud.drawHud()
 			pygame.display.update()
 			self._clock.tick(60)
+		pygame.quit()
+
+	def drawEgg(self):
+		for el in self._eggList:
+			self._window.blit(self._items["egg"], (el._posX, el._posY))
+
+	def drawPlayer(self):
+		for _ in self._playerList:
+			pass
+
+	def drawChara(self):
+		self.drawEgg()
+		self.drawPlayer()
+
 
 	def get_map_size(self):
         	self.write("msz")
@@ -315,6 +342,9 @@ class GraphicalInterface(Server, threading.Thread):
 		self._items["mendiane"] =  pygame.image.load(os.path.abspath("assets/items/mendiane.png")).convert_alpha()
 		self._items["phiras"] =  pygame.image.load(os.path.abspath("assets/items/phiras.png")).convert_alpha()
 		self._items["thystame"] =  pygame.image.load(os.path.abspath("assets/items/thystame.png")).convert_alpha()
+		self._items["applause"] = pygame.image.load(os.path.abspath("assets/icon/applause.png")).convert_alpha()
+		#self._items["circle"] = pygame.image.load(os.path.abspath("assets/cercle_little.jpg")).convert()
+		#self._items["circle"].set_colorkey((255, 255, 255))
 
 	def drawMap(self):
 		for y in range(self._sizeY):
