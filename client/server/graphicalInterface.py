@@ -298,8 +298,8 @@ class GraphicalInterface(Server, threading.Thread):
 					status = self.manageKeys(event)
 			self._window.blit(self._background, (0, 0))
 			self.drawMap()
-			self.drawChara()
 			self.drawCaseContent()
+			self.drawChara()
 			pygame.display.update()
 			self._clock.tick(60)
 		pygame.quit()
@@ -317,8 +317,8 @@ class GraphicalInterface(Server, threading.Thread):
 		for player in self._playerList:
 			tmpX = (player._posX * self._spriteSize) 
 			tmpY = (player._posY * self._spriteSize)
-			tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 2
-			tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 2
+			tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 5 * 4
+			tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 5 * 4
 			self._window.blit(self._itemsPlayer[player._orientaton], (tmp2X, tmp2Y))
 
 	def drawMap(self):
