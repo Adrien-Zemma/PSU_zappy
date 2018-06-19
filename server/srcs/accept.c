@@ -9,20 +9,23 @@
 
 int	set_client(server_t *server, char *str)
 {
-	server->clients[server->nb_client - 1]->team = strdup(str);
-	server->clients[server->nb_client - 1]->food = 1;
-	server->clients[server->nb_client - 1]->linemate = 0;
-	server->clients[server->nb_client - 1]->demaumere = 0;
-	server->clients[server->nb_client - 1]->sibur = 0;
-	server->clients[server->nb_client - 1]->mendiane = 0;
-	server->clients[server->nb_client - 1]->phiras = 0;
-	server->clients[server->nb_client - 1]->thystame = 0;
-	server->clients[server->nb_client - 1]->level = 1;
-	server->clients[server->nb_client - 1]->id = server->nb_client;
-	server->clients[server->nb_client - 1]->posX = ADD_MINERAL(0, server->parse->width);
-	server->clients[server->nb_client - 1]->posY = ADD_MINERAL(0, server->parse->height);
-	server->clients[server->nb_client - 1]->orientation = ADD_MINERAL(1, 5);
-	server->clients[server->nb_client - 1]->command = NULL;
+	client_t *client = server->clients[server->nb_client - 1];
+	client->team = strdup(str);
+	client->food = 1;
+	client->linemate = 0;
+	client->demaumere = 0;
+	client->sibur = 0;
+	client->mendiane = 0;
+	client->phiras = 0;
+	client->thystame = 0;
+	client->level = 1;
+	client->id = server->nb_client;
+	client->posX = ADD_MINERAL(0, server->parse->width);
+	client->posY = ADD_MINERAL(0, server->parse->height);
+	client->orientation = ADD_MINERAL(1, 5);
+	client->command = queue_init();
+	if (!client->command)
+		return (84);
 	return (0);
 }
 

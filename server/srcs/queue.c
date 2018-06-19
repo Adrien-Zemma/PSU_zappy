@@ -14,6 +14,7 @@ command_t	**queue_init()
 	if (!queue)
 		return NULL;
 	queue[0] = NULL;
+	return (queue);
 }
 
 void	queue_append(command_t ***queue, command_t *command)
@@ -31,6 +32,12 @@ void	queue_append(command_t ***queue, command_t *command)
 }
 
 command_t	*queue_get(command_t ***queue)
+{
+	command_t	*to_ret = (*queue)[0];
+	return (to_ret);
+}
+
+command_t	*queue_pop(command_t ***queue)
 {
 	command_t	*to_ret = NULL;
 	int i;

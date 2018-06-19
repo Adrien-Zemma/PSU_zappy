@@ -12,19 +12,21 @@ struct timeval	*get_select_timeout(server_t *server)
 	struct timeval	*ret = NULL;
 	double		time_client = -1;
 	size_t		i = 0;
+	command_t	*cmd;
 
-	for (i = 0; server->clients[i]; i++)
-		if (server->clients[i]->command && server->clients[i]->command->time > 0) {
-			time_client = server->clients[i]->command->time;
+	for (i = 0; server->clients[i]; i++) {
+		cmd = queue_get(&server->clients[i]->command);
+		if (cmd && cmd->time > 0) {
+			time_client = cmd->time;
 			break;
 		}
+	}
 	if (time_client == -1)
 		return (NULL);
-	for (; server->clients[i] != NULL; i++){
-		if (server->clients[i]->command
-			&& server->clients[i]->command->time > 0
-			&& time_client > server->clients[i]->command->time)
-			time_client = server->clients[i]->command->time;
+	for (; server->clients[i] != NULL; i++) {
+		cmd = queue_get(&server->clients[i]->command);
+		if (cmd && cmd->time > 0 && time_client > cmd->time)
+			time_client = cmd->time;
 	}
 	ret = malloc(sizeof(struct timeval));
 	if (!ret)
@@ -36,24 +38,28 @@ struct timeval	*get_select_timeout(server_t *server)
 
 void	remove_time_clients(server_t *server, double last_time)
 {
-	int	state;
-	int	check = 0;
+	int		state;
+	int		check = 0;
+	command_t	*cmd = NULL;
 
-	for (size_t i = 0; server->clients[i]; i++)
-		if (server->clients[i]->command) {
-			server->clients[i]->command->time -= last_time;
-			if (server->clients[i]->command->time - 0.001 < 0) {
-				state = server->clients[i]->command->ptrFnct(server,
+	for (size_t i = 0; server->clients[i]; i++) {
+		cmd = queue_get(&server->clients[i]->command);
+		if (cmd) {
+			cmd->time -= last_time;
+			if (cmd->time - 0.001 < 0) {
+				cmd = queue_pop(&server->clients[i]->command);
+				state = cmd->ptrFnct(server,
 					server->clients[i],
-					server->clients[i]->command->name);
-				free(server->clients[i]->command->name);
-				free(server->clients[i]->command);
-				server->clients[i]->command = NULL;
+					cmd->name);
+				free(cmd->name);
+				free(cmd);
+				cmd = NULL;
 				manage_error(server->clients[i]->fd, state, &check);
 				if (!check)
 					dprintf(server->clients[i]->fd, "suc:%d\n", check);
 			}
 		}
+	}
 }
 
 command_t	*copy_cmd(command_t *command, char *name)

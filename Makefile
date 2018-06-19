@@ -26,7 +26,8 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/server.c \
 	  ./server/srcs/set_socket.c \
 	  ./server/srcs/utils.c	\
-	  ./server/srcs/timeout.c
+	  ./server/srcs/timeout.c \
+	  ./server/srcs/queue.c
 
 OBJS	= $(SRCS:.c=.o)
 
