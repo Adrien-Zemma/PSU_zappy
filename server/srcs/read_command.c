@@ -7,9 +7,9 @@
 
 #include "server.h"
 
-static void	manage_error(int fd, int state, int *check)
+void	manage_error(int fd, int state, int *check)
 {
-	if (state != BAD_PARAM || state != KO)
+	if (state != BAD_PARAM && state != KO)
 		*check = 1;
 	switch (state) {
 		case BAD_PARAM:
@@ -25,8 +25,6 @@ void	read_command(int c1, server_t *server)
 {
 	char	*str = getnextline(c1);
 	int	check = 0;
-	int	state = 0;
-	int	i = 0;
 
 	if (str == NULL)
 		return ;
@@ -36,11 +34,12 @@ void	read_command(int c1, server_t *server)
 	}
 	printf("Client[%d]: %s\n", c1, str);
 	for (int j = 0; server->command[j]; j++) {
-		if (strncmp(server->command[j]->name, str, strlen(server->command[j]->name)) == 0) {
-			state = server->command[j]->ptrFnct(server, server->clients[check], str);
-			manage_error(c1, state, &i);
+		if (strncmp(server->command[j]->name, str, strlen(server->command[j]->name)) == 0
+		&& (strlen(str) == strlen(server->command[j]->name)
+		|| str[strlen(server->command[j]->name) - 1] == ' ')) {
+			queue_append(&server->clients[check]->command, copy_cmd(server->command[j], str));
+			return;
 		}
 	}
-	if (!i)
-		dprintf(c1, "suc:%d\n", i);
+	dprintf(server->clients[check]->fd, "ko\n");
 }

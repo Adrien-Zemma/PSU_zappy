@@ -100,37 +100,53 @@ class GraphicalInterface(Server, threading.Thread):
 			"sbp" : self.commandParamCmd
 		})
 
-	def Cmd(self):
+	def Cmd(self, cmd):
+		print(cmd)
 		pass
-	def expultionCmd(self):
+	def expultionCmd(self, cmd):
+		print(cmd)
 		pass
-	def broadcastCmd(self):
+	def broadcastCmd(self, cmd):
+		print(cmd)
 		pass
-	def incantationStartCmd(self):
+	def incantationStartCmd(self, cmd):
+		print(cmd)
 		pass
-	def incantationEndCmd(self):
+	def incantationEndCmd(self, cmd):
+		print(cmd)
 		pass
-	def eggStartCmd(self):
+	def eggStartCmd(self, cmd):
+		print(cmd)
 		pass
-	def resourceDropCmd(self):
+	def resourceDropCmd(self, cmd):
+		print(cmd)
 		pass
-	def resourcesCollectedCmd(self):
+	def resourcesCollectedCmd(self, cmd):
+		print(cmd)
 		pass
-	def deathCmd(self):
+	def deathCmd(self, cmd):
+		print(cmd)
 		pass
-	def eggDeathCmd(self):
+	def eggDeathCmd(self, cmd):
+		print(cmd)
 		pass
-	def eggHatchingCmd(self):
+	def eggHatchingCmd(self, cmd):
+		print(cmd)
 		pass
-	def playerConnectToEggCmd(self):
+	def playerConnectToEggCmd(self, cmd):
+		print(cmd)
 		pass
-	def endGameCmd(self):
+	def endGameCmd(self, cmd):
+		print(cmd)
 		pass
-	def commandParamCmd(self):
+	def commandParamCmd(self, cmd):
+		print(cmd)
 		pass
-	def unknowCommandCmd(self):
+	def unknowCommandCmd(self, cmd):
+		print(cmd)
 		pass
-	def incomingMessageCmd(self):
+	def incomingMessageCmd(self, cmd):
+		print(cmd)
 		pass
 
 	def buildWindow(self):

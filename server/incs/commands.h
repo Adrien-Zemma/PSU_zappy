@@ -24,12 +24,13 @@ typedef struct tile tile_t;
 
 typedef struct	command_s
 {
+	double	time;
 	char	*name;
 	int	(*ptrFnct)(server_t *, client_t *, char *);
 }		command_t;
 
-command_t	**init_commands(void);
-command_t	*append_command(char *name, int (*ptrFnct)(server_t *, client_t *, char *));
+command_t	**init_commands(t_parse *parse);
+command_t	*append_command(char *name, int (*ptrFnct)(server_t *, client_t *, char *), double time);
 int		map_size(server_t *server, client_t *client, char *str);
 int		names_team(server_t *server, client_t *client, char *str);
 int		map_content(server_t *server, client_t *client, char *str);
