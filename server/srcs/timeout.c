@@ -47,13 +47,12 @@ void	remove_time_clients(server_t *server, double last_time)
 		if (cmd) {
 			cmd->time -= last_time;
 			if (cmd->time - 0.001 < 0) {
-				cmd = queue_pop(&server->clients[i]->command);
 				state = cmd->ptrFnct(server,
 					server->clients[i],
 					cmd->name);
 				free(cmd->name);
 				free(cmd);
-				cmd = NULL;
+				queue_pop(&server->clients[i]->command);
 				manage_error(server->clients[i]->fd, state, &check);
 				if (!check)
 					dprintf(server->clients[i]->fd, "suc:%d\n", check);
