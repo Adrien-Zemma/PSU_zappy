@@ -133,24 +133,35 @@ class GraphicalInterface(Server, threading.Thread):
 	def incomingMessageCmd(self):
 		pass
 
+	def getPlayerPosition(self, name):
+		self.write("ppo" + str(name))
+		tmp = self.readTh.get_command().split(' ')[4:]
+		print("|"*16)
+		print (tmp)
+		print("|"*16)
+
 	def buildPlayer(self):
-		nb = self.get_number_player()
+		nb = self.get_number_player() + 1
+		for item in range(nb):
+			tmp = self.getPlayerPosition(item + 1)
+			self._playerList.append(
+				self.Player(x = 0, y = 0,id = item + 1, inventory = [], orient = 0)
+				)
 		print("-"*16)
 		print (nb)
 		print("-"*16)
 
-
 	class Player():
-		def __init__(self):
-			self._id = -1
-			self._posX = 0
-			self._posY = 0
-			self._level = 0
-			self._inventory = []
+		def __init__(self, **kwargs):
+			self._id = kwargs.get('id')
+			self._posX = kwargs.get('x')
+			self._posY = kwargs.get('y')
+			self._level = kwargs.get('level')
+			self._inventory = kwargs.get('inventory')
 			self._isAlive = True
 			self._isApplause = False
 			self._incanting = False
-			self._orientaton = ""
+			self._orientaton = kwargs.get('orient')
 	class Egg():
 		def __init__(self):
 			self._posX = 0
@@ -196,11 +207,11 @@ class GraphicalInterface(Server, threading.Thread):
 			cmd = self.readTh.get_command().split(' ')[1:]
 			self._sizeX = int(cmd[0])
 			self._sizeY = int(cmd[1])
-			#print("Frequence: ", self.readTh.get_command().split(' ')[1:])
+			print("Frequence: ", self.readTh.get_command().split(' ')[1:])
 			m = []
-			for y in range(self._sizeY):
+			for _ in range(self._sizeY):
 				line = []
-				for x in range(self._sizeX):
+				for _ in range(self._sizeX):
 					cmd = self.readTh.get_command().split(' ')
 					cmd = cmd[3:]
 					try:
@@ -226,7 +237,8 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def manageKeys(self, event):
 		if event.key == pygame.K_i:
-			self._hud.start()
+			#self._hud.start()
+			pass
 		elif event.key == pygame.K_ESCAPE:
 			return False
 		elif event.key == pygame.K_UP:
