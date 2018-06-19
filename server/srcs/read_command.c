@@ -36,7 +36,7 @@ void	read_command(int c1, server_t *server)
 	for (int j = 0; server->command[j]; j++) {
 		if (strncmp(server->command[j]->name, str, strlen(server->command[j]->name)) == 0
 		&& (strlen(str) == strlen(server->command[j]->name)
-		|| str[strlen(server->command[j]->name) - 1] == ' ')) {
+		|| str[strlen(server->command[j]->name)] == ' ')) {
 			queue_append(&server->clients[check]->command, copy_cmd(server->command[j], str));
 			return;
 		}
