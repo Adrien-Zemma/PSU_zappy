@@ -285,6 +285,11 @@ class GraphicalInterface(Server, threading.Thread):
         	cmd = self.readTh.get_command().split(' ')[1:]
         	return cmd
 		
+	
+	def get_player_pos(self, id:int):
+        	self.write("ppo" + str(id))
+        	return self.readTh.get_command().split(' ')[1:]
+	
 	def get_number_player(self):
         	self.write("gnp")
         	return self.readTh.get_command().split(' ')[1:]
