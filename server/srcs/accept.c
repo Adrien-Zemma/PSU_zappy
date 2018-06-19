@@ -22,6 +22,8 @@ int	set_client(server_t *server, char *str)
 	server->clients[server->nb_client - 1]->posX = ADD_MINERAL(0, server->parse->width);
 	server->clients[server->nb_client - 1]->posY = ADD_MINERAL(0, server->parse->height);
 	server->clients[server->nb_client - 1]->orientation = ADD_MINERAL(1, 5);
+	append_player(&server->map[server->clients[server->nb_client - 1]->posY][server->clients[server->nb_client - 1]->posX],
+		server->clients[server->nb_client - 1]);
 	return (0);
 }
 
@@ -57,6 +59,7 @@ int	set_accept(server_t *server)
 		server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
 		server->clients[server->nb_client] = NULL;
 		server->clients[server->nb_client - 1]->fd = tmp;
+		server->clients[server->nb_client - 1]->id = -1;
 		print_graph_infos(server, server->clients[server->nb_client - 1]);
 		return (0);
 	}

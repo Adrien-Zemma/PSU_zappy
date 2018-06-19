@@ -18,6 +18,7 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/commands/rotate_player.c \
 	  ./server/srcs/commands/teams_name.c \
 	  ./server/srcs/commands/tile_content.c \
+	  ./server/srcs/commands/gnp.c \
 	  ./server/srcs/commands.c \
 	  ./server/srcs/getnextline.c \
 	  ./server/srcs/main.c \
@@ -26,7 +27,7 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/read_command.c \
 	  ./server/srcs/server.c \
 	  ./server/srcs/set_socket.c \
-	  ./server/srcs/utils.c 
+	  ./server/srcs/utils.c
 
 OBJS	= $(SRCS:.c=.o)
 

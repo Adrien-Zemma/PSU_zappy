@@ -27,6 +27,7 @@ int	forwardY(server_t *server, client_t *client)
 int	forward(server_t *server, client_t *client, char *str)
 {
 	str = str;
+	remove_player(&server->map[client->posY][client->posX], client);
 	if (client->orientation == 1){
 		if (client->posY == 0)
 			client->posY = server->parse->height - 1;
@@ -40,6 +41,7 @@ int	forward(server_t *server, client_t *client, char *str)
 			client->posX++;
 	}
 	forwardY(server, client);
+	append_player(&server->map[client->posY][client->posX], client);
 	dprintf(client->fd, "ok\n");
 	return OK;
 }
@@ -62,7 +64,7 @@ int	right(server_t *server, client_t *client, char *str)
 			client->orientation = 1;
 			break ;
 	}
-	dprintf(client->fd, "ok\n");	
+	dprintf(client->fd, "ok\n");
 	return OK;
 }
 
