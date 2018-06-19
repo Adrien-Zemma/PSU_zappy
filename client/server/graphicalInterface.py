@@ -74,12 +74,12 @@ class GraphicalInterface(Server, threading.Thread):
 		self._fontsize = 24
 		self._playerList = []
 		self._eggList = []
-		self.buildPlayer()
 		self._font = pygame.font.Font(os.path.abspath("assets/font/Android.ttf"), self._fontsize)
 		self._spriteSize = self._spriteSize * self._scale
 		self._map = Map(x = self._sizeX, y = self._sizeY, spriteSize = self._spriteSize, maxItem = self._maxItemPerCase)
 		self.buildWindow()
 		self.buildItem()
+		self.buildPlayer()
 		self._hud = self.Hud(self)
 		self._commendes = Commands(commands= {
 			"pex" : self.expultionCmd,
@@ -133,23 +133,61 @@ class GraphicalInterface(Server, threading.Thread):
 	def incomingMessageCmd(self):
 		pass
 
-	def getPlayerPosition(self, name):
-		self.write("ppo" + str(name))
-		tmp = self.readTh.get_command().split(' ')[4:]
-		print("|"*16)
-		print (tmp)
-		print("|"*16)
+	def buildWindow(self):
+		self._window = pygame.display.set_mode((self._winSizeX, self._winSizeY))
+		self._background = pygame.image.load(
+			os.path.abspath("assets/back.jpg")).convert()
+		self._window.blit(self._background, (0, 0))
+		self._shiftX = self._winSizeX / 10 * 4.5
+		self._shiftY = (self._winSizeY - (self._spriteSize * 2 *
+                                    self._sizeY)) / 2 + self._spriteSize*2
+
+	def buildItem(self):
+		self._items = {}
+		self._items["case"] = pygame.image.load(
+			os.path.abspath("assets/ground2.png")).convert_alpha()
+		self._items["food"] = pygame.image.load(
+			os.path.abspath("assets/items/food.png")).convert_alpha()
+		self._items["linemate"] = pygame.image.load(
+			os.path.abspath("assets/items/linemate.png")).convert_alpha()
+		self._items["deraumere"] = pygame.image.load(
+			os.path.abspath("assets/items/deraumere.png")).convert_alpha()
+		self._items["sibur"] = pygame.image.load(
+			os.path.abspath("assets/items/sibur.png")).convert_alpha()
+		self._items["mendiane"] = pygame.image.load(
+			os.path.abspath("assets/items/mendiane.png")).convert_alpha()
+		self._items["phiras"] = pygame.image.load(
+			os.path.abspath("assets/items/phiras.png")).convert_alpha()
+		self._items["thystame"] = pygame.image.load(
+			os.path.abspath("assets/items/thystame.png")).convert_alpha()
+		self._items["applause"] = pygame.image.load(
+			os.path.abspath("assets/icon/applause.png")).convert_alpha()
+		self._itemsPlayer = {}
+		self._itemsPlayer[1] = pygame.image.load(
+			os.path.abspath("assets/perso.jpg")).convert()
+		self._itemsPlayer[2] = pygame.image.load(
+			os.path.abspath("assets/perso.jpg")).convert()
+		self._itemsPlayer[3] = pygame.image.load(
+			os.path.abspath("assets/perso.jpg")).convert()
+		self._itemsPlayer[4] = pygame.image.load(
+			os.path.abspath("assets/perso.jpg")).convert()
+		self._itemsPlayer[1].set_colorkey((255, 255, 255))
+		self._itemsPlayer[2].set_colorkey((255, 255, 255))
+		self._itemsPlayer[3].set_colorkey((255, 255, 255))
+		self._itemsPlayer[4].set_colorkey((255, 255, 255))
 
 	def buildPlayer(self):
-		nb = self.get_number_player() + 1
+		nb = int(self.get_number_player()[0])
 		for item in range(nb):
-			tmp = self.getPlayerPosition(item + 1)
+			pos = self.getPlayerPosition(item + 1)
 			self._playerList.append(
-				self.Player(x = 0, y = 0,id = item + 1, inventory = [], orient = 0)
+				self.Player(
+					x = int(pos[1]),
+					y = int(pos[2]),
+					id = item + 1,
+					inventory = [],
+					orient=int(pos[3]))
 				)
-		print("-"*16)
-		print (nb)
-		print("-"*16)
 
 	class Player():
 		def __init__(self, **kwargs):
@@ -237,18 +275,17 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def manageKeys(self, event):
 		if event.key == pygame.K_i:
-			#self._hud.start()
 			pass
 		elif event.key == pygame.K_ESCAPE:
 			return False
 		elif event.key == pygame.K_UP:
-			self._shiftY *= 0.9
+			self._shiftY *= 0.5
 		elif event.key == pygame.K_DOWN:
-			self._shiftY /= 0.9
+			self._shiftY /= 0.5
 		elif event.key == pygame.K_LEFT:
-			self._shiftX /= 0.9
+			self._shiftX /= 0.8
 		elif event.key == pygame.K_RIGHT:
-			self._shiftX *= 0.9
+			self._shiftX *= 0.8
 		return True
 
 	def run(self):
@@ -262,23 +299,60 @@ class GraphicalInterface(Server, threading.Thread):
 			self._window.blit(self._background, (0, 0))
 			self.drawMap()
 			self.drawChara()
-			#self._hud.drawHud()
 			pygame.display.update()
 			self._clock.tick(60)
 		pygame.quit()
+		self.readTh.join()
+
+	def drawChara(self):
+		self.drawEgg()
+		self.drawPlayer()
 
 	def drawEgg(self):
 		for el in self._eggList:
 			self._window.blit(self._items["egg"], (el._posX, el._posY))
 
 	def drawPlayer(self):
-		for _ in self._playerList:
-			pass
+		for player in self._playerList:
+			tmpX = (player._posX * self._spriteSize) 
+			tmpY = (player._posY * self._spriteSize)
+			tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 2
+			tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 2
+			self._window.blit(self._itemsPlayer[player._orientaton], (tmp2X, tmp2Y))
 
-	def drawChara(self):
-		self.drawEgg()
-		self.drawPlayer()
+	def drawMap(self):
+		for y in range(self._sizeY):
+			for x in range(self._sizeX):
+				try:
+					self.drawCase(self._map.content[y][x], self._mapContent[y][x], x, y)
+				except IndexError:
+					print("Can't find index for ", y, x)
+					exit(1)
 
+	def drawCase(self, Tile, caseContent, x, y):
+		tmpX = (x * self._spriteSize)
+		tmpY = (y * self._spriteSize)
+		tmp2X = (tmpX - tmpY) + self._shiftX
+		tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY
+		self._window.blit(self._items["case"], (tmp2X, tmp2Y))
+		self.fillCase(Tile, caseContent)
+
+	def fillCase(self, Tile, caseContent):
+		for key, value in caseContent.items():
+			for unvalue in range(value):
+				try:
+					self._window.blit(
+						self._items[Tile.content[key].name],
+						(Tile.content[key].coords[unvalue][0] + self._shiftX,
+							Tile.content[key].coords[unvalue][1] + self._shiftY)
+					)
+				except IndexError:
+					print("Can't find index at case[", key, "][", unvalue, "]")
+					exit(0)
+
+	def getPlayerPosition(self, name):
+		self.write("ppo " + str(name))
+		return self.readTh.get_command().split(' ')[1:]
 
 	def get_map_size(self):
         	self.write("msz")
@@ -346,56 +420,3 @@ class GraphicalInterface(Server, threading.Thread):
 		except IndexError:
 			print("Error while getting tile", file=sys.stderr)
 			exit(84)
-	
-	def buildWindow(self):
-		self._window = pygame.display.set_mode((self._winSizeX, self._winSizeY))
-		self._background = pygame.image.load(os.path.abspath("assets/back.jpg")).convert()
-		self._window.blit(self._background, (0, 0))
-
-		
-		self._shiftX = self._winSizeX / 10 * 4.5
-		self._shiftY = (self._winSizeY - (self._spriteSize * 2 * self._sizeY)) / 2 + self._spriteSize*2
-		
-	def buildItem(self):
-		self._items = {}
-		self._items["case"] = pygame.image.load(os.path.abspath("assets/ground2.png")).convert_alpha()
-		self._items["food"] = pygame.image.load(os.path.abspath("assets/items/food.png")).convert_alpha()
-		self._items["linemate"] =  pygame.image.load(os.path.abspath("assets/items/linemate.png")).convert_alpha()
-		self._items["deraumere"] =  pygame.image.load(os.path.abspath("assets/items/deraumere.png")).convert_alpha()
-		self._items["sibur"] =  pygame.image.load(os.path.abspath("assets/items/sibur.png")).convert_alpha()
-		self._items["mendiane"] =  pygame.image.load(os.path.abspath("assets/items/mendiane.png")).convert_alpha()
-		self._items["phiras"] =  pygame.image.load(os.path.abspath("assets/items/phiras.png")).convert_alpha()
-		self._items["thystame"] =  pygame.image.load(os.path.abspath("assets/items/thystame.png")).convert_alpha()
-		self._items["applause"] = pygame.image.load(os.path.abspath("assets/icon/applause.png")).convert_alpha()
-		#self._items["circle"] = pygame.image.load(os.path.abspath("assets/cercle_little.jpg")).convert()
-		#self._items["circle"].set_colorkey((255, 255, 255))
-
-	def drawMap(self):
-		for y in range(self._sizeY):
-			for x in range(self._sizeX):
-				try:
-					self.drawCase(self._map.content[y][x], self._mapContent[y][x], x, y)
-				except IndexError:
-					print("Can't find index for ", y, x)
-					exit(1)
-
-	def drawCase(self, Tile, caseContent, x, y):
-		tmpX = (x * self._spriteSize)
-		tmpY = (y * self._spriteSize)
-		tmp2X = (tmpX - tmpY) + self._shiftX
-		tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY
-		self._window.blit(self._items["case"], (tmp2X, tmp2Y))
-		self.fillCase(Tile, caseContent)
-
-	def fillCase(self, Tile, caseContent):
-		for key, value in caseContent.items():
-			for unvalue in range(value):
-				try:	
-					self._window.blit(
-						self._items[Tile.content[key].name],
-						(Tile.content[key].coords[unvalue][0] + self._shiftX,
-							Tile.content[key].coords[unvalue][1] + self._shiftY)
-					)
-				except IndexError:
-					print("Can't find index at case[", key, "][", unvalue, "]")
-					exit(0)
