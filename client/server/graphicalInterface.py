@@ -74,7 +74,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self._fontsize = 24
 		self._playerList = []
 		self._eggList = []
-		self._buildPlayer()
+		self.buildPlayer()
 		self._font = pygame.font.Font(os.path.abspath("assets/font/Android.ttf"), self._fontsize)
 		self._spriteSize = self._spriteSize * self._scale
 		self._map = Map(x = self._sizeX, y = self._sizeY, spriteSize = self._spriteSize, maxItem = self._maxItemPerCase)
