@@ -80,6 +80,7 @@ int	set_accept(server_t *server)
 			server->clients[server->nb_client - 1]->fd = tmp;
 			dprintf(tmp, "%d\n", server->nb_client);
 			dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
+			send_connection(server->clients, server->clients[server->nb_client - 1]);
 			return (set_client(server, str));
 		}
 	}
