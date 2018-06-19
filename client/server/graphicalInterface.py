@@ -134,7 +134,11 @@ class GraphicalInterface(Server, threading.Thread):
 		pass
 
 	def buildPlayer(self):
-		pass
+		nb = self.get_number_player()
+		print("-"*16)
+		print (nb)
+		print("-"*16)
+
 
 	class Player():
 		def __init__(self):
@@ -198,7 +202,6 @@ class GraphicalInterface(Server, threading.Thread):
 				line = []
 				for x in range(self._sizeX):
 					cmd = self.readTh.get_command().split(' ')
-					print(x," ", y ," ", cmd, flush = True)
 					cmd = cmd[3:]
 					try:
         	        			line.append({
@@ -247,7 +250,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self._window.blit(self._background, (0, 0))
 			self.drawMap()
 			self.drawChara()
-			self._hud.drawHud()
+			#self._hud.drawHud()
 			pygame.display.update()
 			self._clock.tick(60)
 		pygame.quit()
@@ -269,6 +272,7 @@ class GraphicalInterface(Server, threading.Thread):
         	self.write("msz")
         	cmd = self.readTh.get_command().split(' ')[1:]
         	return cmd
+		
 	def get_number_player(self):
         	self.write("gnp")
         	return self.readTh.get_command().split(' ')[1:]
