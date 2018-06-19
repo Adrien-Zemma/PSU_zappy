@@ -9,9 +9,11 @@
 
 int	get_number_player(server_t *server, client_t *client, char *str)
 {
-	int i;
+	int nb = 0;
 
 	(void)str;
-	dprintf(client->fd, "%d\n", server->nb_client);
+	for (int i = 0; server->clients[i]; i++)
+		nb += (server->clients[i]->id == -1 ? 0 : 1);
+	dprintf(client->fd, "%d\n", nb);
 	return OK;
 }
