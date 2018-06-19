@@ -6,7 +6,7 @@ from .Commands import Commands
 import threading
 
 from .Server import Server
-from .Threads import ThreadRead		
+from .Threads import ThreadRead
 
 class MaterialCoord():
 	def __init__(self, **kwargs):
@@ -40,7 +40,7 @@ class Tile():
         	        "mendiane": MaterialCoord(name = "mendiane", maxItem = maxItem, spriteSize = spriteSize, x = x, y = y),
         	        "deraumere": MaterialCoord(name = "deraumere", maxItem = maxItem, spriteSize = spriteSize, x = x, y = y),
 		}
-		
+
 
 class Map():
 	def __init__(self, **kwargs):
@@ -55,7 +55,7 @@ class Map():
 				self.content[y].append(Tile(self.maxItem, self.spriteSize, x, y))
 
 class GraphicalInterface(Server, threading.Thread):
-	def __init__(self, port, ip="localhost"):
+	def __init__(self, port=4242, ip="localhost"):
 		super().__init__(port, ip)
 		threading.Thread.__init__(self)
 		self.readTh.start()
@@ -220,10 +220,10 @@ class GraphicalInterface(Server, threading.Thread):
 				self.inventory = []
 				self.level = 0
 				self.food = 0
-		
+
 		def drawPlayerInfo(self):
 			pass
-			
+
 
 		def drawHud(self):
 			self.drawTeams()
@@ -236,7 +236,7 @@ class GraphicalInterface(Server, threading.Thread):
 				tmp += (el + " ")
 			label = self._font.render(tmp, 1, (255, 255, 255))
 			self._graph._window.blit(label, ((self._graph._winSizeX / 2) - (len(tmp) / 2) ,100))
-			
+
 
 	def manageConnection(self):
 		cmd = self.readTh.get_command()
@@ -315,7 +315,7 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def drawPlayer(self):
 		for player in self._playerList:
-			tmpX = (player._posX * self._spriteSize) 
+			tmpX = (player._posX * self._spriteSize)
 			tmpY = (player._posY * self._spriteSize)
 			tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 5 * 4
 			tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 5 * 4
@@ -347,7 +347,7 @@ class GraphicalInterface(Server, threading.Thread):
 					print("Can't find index for ", y, x)
 					exit(1)
 
-		
+
 
 	def fillCase(self, Tile, caseContent):
 		for key, value in caseContent.items():
@@ -370,12 +370,12 @@ class GraphicalInterface(Server, threading.Thread):
         	self.write("msz")
         	cmd = self.readTh.get_command().split(' ')[1:]
         	return cmd
-		
-	
+
+
 	def get_player_pos(self, id:int):
         	self.write("ppo" + str(id))
         	return self.readTh.get_command().split(' ')[1:]
-	
+
 	def get_number_player(self):
         	self.write("gnp")
         	return self.readTh.get_command().split(' ')[1:]
@@ -415,7 +415,7 @@ class GraphicalInterface(Server, threading.Thread):
 
 			cmd = self.readTh.get_command()
 		return names
-	
+
 	def get_tile(self, x:str, y:str):
 		self.write("bct " + str(x) + " " + str(y))
 		cmd = self.readTh.get_command().split(' ')[3:]

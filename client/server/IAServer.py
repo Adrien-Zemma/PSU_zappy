@@ -1,12 +1,11 @@
-import threading
 
 from .Server import Server
 
-class IAServer(Server, threading.Thread):
-	def __init__(self, team, port, ip = "localhost"):
+class IAServer(Server):
+	def __init__(self, team, port, ip="localhost"):
 		super().__init__(port, ip)
-		threading.Thread.__init__(self)
 		self.readTh.start()
+		print(team, port, ip)
 		self.team = team
 		self.team_id = None
 		self.map_size = None
@@ -31,6 +30,3 @@ class IAServer(Server, threading.Thread):
 
 	def left(self:object):
 		self.write("Left")
-
-	def run(self):
-		print("Hi IA")

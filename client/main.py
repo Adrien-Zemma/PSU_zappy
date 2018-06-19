@@ -5,12 +5,12 @@ from server.IA import IA
 
 
 def main():
-	ia = IA(args.name, args.port, args.machine)
-	ui = GraphicalInterface(args.port)
-	ui.start()
+	ia = IA("yoyo", 4242, "localhost")
+	ui = GraphicalInterface(4242)
+	#ui.start()
 	ia.start()
 	ia.join()
-	ui.join()
+	#ui.join()
 	print("Main finished")
 
 
