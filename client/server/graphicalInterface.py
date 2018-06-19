@@ -299,6 +299,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self._window.blit(self._background, (0, 0))
 			self.drawMap()
 			self.drawChara()
+			self.drawCaseContent()
 			pygame.display.update()
 			self._clock.tick(60)
 		pygame.quit()
@@ -335,7 +336,18 @@ class GraphicalInterface(Server, threading.Thread):
 		tmp2X = (tmpX - tmpY) + self._shiftX
 		tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY
 		self._window.blit(self._items["case"], (tmp2X, tmp2Y))
-		self.fillCase(Tile, caseContent)
+
+
+	def drawCaseContent(self):
+		for y in range(self._sizeY):
+			for x in range(self._sizeX):
+				try:
+					self.fillCase(self._map.content[y][x], self._mapContent[y][x])
+				except IndexError:
+					print("Can't find index for ", y, x)
+					exit(1)
+
+		
 
 	def fillCase(self, Tile, caseContent):
 		for key, value in caseContent.items():
