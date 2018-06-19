@@ -32,11 +32,12 @@ OBJS	= $(SRCS:.c=.o)
 
 CFLAGS = -I./server/incs/
 CFLAGS += -W -Wall -Wextra
+LDLIBS = -lm
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	 $(CC) $(OBJS) -o $(NAME)
+	 $(CC) $(OBJS) -o $(NAME) $(LDLIBS)
 
 clean:
 	$(RM) $(OBJS)

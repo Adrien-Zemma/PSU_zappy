@@ -22,18 +22,18 @@ command_t	**init_commands(t_parse *parse)
 	node[4] = append_command("plv #", player_level, 0);
 	node[5] = append_command("pin #", player_inventory, 0);
 	node[6] = append_command("ppo #", player_position, 0);
-	node[7] = append_command("Forward", forward, 7 / parse->freq);
-	node[8] = append_command("Right", right , 7 / parse->freq);
-	node[9] = append_command("Left", left, 7 / parse->freq);
-	node[10] = append_command("inventory", inventory, 1 / parse->freq);
-	node[11] = append_command("Look", look, 7 / parse->freq);
-	node[12] = append_command("Broadcast", broadcast, 7 / parse->freq);
-	node[13] = append_command("Take", take_object, 7 / parse->freq);
+	node[7] = append_command("Forward", forward, 7 / (double)parse->freq);
+	node[8] = append_command("Right", right , 7 / (double)parse->freq);
+	node[9] = append_command("Left", left, 7 / (double)parse->freq);
+	node[10] = append_command("inventory", inventory, 1 / (double)parse->freq);
+	node[11] = append_command("Look", look, 7 / (double)parse->freq);
+	node[12] = append_command("Broadcast", broadcast, 7 / (double)parse->freq);
+	node[13] = append_command("Take", take_object, 7 / (double)parse->freq);
 	node[i] = NULL;
 	return node;
 }
 
-command_t	*append_command(char *name, int (*ptrFnct)(server_t *, client_t *, char *), float time)
+command_t	*append_command(char *name, int (*ptrFnct)(server_t *, client_t *, char *), double time)
 {
 	command_t	*node = malloc(sizeof(command_t));
 

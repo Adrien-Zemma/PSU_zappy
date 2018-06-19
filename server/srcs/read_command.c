@@ -35,7 +35,10 @@ void	read_command(int c1, server_t *server)
 	printf("Client[%d]: %s\n", c1, str);
 	fflush(NULL);
 	for (int j = 0; server->command[j]; j++) {
-		if (strncmp(server->command[j]->name, str, strlen(server->command[j]->name)) == 0)
-			server->clients[check]->command = copy_cmd(server->command[j], strdup(str));
+		if (strncmp(server->command[j]->name, str, strlen(server->command[j]->name)) == 0) {
+			server->clients[check]->command = copy_cmd(server->command[j], str);
+			return;
+		}
 	}
+	dprintf(server->clients[check]->fd, "ko\n");
 }
