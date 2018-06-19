@@ -12,6 +12,7 @@
 	#include "commands.h"
 	#include "map.h"
 	#include <string.h>
+	#include <math.h>
 
 typedef struct command_s command_t;
 typedef struct	tile tile_t;

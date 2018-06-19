@@ -36,6 +36,6 @@ void	read_command(int c1, server_t *server)
 	fflush(NULL);
 	for (int j = 0; server->command[j]; j++) {
 		if (strncmp(server->command[j]->name, str, strlen(server->command[j]->name)) == 0)
-			server->clients[check]->command = copy_cmd(server->command[j], strdup(str));
+			server->clients[check]->command = copy_cmd(server->command[j], str);
 	}
 }
