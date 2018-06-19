@@ -1,5 +1,4 @@
 class Commands():
-
 	def __init__(self, **args):
 		if args is None:
 			self.commands = {}
@@ -12,7 +11,7 @@ class Commands():
 		if self.commands is None:
 			return 1
 		try:
-			self.commands[command]()
+			self.commands[command.split(' ')[0]](command)
 		except KeyError:
 			print("Can't found self.commands[{}]".format(command))
 			return 1
