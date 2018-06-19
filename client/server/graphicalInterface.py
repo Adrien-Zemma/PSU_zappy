@@ -66,11 +66,14 @@ class GraphicalInterface(Server, threading.Thread):
 		self.manageConnection()
 		random.seed()
 		pygame.init()
+		self._clock = pygame.time.Clock()
 		self._winSizeY = 1080
 		self._winSizeX = 1920
 		self._spriteSize = 100
 		self._scale = 1
 		self._maxItemPerCase = 100
+		self._fontsize = 24
+		self._font = pygame.font.Font(os.path.abspath("assets/font/Android.ttf"), self._fontsize)
 		self._spriteSize = self._spriteSize * self._scale
 		self._map = Map(x = self._sizeX, y = self._sizeY, spriteSize = self._spriteSize, maxItem = self._maxItemPerCase)
 		self.buildWindow()
@@ -152,10 +155,14 @@ class GraphicalInterface(Server, threading.Thread):
 				self.inventory = []
 				self.level = 0
 				self.food = 0
-				i = 0;
+		
+		def drawPlayerInfo(self):
+			pass
 			
+
 		def drawHud(self):
 			self.drawTeams()
+			self.drawPlayerInfo()
 
 		def drawTeams(self):
 			teams = self._graph.teams_name()
@@ -173,7 +180,7 @@ class GraphicalInterface(Server, threading.Thread):
 			cmd = self.readTh.get_command().split(' ')[1:]
 			self._sizeX = int(cmd[0])
 			self._sizeY = int(cmd[1])
-			print("Frequence: ", self.readTh.get_command().split(' ')[1:])
+			#print("Frequence: ", self.readTh.get_command().split(' ')[1:])
 			m = []
 			for y in range(self._sizeY):
 				line = []
@@ -202,20 +209,34 @@ class GraphicalInterface(Server, threading.Thread):
 				cmd = self.readTh.get_command()
 			print("Teams: ", self.teams)
 
+	def manageKeys(self, event):
+		if event.key == pygame.K_i:
+			self._hud.start()
+		elif event.key == pygame.K_ESCAPE:
+			return False
+		elif event.key == pygame.K_UP:
+			self._shiftY *= 0.9
+		elif event.key == pygame.K_DOWN:
+			self._shiftY /= 0.9
+		elif event.key == pygame.K_LEFT:
+			self._shiftX *= 0.9
+		elif event.key == pygame.K_RIGHT:
+			self._shiftX /= 0.9
+		return True
 	def run(self):
+		
 		status = True
 		while status:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					status = False
 				if event.type == pygame.KEYDOWN:
-					if event.key == pygame.K_i:
-						self._hud.start()
-					elif event.key == pygame.K_ESCAPE:
-						status = False
+					status = self.manageKeys(event)
+			self._window.blit(self._background, (0, 0))
 			self.drawMap()
 			self._hud.drawHud()
-			pygame.display.flip()
+			pygame.display.update()
+			self._clock.tick(60)
 
 	def get_map_size(self):
         	self.write("msz")
