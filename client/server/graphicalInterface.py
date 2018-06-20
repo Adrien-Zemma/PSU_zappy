@@ -81,12 +81,13 @@ class GraphicalInterface(Server, threading.Thread):
 		self.buildItem()
 		self.buildPlayer()
 		self._hud = self.Hud(self)
-		self._commendes = Commands(commands= {
+		self._commands = Commands(commands= {
 			"pex" : self.expultionCmd,
 			"pbc" : self.broadcastCmd,
 			"pic" : self.incantationStartCmd,
 			"pie" : self.incantationEndCmd,
 			"pfk" : self.Cmd,
+			"pnw" : self.connectionOfNewPlay,
 			"pdr" : self.resourceDropCmd,
 			"pgt" : self.resourcesCollectedCmd,
 			"pdi" : self.deathCmd,
@@ -103,6 +104,21 @@ class GraphicalInterface(Server, threading.Thread):
 	def Cmd(self, cmd):
 		print(cmd)
 		pass
+	def connectionOfNewPlay(self, cmd):
+		pos = cmd.split(' ')[1:]
+		print(pos)
+		self._playerList.append(
+			self.Player(
+				id = int(pos[0][1:]),
+				x = int(pos[1]),
+				y = int(pos[2]),
+				orient = int(pos[3]),
+				level = int(pos[4]),
+				team = str(pos[5]),
+				inventory = []
+			)
+		)
+	
 	def expultionCmd(self, cmd):
 		print(cmd)
 		pass
@@ -225,7 +241,9 @@ class GraphicalInterface(Server, threading.Thread):
 			self._id = kwargs.get('id')
 			self._posX = kwargs.get('x')
 			self._posY = kwargs.get('y')
+			self._team = kwargs.get('team')
 			self._level = kwargs.get('level')
+			self._orientaton = kwargs.get('orient')
 			self._inventory = kwargs.get('inventory')
 			self._frame = 0
 			self._oldposY = 0
@@ -235,7 +253,6 @@ class GraphicalInterface(Server, threading.Thread):
 			self._spriteSizeY = 50
 			self._incanting = False
 			self._isApplause = False
-			self._orientaton = kwargs.get('orient')
 			
 	class Egg():
 		def __init__(self):
@@ -328,6 +345,9 @@ class GraphicalInterface(Server, threading.Thread):
 	def run(self):
 		status = True
 		while status:
+			cmd = self.readTh.get_command(False)
+			if cmd is not None:
+				self._commands.parse(cmd)
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					status = False
@@ -338,6 +358,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self.drawCaseContent()
 			self.drawChara()
 			pygame.display.update()
+			print(len(self._playerList))
 			self._clock.tick(5)
 		pygame.quit()
 		self.readTh.join()
