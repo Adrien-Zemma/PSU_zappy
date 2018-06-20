@@ -5,7 +5,7 @@ from .Threads import ThreadRead
 
 class Server():
 
-	def __init__(self, port=4242, ip="localhost"):
+	def __init__(self, port, ip):
 		self._ip = ip
 		self._port = port
 		self.teams = []

@@ -2,7 +2,7 @@
 from .Server import Server
 
 class IAServer(Server):
-	def __init__(self, team, port, ip="localhost"):
+	def __init__(self, team, port, ip):
 		super().__init__(port, ip)
 		self.readTh.start()
 		print(team, port, ip)
