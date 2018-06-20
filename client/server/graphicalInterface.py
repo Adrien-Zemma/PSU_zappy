@@ -6,7 +6,7 @@ from .Commands import Commands
 import threading
 
 from .Server import Server
-from .Threads import ThreadRead		
+from .Threads import ThreadRead
 
 
 class MaterialCoord():
@@ -59,7 +59,7 @@ class Map():
 
 
 class GraphicalInterface(Server, threading.Thread):
-	def __init__(self, port, ip="localhost"):
+	def __init__(self, port=4242, ip="localhost"):
 		super().__init__(port, ip)
 		threading.Thread.__init__(self)
 		self.readTh.start()
@@ -123,7 +123,7 @@ class GraphicalInterface(Server, threading.Thread):
 				inventory = []
 			)
 		)
-	
+
 	def expultionCmd(self, cmd):
 		print(cmd)
 		pass
@@ -202,7 +202,7 @@ class GraphicalInterface(Server, threading.Thread):
 				4: pygame.image.load(os.path.abspath("assets/perso/move/west.png")).convert_alpha()
 			}
 		}
-		
+
 
 	def buildPlayer(self):
 		nb = int(self.get_number_player()[0])
@@ -221,8 +221,8 @@ class GraphicalInterface(Server, threading.Thread):
 					)
 			except:
 				pass
-				
-				
+
+
 
 	class Player():
 		def __init__(self, **kwargs):
@@ -241,7 +241,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self._spriteSizeY = 50
 			self._incanting = False
 			self._isApplause = False
-			
+
 	class Egg():
 		def __init__(self):
 			self._posX = 0
@@ -262,10 +262,10 @@ class GraphicalInterface(Server, threading.Thread):
 				self.inventory = []
 				self.level = 0
 				self.food = 0
-		
+
 		def drawPlayerInfo(self):
 			pass
-			
+
 
 		def drawHud(self):
 			self.drawTeams()
@@ -278,7 +278,7 @@ class GraphicalInterface(Server, threading.Thread):
 				tmp += (el + " ")
 			label = self._font.render(tmp, 1, (255, 255, 255))
 			self._graph._window.blit(label, ((self._graph._winSizeX / 2) - (len(tmp) / 2) ,100))
-			
+
 
 	def manageConnection(self):
 		cmd = self.readTh.get_command()
@@ -363,20 +363,20 @@ class GraphicalInterface(Server, threading.Thread):
 		for player in self._playerList:
 			if not player._isAlive:
 				continue
-			tmpX = (player._posX * self._spriteSize) 
+			tmpX = (player._posX * self._spriteSize)
 			tmpY = (player._posY * self._spriteSize)
 			tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 5 * 4
 			tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 5 * 4
 			if tmp2X == player._oldposX and tmp2Y == player._oldposY:
 				self._window.blit(
 					self._itemsPlayer["stand"][player._orientaton].subsurface(
-						player._frame * player._spriteSizeX, 
+						player._frame * player._spriteSizeX,
 						0,
 						player._spriteSizeX,
 						player._spriteSizeY
 					),
 					(tmp2X, tmp2Y)
-					
+
 				)
 			else:
 				player._oldposX = tmp2X
@@ -393,8 +393,8 @@ class GraphicalInterface(Server, threading.Thread):
 			if player._frame > 2:
 				player._frame = -1
 			player._frame += 1
-			
-			
+
+
 
 	def drawMap(self):
 		for y in range(self._sizeY):
@@ -422,7 +422,7 @@ class GraphicalInterface(Server, threading.Thread):
 					print("Can't find index for ", y, x)
 					exit(1)
 
-		
+
 
 	def fillCase(self, Tile, caseContent):
 		for key, value in caseContent.items():
@@ -449,7 +449,7 @@ class GraphicalInterface(Server, threading.Thread):
         	self.write("msz")
         	cmd = self.readTh.get_command().split(' ')[1:]
         	return cmd
-	
+
 	def get_number_player(self):
 		self.write("gnp")
 		tmp = self.readTh.get_command().split(' ')[1:]
