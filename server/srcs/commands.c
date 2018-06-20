@@ -10,7 +10,7 @@
 
 command_t	**init_commands(t_parse *parse)
 {
-	const int	i = 17;
+	const int	i = 19;
 	command_t	**node = malloc(sizeof(command_t *) * (i + 1));
 
 	if (!node)
@@ -21,17 +21,19 @@ command_t	**init_commands(t_parse *parse)
 	node[3] = append_command("bct", tile_content, 0);
 	node[4] = append_command("plv #", player_level, 0);
 	node[5] = append_command("pin #", player_inventory, 0);
-	node[6] = append_command("ppo #", player_position, 0);
-	node[7] = append_command("Forward", forward, 7 / (double)parse->freq);
-	node[8] = append_command("Right", right , 7 / (double)parse->freq);
-	node[9] = append_command("Left", left, 7 / (double)parse->freq);
-	node[10] = append_command("inventory", inventory, 1 / (double)parse->freq);
-	node[11] = append_command("Look", look, 7 / (double)parse->freq);
-	node[12] = append_command("Broadcast", broadcast, 7 / (double)parse->freq);
-	node[13] = append_command("Take", take_object, 7 / (double)parse->freq);
-	node[14] = append_command("Connect_nbr", nb_connect, 0);
-	node[15] = append_command("gnp", get_number_player, 0);
-	node[16] = append_command("ppo", get_player_pos, 0);
+	node[6] = append_command("Forward", forward, 7 / (double)parse->freq);
+	node[7] = append_command("Right", right, 7 / (double)parse->freq);
+	node[8] = append_command("Left", left, 7 / (double)parse->freq);
+	node[9] = append_command("inventory", inventory, 1 / (double)parse->freq);
+	node[10] = append_command("Look", look, 7 / (double)parse->freq);
+	node[11] = append_command("Broadcast", broadcast, 7 / (double)parse->freq);
+	node[12] = append_command("Take", take_object, 7 / (double)parse->freq);
+	node[13] = append_command("Connect_nbr", nb_connect, 0);
+	node[14] = append_command("sgt", sgt, 0);
+	node[15] = append_command("sst", sst, 0);
+	node[16] = append_command("Set", set_object, 0);
+	node[17] = append_command("gnp", get_number_player, 0);
+	node[18] = append_command("ppo", get_player_pos, 0);
 	node[i] = NULL;
 	return node;
 }

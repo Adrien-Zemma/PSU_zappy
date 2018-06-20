@@ -36,6 +36,7 @@ int	look_north(server_t *server, client_t *client, int j, int k)
 	int	posY;
 	int	posX = client->posX;
 	int	checkPosX = client->posX;
+	int	check;
 
 	dprintf(client->fd, "[");
 	if (client->posY == 0)
@@ -44,8 +45,17 @@ int	look_north(server_t *server, client_t *client, int j, int k)
 		posY = client->posY - 1;
 	for (int i = 0; i < client->level + 1; i++) {
 		do {
-			// if ()
-			check_map(server->map[posY][client->posX], client);
+			if (posX - j < 0) {
+				check = posX - j;
+				posX = server->parse->width - check;
+				check_map(server->map[posY][posX], client);
+			}
+			else if (posX - j > server->parse->width - 1){
+				posX = (posX - j) - server->parse->width - 1;
+				check_map(server->map[posY][posX], client);
+			}
+			else
+				check_map(server->map[posY][posX - j], client);
 
 		} while (posX++ - j < checkPosX + k);
 		j++;
