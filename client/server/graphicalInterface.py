@@ -193,17 +193,31 @@ class GraphicalInterface(Server, threading.Thread):
 		self._itemsPlayer[4].set_colorkey((255, 255, 255))
 
 	def buildPlayer(self):
-		nb = int(self.get_number_player()[0])
+		while(1):
+			try:
+				nb = int(self.get_number_player()[0])
+				break
+			except:
+				pass
+		if nb == 0:
+			return
 		for item in range(nb):
 			pos = self.getPlayerPosition(item + 1)
-			self._playerList.append(
-				self.Player(
-					x = int(pos[1]),
-					y = int(pos[2]),
-					id = item + 1,
-					inventory = [],
-					orient=int(pos[3]))
-				)
+			#while(1):
+			try:
+				self._playerList.append(
+					self.Player(
+                                            x = int(pos[1]),
+                                            y = int(pos[2]),
+                                            id = item + 1,
+                                            inventory = [],
+                                            orient = int(pos[3]))
+					)
+				break
+			except:
+				pass
+				
+				
 
 	class Player():
 		def __init__(self, **kwargs):
@@ -390,7 +404,6 @@ class GraphicalInterface(Server, threading.Thread):
 	def get_number_player(self):
 		self.write("gnp")
 		tmp = self.readTh.get_command().split(' ')[1:]
-		print(tmp)
 		return tmp
 
 	def get_map(self):
