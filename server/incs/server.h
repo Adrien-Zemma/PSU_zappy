@@ -55,7 +55,7 @@ int	set_accept(server_t *server);
 void	read_command(int c1, server_t *server);
 char	*parse_command(char *command, char c, int nb);
 void	append_player(tile_t **tile, client_t *client);
-int	remove_player(tile_t **tile, client_t *client);
+int	remove_player(tile_t ***map, client_t *client);
 struct timeval	*get_select_timeout(server_t *server);
 void	remove_time_clients(server_t *server, double last_time);
 void	manage_error(int fd, int state, int *check);

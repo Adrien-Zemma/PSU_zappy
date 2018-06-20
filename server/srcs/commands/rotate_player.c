@@ -41,8 +41,8 @@ int	forward(server_t *server, client_t *client, char *str)
 			client->posX++;
 	}
 	forwardY(server, client);
+	remove_player(server->map, client);
 	append_player(&server->map[client->posY][client->posX], client);
-	dprintf(client->fd, "ok\n");
 	return OK;
 }
 
