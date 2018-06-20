@@ -8,4 +8,11 @@ class IA(threading.Thread):
 		self.server = IAServer(team, port, ip)
 
 	def run(self):
-		print("Hi IA !")
+		while True:
+			ret = self.server.forward()
+			print(ret)
+			if ret != "ok":
+				print("Can't move forward")
+				exit(84)
+			else:
+				print("Moving forward !")
