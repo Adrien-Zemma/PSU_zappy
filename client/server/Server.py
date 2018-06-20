@@ -29,16 +29,3 @@ class Server():
         	    if sent == 0:
         	        raise RuntimeError("socket connection broken")
         	    totalsent += sent
-
-	def read(self):
-        	buff = ""
-        	while True:
-        	    data = self._sock.recv(1)
-        	    if data:
-        	        buff += data.decode('utf-8')
-        	    else:
-        	        return None
-        	    if buff.find('\n') != -1:
-        	        buff = buff.replace('\n', '')
-        	        break
-        	return buff

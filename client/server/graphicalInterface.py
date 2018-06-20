@@ -312,7 +312,7 @@ class GraphicalInterface(Server, threading.Thread):
 			cmd = self.readTh.get_command()
 			while cmd is not None:
 				self.teams.append(cmd.split(' ')[1:][0])
-				cmd = self.readTh.get_command()
+				cmd = self.readTh.get_command(True, timeout=0.1)
 			print("Teams: ", self.teams)
 
 	def manageKeys(self, event):

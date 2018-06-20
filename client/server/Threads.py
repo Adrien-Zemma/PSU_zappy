@@ -24,7 +24,7 @@ class ThreadRead(threading.Thread):
         	        break
         	return buff
 
-	def get_command(self, status: bool = True, timeout: int = 0.1):
+	def get_command(self, status: bool = True, timeout: int = None):
 		try:
 			data = self.queue.get(status, timeout)
 			self.queue.task_done()
