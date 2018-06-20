@@ -10,7 +10,6 @@ class Server():
 		self._port = port
 		self.teams = []
 		self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		print(port, ip)
 		self.connect()
 		self.readTh = ThreadRead(self._sock)
 

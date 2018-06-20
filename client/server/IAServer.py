@@ -5,7 +5,6 @@ class IAServer(Server):
 	def __init__(self, team, port, ip):
 		super().__init__(port, ip)
 		self.readTh.start()
-		print(team, port, ip)
 		self.team = team
 		self.team_id = None
 		self.map_size = None
