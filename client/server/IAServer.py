@@ -26,9 +26,13 @@ class IAServer(Server):
 
 	def forward(self:object):
 		self.write("Forward")
+		print("Forward", flush=True)
+		return self.readTh.get_command()
 
 	def right(self:object):
 		self.write("Right")
+		return self.readTh.get_command()
 
 	def left(self:object):
 		self.write("Left")
+		return self.readTh.get_command()
