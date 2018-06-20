@@ -54,10 +54,8 @@ int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 	for (int i = 0; i < server->nb_fd; i++)
 		FD_SET(server->fds[i], &readfds);
 	ret = select((server->fd > best_fd ? server->fd : best_fd) + 1, &readfds, NULL, NULL, tv);
-	if (ret == -1) {
-		perror("select");
+	if (ret == -1)
 		return (84);
-	}
 	if (ret != 0)
 		backup_time = tv ? (tv->tv_sec + (double)(tv->tv_usec / 1000000.0f)) : 0;
 	remove_time_clients(server, backup_time);

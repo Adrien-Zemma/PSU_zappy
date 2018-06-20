@@ -10,15 +10,13 @@
 int	player_inventory(server_t *server, client_t *client, char *str)
 {
 	int	id;
-	
+
 	while (*str && *str != '#')
 		str++;
 	if (*str == '#')
 		str++;
-	else {
-		printf("error inventory player\n");
+	else
 		return BAD_PARAM;
-	}
 	id = atoi(str);
 	for (int i = 0; server->clients[i] != NULL; i++){
 		if (server->clients[i]->id == id)
