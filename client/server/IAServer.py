@@ -9,13 +9,16 @@ class IAServer(Server):
 		self.team_id = None
 		self.map_size = None
 		self.orientation = 0
-		#self.manageConnection()
+		self.manageConnection()
 
 	def manageConnection(self):
 		cmd = self.readTh.get_command()
 		if cmd == "WELCOME":
-			self.write("team " + self.team)
+			self.write(self.team)
 			self.team_id = self.readTh.get_command()
+			if self.team_id == "ko":
+				print("Invalid team name")
+				exit(84)
 			cmd = self.readTh.get_command().split(' ')
 			self.map_size = (cmd[0], cmd[1])
 			print("Setted coords")
