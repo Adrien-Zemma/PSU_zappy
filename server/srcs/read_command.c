@@ -63,7 +63,10 @@ void	read_command(int c1, server_t *server)
 		if (strncmp(server->command[j]->name, str, strlen(server->command[j]->name)) == 0
 		&& (strlen(str) == strlen(server->command[j]->name)
 		|| str[strlen(server->command[j]->name)] == ' ')) {
-			queue_append(&server->clients[check]->command, copy_cmd(server->command[j], str));
+			if (server->command[j]->time == 0)
+				server->command[j]->ptrFnct(server, server->clients[check], str);
+			else
+				queue_append(&server->clients[check]->command, copy_cmd(server->command[j], str));
 			return;
 		}
 	}
