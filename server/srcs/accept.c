@@ -54,9 +54,9 @@ int	set_accept(server_t *server)
 	if (!str)
 		return (0);
 	if (strcmp(str, "GRAPHIC") == 0) {
+		server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
 		server->fds[server->nb_fd] = tmp;
 		server->nb_fd++;
-		server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
 		server->nb_client++;
 		server->clients = realloc(server->clients,
 			sizeof(client_t *) * (1 + server->nb_client));
