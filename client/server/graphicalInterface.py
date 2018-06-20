@@ -180,13 +180,13 @@ class GraphicalInterface(Server, threading.Thread):
 			os.path.abspath("assets/icon/applause.png")).convert_alpha()
 		self._itemsPlayer = {
 			"stand": {
-				1 : pygame.image.load(os.path.abspath("assets/perso/stand/noth.png")).convert_alpha(),
+				1 : pygame.image.load(os.path.abspath("assets/perso/stand/north.png")).convert_alpha(),
 				2 : pygame.image.load(os.path.abspath("assets/perso/stand/east.png")).convert_alpha(),
 				3 : pygame.image.load(os.path.abspath("assets/perso/stand/south.png")).convert_alpha(),
 				4 : pygame.image.load(os.path.abspath("assets/perso/stand/west.png")).convert_alpha()
 			},
 			"move":{
-				1: pygame.image.load(os.path.abspath("assets/perso/move/noth.png")).convert_alpha(),
+				1: pygame.image.load(os.path.abspath("assets/perso/move/north.png")).convert_alpha(),
 				2: pygame.image.load(os.path.abspath("assets/perso/move/east.png")).convert_alpha(),
 				3: pygame.image.load(os.path.abspath("assets/perso/move/south.png")).convert_alpha(),
 				4: pygame.image.load(os.path.abspath("assets/perso/move/west.png")).convert_alpha()
@@ -205,7 +205,6 @@ class GraphicalInterface(Server, threading.Thread):
 			return
 		for item in range(nb):
 			pos = self.getPlayerPosition(item + 1)
-			#while(1):
 			try:
 				self._playerList.append(
 					self.Player(
@@ -232,7 +231,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self._oldposY = 0
 			self._oldposX = 0
 			self._isAlive = True
-			self._spriteSize = 31
+			self._spriteSizeX = 31
 			self._spriteSizeY = 50
 			self._incanting = False
 			self._isApplause = False
@@ -339,7 +338,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self.drawCaseContent()
 			self.drawChara()
 			pygame.display.update()
-			self._clock.tick(60)
+			self._clock.tick(5)
 		pygame.quit()
 		self.readTh.join()
 
@@ -380,7 +379,7 @@ class GraphicalInterface(Server, threading.Thread):
                                         ),
 					(tmp2X, tmp2Y)
 				)
-			if player._frame > 3:
+			if player._frame > 2:
 				player._frame = -1
 			player._frame += 1
 			
