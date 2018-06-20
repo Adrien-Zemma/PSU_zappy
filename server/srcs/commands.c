@@ -9,7 +9,7 @@
 
 command_t	**init_commands(void)
 {
-	const int	i = 18;
+	const int	i = 21;
 	command_t	**node = malloc(sizeof(command_t *) * (i + 1));
 
 	if (!node)
@@ -32,6 +32,9 @@ command_t	**init_commands(void)
 	node[15] = append_command("sgt", sgt);
 	node[16] = append_command("sst", sst);
 	node[17] = append_command("Set", set_object);
+	node[18] = append_command("gnp", get_number_player);
+	node[19] = append_command("gnp", get_number_player);
+	node[20] = append_command("ppo", get_player_pos);
 	node[i] = NULL;
 	return node;
 }

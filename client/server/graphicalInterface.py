@@ -120,7 +120,14 @@ class GraphicalInterface(Server, threading.Thread):
 	def get_map_size(self):
         	self.write("msz")
         	cmd = self.readTh.get_command().split(' ')[1:]
-        	return cmd
+	
+	def get_player_pos(self, id:int):
+        	self.write("ppo" + str(id))
+        	return self.readTh.get_command().split(' ')[1:]
+	
+	def get_number_player(self):
+        	self.write("gnp")
+        	return self.readTh.get_command().split(' ')[1:]
 
 	def get_map(self):
 		m = []

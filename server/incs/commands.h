@@ -49,5 +49,7 @@ int	nb_connect(server_t *server, client_t *client, char *str);
 int	sgt(server_t *server, client_t *client, char *str);
 int	sst(server_t *server, client_t *client, char *str);
 int	set_object(server_t *server, client_t *client, char *str);
+int	get_number_player(server_t *server, client_t *client, char *str);
+int	get_player_pos(server_t *server, client_t *client, char *str);
 
 #endif /* !COMMANDS_H_ */
