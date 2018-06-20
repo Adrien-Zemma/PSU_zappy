@@ -178,19 +178,21 @@ class GraphicalInterface(Server, threading.Thread):
 			os.path.abspath("assets/items/thystame.png")).convert_alpha()
 		self._items["applause"] = pygame.image.load(
 			os.path.abspath("assets/icon/applause.png")).convert_alpha()
-		self._itemsPlayer = {}
-		self._itemsPlayer[1] = pygame.image.load(
-			os.path.abspath("assets/perso.jpg")).convert()
-		self._itemsPlayer[2] = pygame.image.load(
-			os.path.abspath("assets/perso.jpg")).convert()
-		self._itemsPlayer[3] = pygame.image.load(
-			os.path.abspath("assets/perso.jpg")).convert()
-		self._itemsPlayer[4] = pygame.image.load(
-			os.path.abspath("assets/perso.jpg")).convert()
-		self._itemsPlayer[1].set_colorkey((255, 255, 255))
-		self._itemsPlayer[2].set_colorkey((255, 255, 255))
-		self._itemsPlayer[3].set_colorkey((255, 255, 255))
-		self._itemsPlayer[4].set_colorkey((255, 255, 255))
+		self._itemsPlayer = {
+			"stand": {
+				1 : pygame.image.load(os.path.abspath("assets/perso/stand/noth.png")).convert_alpha(),
+				2 : pygame.image.load(os.path.abspath("assets/perso/stand/east.png")).convert_alpha(),
+				3 : pygame.image.load(os.path.abspath("assets/perso/stand/south.png")).convert_alpha(),
+				4 : pygame.image.load(os.path.abspath("assets/perso/stand/west.png")).convert_alpha()
+			},
+			"move":{
+				1: pygame.image.load(os.path.abspath("assets/perso/move/noth.png")).convert_alpha(),
+				2: pygame.image.load(os.path.abspath("assets/perso/move/east.png")).convert_alpha(),
+				3: pygame.image.load(os.path.abspath("assets/perso/move/south.png")).convert_alpha(),
+				4: pygame.image.load(os.path.abspath("assets/perso/move/west.png")).convert_alpha()
+			}
+		}
+		
 
 	def buildPlayer(self):
 		while(1):
@@ -226,10 +228,16 @@ class GraphicalInterface(Server, threading.Thread):
 			self._posY = kwargs.get('y')
 			self._level = kwargs.get('level')
 			self._inventory = kwargs.get('inventory')
+			self._frame = 0
+			self._oldposY = 0
+			self._oldposX = 0
 			self._isAlive = True
-			self._isApplause = False
+			self._spriteSize = 31
+			self._spriteSizeY = 50
 			self._incanting = False
+			self._isApplause = False
 			self._orientaton = kwargs.get('orient')
+			
 	class Egg():
 		def __init__(self):
 			self._posX = 0
@@ -349,7 +357,34 @@ class GraphicalInterface(Server, threading.Thread):
 			tmpY = (player._posY * self._spriteSize)
 			tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 5 * 4
 			tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 5 * 4
-			self._window.blit(self._itemsPlayer[player._orientaton], (tmp2X, tmp2Y))
+			if tmp2X == player._oldposX and tmp2Y == player._oldposY:
+				self._window.blit(
+					self._itemsPlayer["stand"][player._orientaton].subsurface(
+						player._frame * player._spriteSizeX, 
+						0,
+						player._spriteSizeX,
+						player._spriteSizeY
+					),
+					(tmp2X, tmp2Y)
+					
+				)
+			else:
+				player._oldposX = tmp2X
+				player._oldposY = tmp2Y
+				self._window.blit(
+					self._itemsPlayer["move"][player._orientaton].subsurface(
+						player._frame * player._spriteSizeX,
+						0,
+						player._spriteSizeX,
+						player._spriteSizeY
+                                        ),
+					(tmp2X, tmp2Y)
+				)
+			if player._frame > 3:
+				player._frame = -1
+			player._frame += 1
+			
+			
 
 	def drawMap(self):
 		for y in range(self._sizeY):
