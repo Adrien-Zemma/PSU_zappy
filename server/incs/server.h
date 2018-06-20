@@ -15,7 +15,7 @@
 	#include <math.h>
 
 typedef struct command_s command_t;
-typedef struct	tile tile_t;
+typedef struct	tile_s tile_t;
 
 typedef	struct client_s
 {

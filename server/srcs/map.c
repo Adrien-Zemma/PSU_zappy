@@ -34,8 +34,6 @@ int	reorganize_players(client_t ***clients, int index)
 
 void	manage_tile(tile_t *tile, client_t *client)
 {
-	int	size = -1;
-
 	for (int k = 0; tile->clients[k]; k++) {
 		if (tile->clients[k] == client) {
 			reorganize_players(&tile->clients, k);

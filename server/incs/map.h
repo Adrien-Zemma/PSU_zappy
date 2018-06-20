@@ -18,7 +18,7 @@
 
 typedef struct client_s client_t;
 
-typedef struct	tile {
+typedef struct	tile_s {
 	int		minPlayers;
 	int		linemate;
 	int		deraumere;
@@ -32,5 +32,7 @@ typedef struct	tile {
 
 tile_t	***init_map(int weight, int height);
 void	free_map(tile_t ***map);
+
+extern const tile_t level_requirement[6];
 
 #endif /* !MAP_H_ */
