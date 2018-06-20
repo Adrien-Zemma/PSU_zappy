@@ -69,7 +69,7 @@ int	broadcast(server_t *server, client_t *client, char *str)
 	else
 		return BAD_PARAM;
 	for (int i = 0; server->clients[i]; i++)
-		if (server->clients[i] != client)
+		if (server->clients[i] != client && server->clients[i]->id != -1)
 			broadcast_client(server->map, client, server->clients[i], str);
 	return OK;
 }
