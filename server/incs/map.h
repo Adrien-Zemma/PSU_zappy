@@ -19,6 +19,7 @@
 typedef struct client_s client_t;
 
 typedef struct	tile {
+	int		minPlayers;
 	int		linemate;
 	int		deraumere;
 	int		sibur;
