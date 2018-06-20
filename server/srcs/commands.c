@@ -6,8 +6,9 @@
 */
 
 #include "commands.h"
+#include "parse.h"
 
-command_t	**init_commands(void)
+command_t	**init_commands(t_parse *parse)
 {
 	const int	i = 21;
 	command_t	**node = malloc(sizeof(command_t *) * (i + 1));
@@ -39,12 +40,13 @@ command_t	**init_commands(void)
 	return node;
 }
 
-command_t	*append_command(char *name, int (*ptrFnct)(server_t *, client_t *, char *))
+command_t	*append_command(char *name, int (*ptrFnct)(server_t *, client_t *, char *), double time)
 {
 	command_t	*node = malloc(sizeof(command_t));
 
 	if (!node)
 		return NULL;
+	node->time = time;
 	node->name = name;
 	node->ptrFnct = ptrFnct;
 	return node;

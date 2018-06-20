@@ -1,6 +1,4 @@
-from Server import Singleton
-
-class Commands(metaclass=Singleton):
+class Commands():
 
 	def __init__(self, **args):
 		if args is None:

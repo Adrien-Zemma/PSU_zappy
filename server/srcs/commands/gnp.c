@@ -14,6 +14,6 @@ int	get_number_player(server_t *server, client_t *client, char *str)
 	(void)str;
 	for (int i = 0; server->clients[i]; i++)
 		nb += (server->clients[i]->id == -1 ? 0 : 1);
-	dprintf(client->fd, "%d\n", nb);
+	dprintf(client->fd, "gnp %d\n", nb);
 	return OK;
 }

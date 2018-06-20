@@ -13,7 +13,7 @@ int main(int ac, char **av)
 {
 	t_parse	*parse = parse_args(av);
 	server_t	*server = malloc(sizeof(server_t));
-	
+
 	if (!parse || ac < 12) {
 		if (parse && parse->teams)
 			free(parse->teams);
@@ -23,7 +23,7 @@ int main(int ac, char **av)
 	}
 	server->clients = malloc(sizeof(client_t *) * 1);
 	server->parse = parse;
-	server->command = init_commands();
+	server->command = init_commands(parse);
 	server->clients[0] = NULL;
 	server->nb_client = 0;
 	server->fds = malloc(sizeof(int) * 1);
