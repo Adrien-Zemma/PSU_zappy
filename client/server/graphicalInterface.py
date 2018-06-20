@@ -276,15 +276,6 @@ class GraphicalInterface(Server, threading.Thread):
 				)
 
 		class Block():
-			def __init__(self):
-				self.name = ""
-				self.inventory = []
-				self.level = 0
-				self.food = 0
-
-			def drawPlayerInfo(self):
-				pass
-
 			def __init__(self, **kwargs):
 				self.team = kwargs.get('team')
 				self.name = kwargs.get('name')
@@ -314,11 +305,6 @@ class GraphicalInterface(Server, threading.Thread):
 					graph._window.blit(label, (x + 100, y + 30))
 				except:
 					pass
-
-					
-
-		
-			
 
 		def drawTeams(self):
 			teams = self._graph.teams_name()
