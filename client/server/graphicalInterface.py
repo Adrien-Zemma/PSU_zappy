@@ -78,6 +78,8 @@ class GraphicalInterface(Server, threading.Thread):
 		self._fontsize = 24
 		self._playerList = []
 		self._eggList = []
+		self._son = pygame.mixer.music.load(os.path.abspath("assets/sound.wav"))
+		self._son = pygame.mixer.music.set_volume(0.5)
 		self._font = pygame.font.Font(os.path.abspath("assets/font/Android.ttf"), self._fontsize)
 		self._spriteSize = self._spriteSize * self._scale
 		self._map = Map(x = self._sizeX, y = self._sizeY, spriteSize = self._spriteSize, maxItem = self._maxItemPerCase)
@@ -332,6 +334,7 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def run(self):
 		status = True
+		pygame.mixer.music.play()
 		while status:
 			cmd = self.readTh.get_command(False)
 			if cmd is not None:
@@ -346,8 +349,9 @@ class GraphicalInterface(Server, threading.Thread):
 			self.drawCaseContent()
 			self.drawChara()
 			pygame.display.update()
-			print(len(self._playerList))
 			self._clock.tick(5)
+
+		pygame.mixer.music.stop
 		pygame.quit()
 		self.readTh.join()
 
