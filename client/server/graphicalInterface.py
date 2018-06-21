@@ -245,23 +245,23 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def buildPlayer(self):
 		nb = int(self.get_number_player()[0])
-		print(nb)
 		if nb == 0:
 			return
 		for item in range(nb):
-			pos = self.getPlayerPosition(item + 1)
 			try:
+				pos = self.getPlayerPosition(item + 1)
+				inv = self.getPlayerBag(item + 1)
 				self._playerList.append(
 					self.Player(
                                             x = int(pos[1]),
                                             y = int(pos[2]),
                                             id = item + 1,
-                                            inventory = self.getPlayerBag(item + 1),
+                                            inventory = inv,
                                             orient = int(pos[3])
 					)
 				)
 			except:
-				pass
+				continue
 
 
 
@@ -341,7 +341,7 @@ class GraphicalInterface(Server, threading.Thread):
 					txt = ""
 					for key, value in self.inventory.items():
 						txt += (key[1] + ":" + str(value) + " ")
-					label = graph._font.render(str(self.level), 1, (255, 255, 255))
+					label = graph._font.render(txt, 1, (255, 255, 255))
 					graph._window.blit(label, (x + 10, y + 30))
 				except:
 					pass
@@ -462,12 +462,6 @@ class GraphicalInterface(Server, threading.Thread):
 			elif player._isApplause:
 				self._window.blit(self._items["applause"], (tmp2X, tmp2Y))
 				player._isApplause = False
-			
-	
-
-				
-				
-		
 
 	def drawChara(self):
 		self.drawEgg()
@@ -560,12 +554,12 @@ class GraphicalInterface(Server, threading.Thread):
 					exit(0)
 
 	def getPlayerPosition(self, name):
-		self.write("ppo " + str(name))
 		try:
+			self.write("ppo " + str(name))
 			cmd = self.readTh.get_command().split(' ')[1:]
-			return cmd
 		except:
 			return None
+		return cmd
 
 	def get_map_size(self):
         	self.write("msz")
@@ -613,7 +607,7 @@ class GraphicalInterface(Server, threading.Thread):
 		return names
 	
 	def getPlayerBag(self, ident:int):
-		self.write("pin " + str(ident))
+		self.write("pin #" + str(ident))
 		cmd = self.readTh.get_command()
 		print("-"*20)
 		print(cmd + str(ident))
@@ -629,9 +623,6 @@ class GraphicalInterface(Server, threading.Thread):
 				"phiras": int(cmd[5]),
 				"thystame": int(cmd[6]),
 			}
-			print("-"*20)
-			print(tab)
-			print("-"*20)
 		except:
 			return None
 		return tab
