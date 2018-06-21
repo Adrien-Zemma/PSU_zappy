@@ -72,4 +72,3 @@ int	set_object(server_t *server, client_t *client, char *str)
 	}
 	return (set_other_object(server, client, str));
 }
-
