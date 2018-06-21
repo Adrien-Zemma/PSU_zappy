@@ -71,5 +71,6 @@ int	broadcast(server_t *server, client_t *client, char *str)
 	for (int i = 0; server->clients[i]; i++)
 		if (server->clients[i] != client && server->clients[i]->id != -1)
 			broadcast_client(server->map, client, server->clients[i], str);
+	dprintf(client->fd, "ok\n");
 	return OK;
 }
