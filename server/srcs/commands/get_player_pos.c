@@ -31,6 +31,5 @@ int	get_player_pos(server_t *server, client_t *client, char *str)
 			c->orientation);
 		}
 	}
-	dprintf(client->fd, "ok\n");
 	return OK;
 }
