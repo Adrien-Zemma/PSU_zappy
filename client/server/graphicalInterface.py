@@ -281,7 +281,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self._isAlive = True
 			self._spriteSizeX = 31
 			self._spriteSizeY = 50
-			self._incanting = True
+			self._incanting = False
 			self._isApplause = True
 			self._isPushing = False
 
