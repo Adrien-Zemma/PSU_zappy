@@ -73,9 +73,10 @@ int main(int ac, char **av)
 	server->nb_fd = 0;
 	if (set_socket(parse, server) == 84)
 		return (84);
-	if (start_server(parse, server) == 84)
+	if (start_server(parse, server) == 84) {
 		free_server(server);
 		return (84);
+	}
 	free_tab(parse->teams);
 	free(parse);
 	return (0);
