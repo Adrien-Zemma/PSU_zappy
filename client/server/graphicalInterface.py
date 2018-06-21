@@ -118,7 +118,7 @@ class GraphicalInterface(Server, threading.Thread):
 		pos = cmd.split(' ')[1:]
 		self._playerList.append(
 			self.Player(
-				id = int(pos[0]),
+				id = int(pos[0][1:]),
 				x = int(pos[1]),
 				y = int(pos[2]),
 				orient = int(pos[3]),
@@ -245,7 +245,6 @@ class GraphicalInterface(Server, threading.Thread):
 
 
 	def buildPlayer(self):
-		"""
 		nb = self.getAllId()
 		if nb == None:
 			return
@@ -262,34 +261,12 @@ class GraphicalInterface(Server, threading.Thread):
 						team = team,
 						x = int(pos[1]),
 						y = int(pos[2]),
-						id = item + 1,
+						id = item,
 						inventory = inv,
 						orient = int(pos[3])
 					)
 				)
-			except:
-				continue
-		"""
-		nb = int(self.get_number_player()[0])
-		if nb == 0:
-			return
-		for item in range(nb):
-			try:
-				team = self.getPlayerTeam(item + 1)
-				pos = self.getPlayerPosition(item + 1)
-				inv = self.getPlayerBag(item + 1)
-				if (pos == None or inv == None):
-					continue
-				self._playerList.append(
-					self.Player(
-						team = team,
-						x = int(pos[1]),
-						y = int(pos[2]),
-						id = item + 1,
-						inventory = inv,
-						orient = int(pos[3])
-					)
-				)
+				print(item)
 			except:
 				continue
 
@@ -394,15 +371,6 @@ class GraphicalInterface(Server, threading.Thread):
 						graph._window.blit(label, (x + 5, y + 40))
 				except:
 					pass
-
-		def drawTeams(self):
-			teams = self._graph.teams_name()
-			tmp = ""
-			for el in teams:
-				tmp += (el + " ")
-			label = self._font.render(tmp, 1, (255, 255, 255))
-			self._graph._window.blit(label, ((self._graph._winSizeX / 2) - (len(tmp) / 2) ,100))
-
 
 	def manageConnection(self):
 		cmd = self.readTh.get_command()
@@ -550,7 +518,7 @@ class GraphicalInterface(Server, threading.Thread):
                                         ),
 					(tmp2X, tmp2Y)
 				)
-			if player._frame > 2:
+			if player._frame > 1:
 				player._frame = -1
 			player._frame += 1
 
@@ -705,9 +673,10 @@ class GraphicalInterface(Server, threading.Thread):
 			return None
 		pass
 	def getAllId(self):
-		self.write("gai")
+		self.write("gai ")
 		try:
 			cmd = self.readTh.get_command().split(' ')[1:]
+			print(cmd)
 			return cmd
 		except:
 			return None
