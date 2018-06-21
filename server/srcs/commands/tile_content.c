@@ -19,5 +19,6 @@ int	tile_content(server_t *server, client_t *client, char *str)
 	if (x >= server->parse->width || y >= server->parse->height)
 		return KO;
 	draw_tile(server->map, client->fd, x, y);
+	dprintf(client->fd, "ok\n");
 	return OK;
 }
