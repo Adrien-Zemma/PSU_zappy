@@ -8,9 +8,9 @@ def main():
 	#ia = IA(args.name, args.port, args.machine)
 	ui = GraphicalInterface(args.port, args.machine)
 	ui.start()
+	ui.join()
 	#ia.start()
 	#ia.join()
-    #ui.join()
 	print("Main finished")
 
 if __name__ == '__main__':
