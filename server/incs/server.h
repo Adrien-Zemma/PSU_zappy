@@ -15,7 +15,7 @@
 	#include <math.h>
 
 typedef struct command_s command_t;
-typedef struct	tile tile_t;
+typedef struct	tile_s tile_t;
 
 typedef	struct client_s
 {
@@ -33,6 +33,7 @@ typedef	struct client_s
 	int	id;
 	int	orientation;
 	char	*team;
+	int	is_incanting;
 	command_t	**command;
 }	client_t;
 
