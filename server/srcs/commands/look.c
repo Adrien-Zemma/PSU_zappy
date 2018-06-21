@@ -10,21 +10,21 @@
 void	check_map(tile_t *map, client_t *client)
 {
 	if (map->linemate != 0)
-		dprintf(client->fd, "linemate");
+		dprintf(client->fd, "linemate ");
 	if (map->deraumere != 0)
-		dprintf(client->fd, " deraumere");
+		dprintf(client->fd, "deraumere ");
 	if (map->sibur != 0)
-		dprintf(client->fd, " sibur");
+		dprintf(client->fd, "sibur ");
 	if (map->mendiane != 0)
-		dprintf(client->fd, " mendiane");
+		dprintf(client->fd, "mendiane ");
 	if (map->phiras != 0)
-		dprintf(client->fd, " phiras");
+		dprintf(client->fd, "phiras ");
 	if (map->thystam != 0)
-		dprintf(client->fd, " thystam");
+		dprintf(client->fd, "thystam ");
 	for (int i = 0; map->clients[i] != NULL; i++)
-		dprintf(client->fd, " player");
+		dprintf(client->fd, "player ");
 	if (map->food != 0)
-		dprintf(client->fd, " food");
+		dprintf(client->fd, "food ");
 	dprintf(client->fd, ",");
 }
 
@@ -56,10 +56,8 @@ int	look_north(server_t *server, client_t *client, int *nb)
 	int	posY;
 
 	dprintf(client->fd, "[");
-	if (client->posY == 0)
-		posY = server->parse->height - 1;
-	else
-		posY = client->posY - 1;
+
+	posY = client->posY;
 	for (int i = 0; i < client->level + 1; i++) {
 		check_look_north(client, nb, posY, server);
 		if (posY - 1 < 0)
