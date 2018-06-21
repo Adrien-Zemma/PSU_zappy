@@ -1,4 +1,4 @@
-
+import sys
 from .Server import Server
 
 class IAServer(Server):
@@ -57,9 +57,22 @@ class IAServer(Server):
 		return datas
 
 	def inventory(self:object):
-		self.write("Inventory")
+		self.write("inventory")
 		ret = self.readTh.get_command()
-		return ret
+		data = dict()
+		ret = ret[1:-1]
+		for tile in ret.split(','):
+			cmd = tile.split(' ')
+			try:
+				if len(cmd) == 3:
+					data[cmd[1]] = int(cmd[2])
+				elif len(cmd) == 2:
+					data[cmd[0]] = int(cmd[1])
+			except (KeyError, IndexError):
+				print("Error while recepting inventory", file=sys.stderr)
+				exit(84)
+		print(data, flush=True)
+		return data
 
 	def broadcast(self:object, msg:str):
 		self.write("Broadcast " + msg)
