@@ -36,6 +36,7 @@ int	forke(server_t *server, client_t *client, char *str)
 		if (server->clients[i]->id == -1)
 			dprintf(server->clients[i]->fd, "pfk %d\n", client->id);
 	}
+	dprintf(client->fd, "ok\n");
 	return (0);
 }
 
