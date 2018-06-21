@@ -24,7 +24,6 @@ int	take_other_other(server_t *server, client_t *client, char *str)
 	for (int i = 0; server->clients[i] != NULL; i++)
 		if (server->clients[i]->id == -1)
 			dprintf(server->clients[i]->fd, "pgt %d 1\n", client->fd);
-	dprintf(client->fd, "ok\n");
 	return OK;
 }
 

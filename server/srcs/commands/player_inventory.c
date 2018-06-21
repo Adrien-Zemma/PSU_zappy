@@ -27,6 +27,5 @@ int	player_inventory(server_t *server, client_t *client, char *str)
 			server->clients[i]->mendiane, server->clients[i]->phiras,
 			server->clients[i]->thystame);
 	}
-	dprintf(client->fd, "ok\n");
 	return OK;
 }

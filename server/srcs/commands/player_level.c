@@ -26,7 +26,6 @@ int	player_level(server_t *server, client_t *client, char *str)
 				"plv %d %d", id, server->clients[i]->level);
 	}
 	dprintf(client->fd, "\n");
-	dprintf(client->fd, "ok\n");
 	return OK;
 }
 
@@ -37,6 +36,5 @@ int	forke(server_t *server, client_t *client, char *str)
 		if (server->clients[i]->id == -1)
 			dprintf(server->clients[i]->fd, "pfk %d\n", client->id);
 	}
-	dprintf(client->fd, "ok\n");
 	return (0);
 }

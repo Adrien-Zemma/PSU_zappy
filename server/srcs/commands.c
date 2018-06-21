@@ -24,7 +24,7 @@ command_t	**init_commands(t_parse *parse)
 	node[6] = append_command("Forward", forward, 7 / (double)parse->freq);
 	node[7] = append_command("Right", right, 7 / (double)parse->freq);
 	node[8] = append_command("Left", left, 7 / (double)parse->freq);
-	node[9] = append_command("inventory", inventory, 1 / (double)parse->freq);
+	node[9] = append_command("Inventory", inventory, 1 / (double)parse->freq);
 	node[10] = append_command("Look", look, 7 / (double)parse->freq);
 	node[11] = append_command("Broadcast", broadcast, 7 / (double)parse->freq);
 	node[12] = append_command("Take", take_object, 7 / (double)parse->freq);

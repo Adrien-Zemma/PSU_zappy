@@ -17,6 +17,7 @@ int	player_position(server_t *server, client_t *client, char *str)
 		str++;
 	else {
 		printf("error player position\n");
+		dprintf(client->fd, "ko\n");
 		return BAD_PARAM;
 	}
 	id = atoi(str);
@@ -26,6 +27,5 @@ int	player_position(server_t *server, client_t *client, char *str)
 			id, server->clients[i]->posX,
 			server->clients[i]->posY);
 	}
-	dprintf(client->fd, "ok\n");
 	return OK;
 }
