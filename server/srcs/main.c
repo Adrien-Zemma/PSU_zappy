@@ -18,14 +18,9 @@ int	start_server(t_parse *parse, server_t *server)
 {
 	fd_set	readfds;
 
-	while (42) {
-		if (check_fd(parse, server, readfds) == 84) {
-			printf("hugo\n");
+	while (42)
+		if (check_fd(parse, server, readfds) == 84)
 			return (84);
-		}
-	}
-	printf("HELLO BOY\n");
-	fflush(NULL);
 	return (0);
 }
 
@@ -78,12 +73,9 @@ int main(int ac, char **av)
 	server->nb_fd = 0;
 	if (set_socket(parse, server) == 84)
 		return (84);
-	if (start_server(parse, server) == 84) {
-		printf("FREEING\n");
-		fflush(NULL);
+	if (start_server(parse, server) == 84)
 		free_server(server);
 		return (84);
-	}
 	free_tab(parse->teams);
 	free(parse);
 	return (0);

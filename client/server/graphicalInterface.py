@@ -67,6 +67,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self._sizeY = None
 		self._mapContent = [[{}]]
 		self.manageConnection()
+		self.daemon = True
 		random.seed()
 		pygame.init()
 		self._clock = pygame.time.Clock()
