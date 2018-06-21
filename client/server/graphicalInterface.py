@@ -327,7 +327,7 @@ class GraphicalInterface(Server, threading.Thread):
 				self.magic = kwargs.get('magic')
 
 			def draw(self, y, graph, screenX):
-				BLACK = (255,255,255)
+				BLACK = (112,112,112)
 				x = screenX - 360
 				y = y * 110 + 10
 				pygame.draw.rect(graph._window, BLACK, [x, y, 350, 100], 2)
