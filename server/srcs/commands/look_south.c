@@ -18,14 +18,14 @@ void	check_look_south(client_t *client, int *nb, int posY, server_t *server)
 		if (posX - nb[0] < 0) {
 			check = posX - nb[0];
 			posX = server->parse->width - check;
-			check_map(server->map[posY][posX], client);
+			check_map(server->map[map_val_pos(server->parse->height, posY)][map_val_pos(server->parse->width, posX)], client);
 		}
 		else if (posX - nb[0] > (server->parse->width - 1)){
 			posX = (posX) - server->parse->width;
-			check_map(server->map[posY][posX - nb[0]], client);
+			check_map(server->map[map_val_pos(server->parse->height, posY)][map_val_pos(server->parse->width, posX - nb[0])], client);
 		}
 		else
-			check_map(server->map[posY][posX - nb[0]], client);
+			check_map(server->map[map_val_pos(server->parse->height, posY)][map_val_pos(server->parse->width, posX - nb[0])], client);
 	} while (i++ - nb[0] < 1 + nb[0] - 1);
 }
 

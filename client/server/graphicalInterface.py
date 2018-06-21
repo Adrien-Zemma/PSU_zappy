@@ -109,7 +109,7 @@ class GraphicalInterface(Server, threading.Thread):
 	def Cmd(self, cmd):
 		print(cmd)
 		pass
-	
+
 	def playerLaidEgg(self, cmd):
 		cmd = cmd.plit(' ')[1:]
 		self._eggList.append(self.Egg(cmd[0], cmd[2], cmd[3]))
@@ -183,7 +183,7 @@ class GraphicalInterface(Server, threading.Thread):
 					player._isAlive = False
 		except:
 			pass
-		
+
 	def eggDeathCmd(self, cmd):
 		print(cmd)
 		pass
@@ -628,7 +628,7 @@ class GraphicalInterface(Server, threading.Thread):
 		except:
 			return "None"
 		return cmd
-	
+
 	def getPlayerBag(self, ident:int):
 		self.write("pin #" + str(ident))
 		cmd = self.readTh.get_command()
