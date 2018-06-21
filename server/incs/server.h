@@ -67,5 +67,6 @@ command_t	*queue_pop(command_t ***queue);
 int		send_connection(client_t **targets, client_t *origin);
 void	check_map(tile_t *map, client_t *client);
 int	look_south(server_t *server, client_t *client, int *nb);
+int	look_east(server_t *server, client_t *client, int *nb);
 
 #endif /* !SERVER */

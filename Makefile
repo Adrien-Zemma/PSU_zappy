@@ -34,6 +34,7 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/timeout.c \
 	  ./server/srcs/commands/look_south.c \
 	  ./server/srcs/commands/look_east.c \
+	  ./server/srcs/commands/look_west.c \
 	  ./server/srcs/utils.c
 
 OBJS	= $(SRCS:.c=.o)

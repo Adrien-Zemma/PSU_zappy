@@ -80,7 +80,7 @@ int	look(server_t *server, client_t *client, char *str)
 	nb[0] = 0;
 	nb[1] = 0;
 	str = str;
-	client->orientation = 3;
+	client->orientation = 2;
 	switch (client->orientation){
 		case 1:
 			look_north(server, client, nb);
@@ -90,6 +90,9 @@ int	look(server_t *server, client_t *client, char *str)
 			break;
 		case 2:
 			look_east(server, client, nb);
+			break;
+		case 4:
+			look_west(server, client, nb);
 			break;
 	}
 

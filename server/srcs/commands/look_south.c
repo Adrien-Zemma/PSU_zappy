@@ -38,7 +38,7 @@ int	look_south(server_t *server, client_t *client, int *nb)
 		posY = 0;
 	else
 		posY = client->posY + 1;
-	for (int i = 0; i < client->level + 3; i++) {
+	for (int i = 0; i < client->level + 1; i++) {
 		check_look_south(client, nb, posY, server);
 		if (posY + 1 > server->parse->height - 1)
 			posY = 0;
