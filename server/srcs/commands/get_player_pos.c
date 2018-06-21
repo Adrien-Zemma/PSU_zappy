@@ -14,13 +14,14 @@ int	get_player_pos(server_t *server, client_t *client, char *str)
 
 	while (*str && *str != ' ')
 		str++;
-	if (*str == ' ')
+	if (*str == ' ' && *(str + 1) && *(str + 1) == '#')
 		str++;
 	else
 		return BAD_PARAM;
+	str++;
 	client_id = atoi(str);
-	if (client_id == 0)
-		return KO;
+	printf("hello:%d|%s\n", client_id, str);
+	fflush(NULL);
 	for (int i = 0; server->clients[i]; i++) {
 		printf("Client:%d|%d\n", client_id, server->clients[i]->id);
 		if (server->clients[i]->id == client_id) {
