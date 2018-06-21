@@ -96,7 +96,7 @@ class GraphicalInterface(Server, threading.Thread):
 			"pdr" : self.resourceDropCmd,
 			"pgt" : self.resourcesCollectedCmd,
 			"pdi" : self.deathCmd,
-			"enw" : self.Cmd,
+			"enw" : self.playerLaidEgg,
 			"eht" : self.eggHatchingCmd,
 			"ebo" : self.Cmd,
 			"edi" : self.eggDeathCmd,
@@ -109,6 +109,10 @@ class GraphicalInterface(Server, threading.Thread):
 	def Cmd(self, cmd):
 		print(cmd)
 		pass
+	
+	def playerLaidEgg(self, cmd):
+		cmd = cmd.plit(' ')[1:]
+		self._eggList.append(self.Egg(cmd[0], cmd[2], cmd[3]))
 
 	def connectionOfNewPlay(self, cmd):
 		pos = cmd.split(' ')[1:]
@@ -125,17 +129,43 @@ class GraphicalInterface(Server, threading.Thread):
 		)
 
 	def expultionCmd(self, cmd):
-		print(cmd)
+		try:
+			name = cmd.split(' ')[1:]
+			for player in self._playerList:
+				if (player._id == name):
+					player._isPushing = True
+		except:
+			pass
+
 		pass
+
 	def broadcastCmd(self, cmd):
-		print(cmd)
-		pass
+		try:
+			name = cmd.split(' ')[1:]
+			for player in self._playerList:
+				if (player._id == name):
+					player._isApplause = True
+		except:
+			pass
+
 	def incantationStartCmd(self, cmd):
-		print(cmd)
-		pass
+		try:
+			name = cmd.split(' ')[1:]
+			for player in self._playerList:
+				if (player._id == name):
+					player._incanting = True
+		except:
+			pass
+
 	def incantationEndCmd(self, cmd):
-		print(cmd)
-		pass
+		try:
+			name = cmd.split(' ')[1:]
+			for player in self._playerList:
+				if (player._id == name):
+					player._incanting = False
+		except:
+			pass
+
 	def eggStartCmd(self, cmd):
 		print(cmd)
 		pass
@@ -146,8 +176,14 @@ class GraphicalInterface(Server, threading.Thread):
 		print(cmd)
 		pass
 	def deathCmd(self, cmd):
-		print(cmd)
-		pass
+		try:
+			name = cmd.split(' ')[1:]
+			for player in self._playerList:
+				if (player._id == name):
+					player._isAlive = False
+		except:
+			pass
+		
 	def eggDeathCmd(self, cmd):
 		print(cmd)
 		pass
@@ -176,6 +212,8 @@ class GraphicalInterface(Server, threading.Thread):
 		self._window.blit(self._background, (0, 0))
 		self._shiftX = self._winSizeX / 10 * 4.5
 		self._shiftY = (self._winSizeY - (self._spriteSize * 2 * self._sizeY)) / 2 + self._spriteSize*2
+		label = self._font.render("Loading" , 1, (255, 255, 255))
+		self._window.blit(label, (self._winSizeX/2, self._winSizeY/2))
 
 	def buildItem(self):
 		self._items = {}
@@ -188,6 +226,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self._items["phiras"] = pygame.image.load(os.path.abspath("assets/items/phiras.png")).convert_alpha()
 		self._items["thystame"] = pygame.image.load(os.path.abspath("assets/items/thystame.png")).convert_alpha()
 		self._items["applause"] = pygame.image.load(os.path.abspath("assets/icon/applause.png")).convert_alpha()
+		self._items["fist"] = pygame.image.load(os.path.abspath("assets/icon/fist.png")).convert_alpha()
 		self._itemsPlayer = {
 			"stand": {
 				1 : pygame.image.load(os.path.abspath("assets/perso/stand/north.png")).convert_alpha(),
@@ -218,8 +257,9 @@ class GraphicalInterface(Server, threading.Thread):
                                             y = int(pos[2]),
                                             id = item + 1,
                                             inventory = self.getPlayerBag(item + 1),
-                                            orient = int(pos[3]))
+                                            orient = int(pos[3])
 					)
+				)
 			except:
 				pass
 
@@ -241,10 +281,12 @@ class GraphicalInterface(Server, threading.Thread):
 			self._spriteSizeX = 31
 			self._spriteSizeY = 50
 			self._incanting = False
-			self._isApplause = False
+			self._isApplause = True
+			self._isPushing = False
 
 	class Egg():
-		def __init__(self):
+		def __init__(self, name, x, y):
+			self._id = name
 			self._posX = 0
 			self._posY = 0
 
@@ -253,7 +295,6 @@ class GraphicalInterface(Server, threading.Thread):
 			self._hasDraw = False
 			self._fontsize = 25
 			self._graph = graphical
-			self._font = pygame.font.Font(os.path.abspath("assets/font/Android.ttf"), self._fontsize)
 			self._blocks = []
 			self.buildBlock()
 			self.drawBlock()
@@ -266,6 +307,10 @@ class GraphicalInterface(Server, threading.Thread):
 
 		def buildBlock(self):
 			for player in self._graph._playerList:
+				print(player._team)
+				print(player._inventory)
+				print(player._level)
+				print(player._team)
 				self._blocks.append(
 					self.Block (
 						name = player._team,
@@ -382,6 +427,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self.drawMap()
 			self.drawCaseContent()
 			self.drawChara()
+			self.drawIcon()
 			self.Hud(self)
 			pygame.display.update()
 			self._clock.tick(5)
@@ -397,9 +443,31 @@ class GraphicalInterface(Server, threading.Thread):
 				player._posY = int(cmd[2])
 				player._orientaton = int(cmd[3])
 				player._inventory = self.getPlayerBag(player._id)
+				player._level = self.getPlayerLevel(player._id)
 
 			except:
 				pass
+
+	def drawIcon(self):
+		for player in self._playerList:
+			tmpX = (player._posX * self._spriteSize)
+			tmpY = (player._posY * self._spriteSize)
+			tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 5 * 2
+			tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 5 * 2
+			if player._isPushing:
+				self._window.blit(self._items["fist"], (tmp2X, tmp2Y))
+				player._isPushing = False
+			elif player._incanting:
+				self._window.blit(self._items["cercle"], (tmp2X, tmp2Y))
+			elif player._isApplause:
+				self._window.blit(self._items["applause"], (tmp2X, tmp2Y))
+				player._isApplause = False
+			
+	
+
+				
+				
+		
 
 	def drawChara(self):
 		self.drawEgg()
@@ -407,7 +475,11 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def drawEgg(self):
 		for el in self._eggList:
-			self._window.blit(self._items["egg"], (el._posX, el._posY))
+			tmpX = (el.x * self._spriteSize)
+			tmpY = (el.y * self._spriteSize)
+			tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 5 * 4
+			tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 5 * 4
+			self._window.blit(self._items["egg"], (tmp2X, tmp2Y))
 
 	def drawPlayer(self):
 		for player in self._playerList:
@@ -542,8 +614,12 @@ class GraphicalInterface(Server, threading.Thread):
 	
 	def getPlayerBag(self, ident:int):
 		self.write("pin " + str(ident))
+		cmd = self.readTh.get_command()
+		print("-"*20)
+		print(cmd + str(ident))
+		print("-"*20)
 		try:
-			cmd = self.readTh.get_command().split(' ')[2:]
+			cmd = cmd.split(' ')[4:]
 			tab = {
 				"food": int (cmd[0]),
 				"linemate": int(cmd[1]),
@@ -553,6 +629,9 @@ class GraphicalInterface(Server, threading.Thread):
 				"phiras": int(cmd[5]),
 				"thystame": int(cmd[6]),
 			}
+			print("-"*20)
+			print(tab)
+			print("-"*20)
 		except:
 			return None
 		return tab
@@ -573,3 +652,12 @@ class GraphicalInterface(Server, threading.Thread):
 		except IndexError:
 			print("Error while getting tile", file=sys.stderr)
 			exit(84)
+
+	def getPlayerLevel(self, name):
+		self.write("plv #" + str(name))
+		try:
+			cmd = self.readTh.get_command().split(' ')[1:]
+			return cmd[1:]
+		except:
+			return None
+		pass
