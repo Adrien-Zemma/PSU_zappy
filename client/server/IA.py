@@ -1,6 +1,7 @@
 import threading
 
 from .IAServer import IAServer
+from .incantationRequirements import incantationRequirements
 
 class IA(threading.Thread):
 	def __init__(self, team, port, ip):
