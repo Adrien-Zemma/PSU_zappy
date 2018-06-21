@@ -1,3 +1,5 @@
+
+
 /*
 ** EPITECH PROJECT, 2018
 ** Project Name
@@ -15,5 +17,7 @@ int	inventory(server_t *server, client_t *client, char *str)
 		client->food, client->linemate, client->demaumere,
 		client->sibur, client->mendiane, client->phiras,
 		client->thystame);
+	dprintf(client->fd, "ok\n");
 	return OK;
 }
+

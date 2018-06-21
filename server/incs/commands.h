@@ -53,5 +53,6 @@ int	set_object(server_t *server, client_t *client, char *str);
 int	get_number_player(server_t *server, client_t *client, char *str);
 int	get_player_pos(server_t *server, client_t *client, char *str);
 int	send_connection(client_t **targets, client_t *origin);
+int	forke(server_t *server, client_t *client, char *str);
 
 #endif /* !COMMANDS_H_ */

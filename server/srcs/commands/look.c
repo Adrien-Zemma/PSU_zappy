@@ -21,22 +21,39 @@ void	check_map(tile_t *map, client_t *client)
 		dprintf(client->fd, " phiras");
 	if (map->thystam != 0)
 		dprintf(client->fd, " thystam");
+	for (int i = 0; map->clients[i] != NULL; i++)
+		dprintf(client->fd, " player");
 	if (map->food != 0)
-		dprintf(client->fd, " food,");
+		dprintf(client->fd, " food");
+	dprintf(client->fd, ",");
 }
 
-int	look_south(server_t *server, client_t *client, int j, int k)
+void	check_look_north(client_t *client, int *nb, int posY, server_t *server)
 {
+	int	posX = client->posX - 1;
+	int	check;
+	int	i = 0;
 
-	return (0);
+	do {
+		posX++;
+		if (posX - nb[0] < 0) {
+			check = posX - nb[0];
+			posX = server->parse->width - check;
+			check_map(server->map[posY][posX], client);
+		}
+		else if (posX - nb[0] > (server->parse->width - 1)){
+			posX = (posX) - server->parse->width;
+			check_map(server->map[posY][posX - nb[0]], client);
+		}
+		else  {
+			check_map(server->map[posY][posX - nb[0]], client);
+		}
+	} while (i++ - nb[0] < 1 + nb[0] - 1);
 }
 
-int	look_north(server_t *server, client_t *client, int j, int k)
+int	look_north(server_t *server, client_t *client, int *nb)
 {
 	int	posY;
-	int	posX = client->posX;
-	int	checkPosX = client->posX;
-	int	check;
 
 	dprintf(client->fd, "[");
 	if (client->posY == 0)
@@ -44,26 +61,13 @@ int	look_north(server_t *server, client_t *client, int j, int k)
 	else
 		posY = client->posY - 1;
 	for (int i = 0; i < client->level + 1; i++) {
-		do {
-			if (posX - j < 0) {
-				check = posX - j;
-				posX = server->parse->width - check;
-				check_map(server->map[posY][posX], client);
-			}
-			else if (posX - j > server->parse->width - 1){
-				posX = (posX - j) - server->parse->width - 1;
-				check_map(server->map[posY][posX], client);
-			}
-			else
-				check_map(server->map[posY][posX - j], client);
-
-		} while (posX++ - j < checkPosX + k);
-		j++;
-		k++;
-		if (posY - 1 == 0)
+		check_look_north(client, nb, posY, server);
+		if (posY - 1 < 0)
 			posY = server->parse->height - 1;
 		else
 			posY--;
+		nb[0]++;
+		nb[1]++;
 	}
 	dprintf(client->fd, "]\n");
 	return (0);
@@ -71,16 +75,23 @@ int	look_north(server_t *server, client_t *client, int j, int k)
 
 int	look(server_t *server, client_t *client, char *str)
 {
-	int	j = 0;
-	int	k = 0;
+	int	nb[2];
 
+	nb[0] = 0;
+	nb[1] = 0;
 	str = str;
 	switch (client->orientation){
 		case 1:
-			look_north(server, client, j, k);
+			look_north(server, client, nb);
+			break;
+		case 3:
+			look_south(server, client, nb);
 			break;
 		case 2:
-			look_south(server, client, j, k);
+			look_east(server, client, nb);
+			break;
+		case 4:
+			look_west(server, client, nb);
 			break;
 	}
 
