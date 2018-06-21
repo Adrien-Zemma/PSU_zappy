@@ -18,14 +18,14 @@ void	check_look_east(client_t *client, int *nb, int posX, server_t *server)
 		if (posY - nb[0] < 0) {
 			check = posY - nb[0];
 			posY = server->parse->height - check;
-			check_map(server->map[posY][posX], client);
+			check_map(server->map[map_val_pos(server->parse->height, posY)][map_val_pos(server->parse->width, posX)], client);
 		}
 		else if (posY - nb[0] > (server->parse->height - 1)) {
 			posY = posY - server->parse->height;
-			check_map(server->map[posY - nb[0]][posX], client);
+			check_map(server->map[map_val_pos(server->parse->height, posY - nb[0])][map_val_pos(server->parse->width, posX)], client);
 		}
 		else{
-			check_map(server->map[posY - nb[0]][posX], client);
+			check_map(server->map[map_val_pos(server->parse->height, posY - nb[0])][map_val_pos(server->parse->width, posX)], client);
 		}
 	}while (i++ - nb[0] < 1 + nb[0] - 1);
 }

@@ -9,7 +9,6 @@ class ThreadRead(threading.Thread):
 		threading.Thread.__init__(self)
 		self.queue = queue.Queue()
 		self.socket = socket
-		self.loop = True
 		self.daemon = True
 
 	def _read(self):
@@ -32,16 +31,13 @@ class ThreadRead(threading.Thread):
 		except queue.Empty:
 			data = None
 		return data
-	
-	def stop(self: object):
-		self.loop = False
 
 	def run(self):
 		"""
 		Thread run method. Read command from server socket
 		"""
 		cmd = self._read()
-		while self.loop and cmd:
+		while True:
 			print("Putting [" + cmd + "]")
 			self.queue.put(cmd)
 			cmd = self._read()

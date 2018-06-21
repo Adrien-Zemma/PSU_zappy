@@ -6,15 +6,15 @@ class IA(threading.Thread):
 	def __init__(self, team, port, ip):
 		threading.Thread.__init__(self)
 		self.server = IAServer(team, port, ip)
-		self._loop = True
-	
-	def stop(self: object):
-		self._loop = False
+		self.daemon = True
 
 	def run(self):
-		while self._loop:
+		while True:
+			ret = self.server.look()
+			if ret[0]["food"] > 0:
+				print("taking food!")
+				self.server.take("food")
 			ret = self.server.forward()
-			print(ret)
 			if ret != "ok":
 				print("Can't move forward")
 				exit(84)

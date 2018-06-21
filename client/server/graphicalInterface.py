@@ -67,6 +67,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self._sizeY = None
 		self._mapContent = [[{}]]
 		self.manageConnection()
+		self.daemon = True
 		random.seed()
 		pygame.init()
 		self._clock = pygame.time.Clock()
@@ -109,7 +110,7 @@ class GraphicalInterface(Server, threading.Thread):
 	def Cmd(self, cmd):
 		print(cmd)
 		pass
-	
+
 	def playerLaidEgg(self, cmd):
 		cmd = cmd.plit(' ')[1:]
 		self._eggList.append(self.Egg(cmd[0], cmd[2], cmd[3]))
@@ -183,7 +184,7 @@ class GraphicalInterface(Server, threading.Thread):
 					player._isAlive = False
 		except:
 			pass
-		
+
 	def eggDeathCmd(self, cmd):
 		print(cmd)
 		pass
@@ -628,7 +629,7 @@ class GraphicalInterface(Server, threading.Thread):
 		except:
 			return "None"
 		return cmd
-	
+
 	def getPlayerBag(self, ident:int):
 		self.write("pin #" + str(ident))
 		cmd = self.readTh.get_command()
