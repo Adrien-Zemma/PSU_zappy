@@ -118,7 +118,7 @@ class GraphicalInterface(Server, threading.Thread):
 		pos = cmd.split(' ')[1:]
 		self._playerList.append(
 			self.Player(
-				id = int(pos[0][1:]),
+				id = int(pos[0]),
 				x = int(pos[1]),
 				y = int(pos[2]),
 				orient = int(pos[3]),
@@ -245,20 +245,49 @@ class GraphicalInterface(Server, threading.Thread):
 
 
 	def buildPlayer(self):
+		"""
+		nb = self.getAllId()
+		if nb == None:
+			return
+		for item in nb:
+			item = int(item)
+			try:
+				team = self.getPlayerTeam(item)
+				pos = self.getPlayerPosition(item)
+				inv = self.getPlayerBag(item)
+				if (pos == None or inv == None):
+					continue
+				self._playerList.append(
+					self.Player(
+						team = team,
+						x = int(pos[1]),
+						y = int(pos[2]),
+						id = item + 1,
+						inventory = inv,
+						orient = int(pos[3])
+					)
+				)
+			except:
+				continue
+		"""
 		nb = int(self.get_number_player()[0])
 		if nb == 0:
 			return
 		for item in range(nb):
 			try:
+				team = self.getPlayerTeam(item + 1)
 				pos = self.getPlayerPosition(item + 1)
 				inv = self.getPlayerBag(item + 1)
+				if (pos == None or inv == None):
+					continue
 				self._playerList.append(
 					self.Player(
-                                            x = int(pos[1]),
-                                            y = int(pos[2]),
-                                            id = item + 1,
-                                            inventory = inv,
-                                            orient = int(pos[3])
+						team = team,
+						x = int(pos[1]),
+						y = int(pos[2]),
+						id = item + 1,
+						inventory = inv,
+						orient = int(pos[3])
 					)
 				)
 			except:
@@ -314,12 +343,14 @@ class GraphicalInterface(Server, threading.Thread):
 						inv = player._inventory,
 						level = int(player._level[0]),
 						team = player._team,
-						magic = player._incanting
+						magic = player._incanting,
+						id = player._id
 					)
 				)
 
 		class Block():
 			def __init__(self, **kwargs):
+				self.id = kwargs.get('id')
 				self.team = kwargs.get('team')
 				self.name = kwargs.get('name')
 				self.inventory = kwargs.get('inv')
@@ -332,8 +363,13 @@ class GraphicalInterface(Server, threading.Thread):
 				y = y * 110 + 10
 				pygame.draw.rect(graph._window, BLACK, [x, y, 350, 100], 2)
 				try:
-					label = graph._font.render(str(self.level),1,(255, 255, 255))
+					label = graph._font.render(str(self.level), 1, (255, 255, 255))
 					graph._window.blit(label, (x +10, y + 10))
+				except:
+					pass
+				try:
+					label = graph._font.render(str(self.id), 1, (255, 255, 255))
+					graph._window.blit(label, (screenX - 30, y + 10))
 				except:
 					pass
 
@@ -564,7 +600,10 @@ class GraphicalInterface(Server, threading.Thread):
 	def getPlayerPosition(self, name):
 		try:
 			self.write("ppo #" + str(name))
-			cmd = self.readTh.get_command().split(' ')[1:]
+			cmd = self.readTh.get_command()
+			if (cmd == "ko"):
+				return None
+			cmd = cmd.split(' ')[1:]
 		except:
 			return None
 		return cmd
@@ -613,6 +652,14 @@ class GraphicalInterface(Server, threading.Thread):
 				print("Error while creating team names", file=sys.stderr)
 			cmd = self.readTh.get_command()
 		return names
+
+	def getPlayerTeam(self, name):
+		self.write("gpt #" + str(name))
+		try:
+			cmd = self.readTh.get_command().split(' ')[1]
+		except:
+			return "None"
+		return cmd
 	
 	def getPlayerBag(self, ident:int):
 		self.write("pin #" + str(ident))
@@ -657,3 +704,10 @@ class GraphicalInterface(Server, threading.Thread):
 		except:
 			return None
 		pass
+	def getAllId(self):
+		self.write("gai")
+		try:
+			cmd = self.readTh.get_command().split(' ')[1:]
+			return cmd
+		except:
+			return None
