@@ -36,3 +36,42 @@ class IAServer(Server):
 	def left(self:object):
 		self.write("Left")
 		return self.readTh.get_command()
+
+	def look(self:object):
+		self.write("Look")
+		ret = self.readTh.get_command()
+		return ret
+
+	def inventory(self:object):
+		self.write("Inventory")
+		ret = self.readTh.get_command()
+		return ret
+
+	def broadcast(self:object, msg:str):
+		self.write("Broadcast " + msg)
+		return self.readTh.get_command()
+
+	def connectNbr(self:object):
+		self.write("Connect_nbr")
+		ret = self.readTh.get_command()
+		return ret
+
+	def fork(self:object):
+		self.write("Fork")
+		return self.readTh.get_command()
+
+	def eject(self:object):
+		self.write("Eject")
+		return self.readTh.get_command()
+
+	def take(self:object, object:str):
+		self.write("Take " + object)
+		return self.readTh.get_command()
+
+	def set(self:object, object:str):
+		self.write("Set " + object)
+		return self.readTh.get_command()
+
+	def incantation(self:object):
+		self.write("Incantation")
+		return self.readTh.get_command()
