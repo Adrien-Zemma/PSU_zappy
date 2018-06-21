@@ -40,6 +40,10 @@ class IAServer(Server):
 	def look(self:object):
 		self.write("Look")
 		ret = self.readTh.get_command()
+		datas = list()
+		ret = ret[1:-1]
+		for tile in ret.split(', '):
+			print(tile)
 		return ret
 
 	def inventory(self:object):
