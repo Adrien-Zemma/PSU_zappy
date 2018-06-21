@@ -33,6 +33,6 @@ typedef struct	tile_s {
 tile_t	***init_map(int weight, int height);
 void	free_map(tile_t ***map);
 
-extern const tile_t level_requirement[6];
+extern const tile_t level_requirement[7];
 
 #endif /* !MAP_H_ */

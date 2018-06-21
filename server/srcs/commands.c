@@ -34,7 +34,7 @@ command_t	**init_commands(t_parse *parse)
 	node[16] = append_command("Set", set_object, 0);
 	node[17] = append_command("gnp", get_number_player, 0);
 	node[18] = append_command("ppo", get_player_pos, 0);
-	node[19] = append_command("Incantation", start_incantation, 300 / (double)parse->freq);
+	node[19] = append_command("Incantation", start_incantation, 2 / (double)parse->freq);
 	node[i] = NULL;
 	return node;
 }

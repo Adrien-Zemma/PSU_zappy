@@ -18,8 +18,38 @@ const tile_t level_requirement[] = {
 	{6, 2, 2, 2, 2, 2, 1, 0, NULL},
 };
 
+static int	compare_tile_incantation(tile_t *tile, tile_t level)
+{
+	int i;
+
+	for (i = 0; tile->clients[i]; i++);
+	if (tile->linemate >= level.linemate &&
+	tile->deraumere >= level.deraumere &&
+	tile->sibur >= level.sibur &&
+	tile->mendiane >= level.mendiane &&
+	tile->phiras >= level.phiras &&
+	i >= level.minPlayers) {
+		printf("Goodplayer\n");
+		return (1);
+	}
+	return (0);
+}
+
+static void	remove_minerals(tile_t **p_tile, tile_t level)
+{
+	(*p_tile)->linemate -= level.linemate;
+	(*p_tile)->deraumere -= level.deraumere;
+	(*p_tile)->sibur -= level.sibur;
+	(*p_tile)->mendiane -= level.mendiane;
+	(*p_tile)->phiras -= level.phiras;
+	(*p_tile)->thystam -= level.thystam;
+}
+
 int	start_incantation(server_t *server, client_t *client, char *str)
 {
-	
+	if (client->level >= 8 || compare_tile_incantation(server->map[client->posY][client->posX], level_requirement[client->level + 1]) == 0)
+		return KO;
+	remove_minerals(&server->map[client->posY][client->posX], level_requirement[client->level + 1]);
+	draw_tile(server->map, 1, client->posY, client->posX);
 	return OK;
 }
