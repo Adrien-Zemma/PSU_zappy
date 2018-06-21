@@ -121,8 +121,10 @@ tile_t	***init_map(int weight, int height)
 void	free_map(tile_t ***map)
 {
 	for (int i = 0; map[i]; i++) {
-		for (int j = 0; map[i][j]; j++)
+		for (int j = 0; map[i][j]; j++) {
+			free(map[i][j]->clients);
 			free(map[i][j]);
+		}
 		free(map[i]);
 		map[i] = NULL;
 	}

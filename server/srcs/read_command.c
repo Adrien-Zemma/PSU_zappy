@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-static void	remove_client(server_t *server, int fd)
+void	remove_client(server_t *server, int fd)
 {
 	size_t	i = 0;
 	size_t	j = 0;
@@ -16,6 +16,8 @@ static void	remove_client(server_t *server, int fd)
 	server->nb_fd--;
 	for (; server->clients[i] && server->clients[j]; i++) {
 		if (server->clients[j]->fd == fd) {
+			free_queue(server->clients[j]->command);
+			free(server->clients[j]->team);
 			free(server->clients[j]);
 			j++;
 			if (!server->clients[j])
@@ -64,10 +66,13 @@ void	read_command(int c1, server_t *server)
 		|| str[strlen(server->command[j]->name)] == ' ')) {
 			if (server->command[j]->time == 0)
 				server->command[j]->ptrFnct(server, server->clients[check], str);
-			else
+			else {
 				queue_append(&server->clients[check]->command, copy_cmd(server->command[j], str));
+				free(str);
+			}
 			return;
 		}
 	}
+	free(str);
 	dprintf(server->clients[check]->fd, "ko\n");
 }
