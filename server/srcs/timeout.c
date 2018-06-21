@@ -38,8 +38,6 @@ struct timeval	*get_select_timeout(server_t *server)
 
 void	remove_time_clients(server_t *server, double last_time)
 {
-	int		state;
-	int		check = 0;
 	command_t	*cmd = NULL;
 
 	for (size_t i = 0; server->clients[i]; i++) {
@@ -47,15 +45,12 @@ void	remove_time_clients(server_t *server, double last_time)
 		if (cmd) {
 			cmd->time -= last_time;
 			if (cmd->time - 0.001 < 0) {
-				state = cmd->ptrFnct(server,
+				cmd->ptrFnct(server,
 					server->clients[i],
 					cmd->name);
 				free(cmd->name);
 				free(cmd);
 				queue_pop(&server->clients[i]->command);
-				manage_error(server->clients[i]->fd, state, &check);
-				if (!check)
-					dprintf(server->clients[i]->fd, "suc:%d\n", check);
 			}
 		}
 	}

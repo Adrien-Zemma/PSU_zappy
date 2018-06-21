@@ -22,6 +22,7 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/commands/take_object.c \
 	  ./server/srcs/commands/teams_name.c \
 	  ./server/srcs/commands/tile_content.c \
+	  ./server/srcs/commands/incantation.c \
 	  ./server/srcs/commands.c \
 	  ./server/srcs/getnextline.c \
 	  ./server/srcs/main.c \

@@ -58,19 +58,10 @@ int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 		return (84);
 	if (ret != 0)
 		backup_time = tv ? (tv->tv_sec + (double)(tv->tv_usec / 1000000.0f)) : 0;
+	if (tv)
+		free(tv);
 	remove_time_clients(server, backup_time);
 	if (good_select(readfds, server) == 84)
 		return (84);
-	return (0);
-}
-
-int	start_server(t_parse *parse, server_t *server)
-{
-	fd_set	readfds;
-
-	while (42) {
-		if (check_fd(parse, server, readfds) == 84)
-			return (84);
-	}
 	return (0);
 }

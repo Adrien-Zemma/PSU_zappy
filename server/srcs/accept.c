@@ -19,6 +19,7 @@ int	set_client(server_t *server, char *str)
 	client->phiras = 0;
 	client->thystame = 0;
 	client->level = 1;
+	client->is_incanting = 0;
 	client->id = server->nb_client;
 	client->posX = ADD_MINERAL(0, server->parse->width);
 	client->posY = ADD_MINERAL(0, server->parse->height);
@@ -28,6 +29,7 @@ int	set_client(server_t *server, char *str)
 		return (84);
 	append_player(&server->map[server->clients[server->nb_client - 1]->posY][server->clients[server->nb_client - 1]->posX],
 		server->clients[server->nb_client - 1]);
+	free(str);
 	return (0);
 }
 
@@ -88,11 +90,15 @@ int	set_accept(server_t *server)
 	str = getnextline(tmp);
 	if (!str)
 		return (0);
-	if (strcmp(str, "GRAPHIC") == 0)
+	if (strcmp(str, "GRAPHIC") == 0) {
+		free(str);
 		return (set_graphic(server, tmp));
+	}
 	for (int i = 0; server->parse->teams[i] != NULL; i++)
-		if (strncmp(server->parse->teams[i], str, strlen(server->parse->teams[i])) == 0)
+		if (strncmp(server->parse->teams[i], str, strlen(server->parse->teams[i])) == 0) {
 			return (alloc_client(server, tmp, str));
+		}
+	free(str);
 	dprintf(tmp, "ko\n");
 	return (0);
 }

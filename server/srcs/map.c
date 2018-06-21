@@ -34,8 +34,6 @@ int	reorganize_players(client_t ***clients, int index)
 
 void	manage_tile(tile_t *tile, client_t *client)
 {
-	int	size = -1;
-
 	for (int k = 0; tile->clients[k]; k++) {
 		if (tile->clients[k] == client) {
 			reorganize_players(&tile->clients, k);
@@ -71,13 +69,20 @@ void	search_players(tile_t ***map)
 
 static void	gen_tile(tile_t **node)
 {
-	(*node)->linemate = ADD_MINERAL(0, 2);
-	(*node)->deraumere = ADD_MINERAL(0, 2);
-	(*node)->sibur = ADD_MINERAL(0, 2);
-	(*node)->mendiane = ADD_MINERAL(0, 2);
-	(*node)->phiras = ADD_MINERAL(0, 2);
-	(*node)->thystam = ADD_MINERAL(0, 2);
-	(*node)->food = ADD_MINERAL(0, 2);
+	// (*node)->linemate = ADD_MINERAL(0, 2);
+	// (*node)->deraumere = ADD_MINERAL(0, 2);
+	// (*node)->sibur = ADD_MINERAL(0, 2);
+	// (*node)->mendiane = ADD_MINERAL(0, 2);
+	// (*node)->phiras = ADD_MINERAL(0, 2);
+	// (*node)->thystam = ADD_MINERAL(0, 2);
+	// (*node)->food = ADD_MINERAL(0, 2);
+	(*node)->linemate = 1;
+	(*node)->deraumere = 1;
+	(*node)->sibur = 1;
+	(*node)->mendiane = 1;
+	(*node)->phiras = 1;
+	(*node)->thystam = 1;
+	(*node)->food = 1;
 	(*node)->clients = malloc(sizeof(client_t *) * 1);
 	(*node)->clients[0] = NULL;
 }
@@ -116,8 +121,10 @@ tile_t	***init_map(int weight, int height)
 void	free_map(tile_t ***map)
 {
 	for (int i = 0; map[i]; i++) {
-		for (int j = 0; map[i][j]; j++)
+		for (int j = 0; map[i][j]; j++) {
+			free(map[i][j]->clients);
 			free(map[i][j]);
+		}
 		free(map[i]);
 		map[i] = NULL;
 	}
