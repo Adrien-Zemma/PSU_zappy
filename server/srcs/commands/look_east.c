@@ -35,10 +35,7 @@ int	look_east(server_t *server, client_t *client, int *nb)
 	int	posX;
 
 	dprintf(client->fd, "[");
-	if (client->posX == server->parse->width - 1)
-		posX = 0;
-	else
-		posX = client->posX + 1;
+	posX = client->posX;
 	for (int i = 0; i < client->level + 1; i++) {
 		check_look_east(client, nb, posX, server);
 		if (posX + 1 > server->parse->width - 1)
