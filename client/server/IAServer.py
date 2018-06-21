@@ -41,10 +41,20 @@ class IAServer(Server):
 		self.write("Look")
 		ret = self.readTh.get_command()
 		datas = list()
-		ret = ret[1:-1]
-		for tile in ret.split(', '):
-			print(tile)
-		return ret
+		ret = ret[1:-2]
+		ret = "".join(ret.split())
+		for tile in ret.split(','):
+			datas.append({
+				"linemate": tile.count("linemate"),
+				"deraumere": tile.count("deraumere"),
+				"sibur": tile.count("sibur"),
+				"mendiane": tile.count("mendiane"),
+				"phiras": tile.count("phiras"),
+				"thystame": tile.count("thystame"),
+				"player": tile.count("player")
+			})
+		print(datas, flush=True)
+		return datas
 
 	def inventory(self:object):
 		self.write("Inventory")
