@@ -10,6 +10,7 @@ class ThreadRead(threading.Thread):
 		self.queue = queue.Queue()
 		self.socket = socket
 		self.loop = True
+		self.daemon = True
 
 	def _read(self):
         	buff = ""
@@ -31,6 +32,9 @@ class ThreadRead(threading.Thread):
 		except queue.Empty:
 			data = None
 		return data
+	
+	def stop(self: object):
+		self.loop = False
 
 	def run(self):
 		"""
