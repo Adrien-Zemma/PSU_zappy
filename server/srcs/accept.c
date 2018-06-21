@@ -19,6 +19,7 @@ int	set_client(server_t *server, char *str)
 	client->phiras = 0;
 	client->thystame = 0;
 	client->level = 1;
+	client->is_incanting = 0;
 	client->id = server->nb_client;
 	client->posX = ADD_MINERAL(0, server->parse->width);
 	client->posY = ADD_MINERAL(0, server->parse->height);
