@@ -356,13 +356,13 @@ class GraphicalInterface(Server, threading.Thread):
 		elif event.key == pygame.K_ESCAPE:
 			return False
 		elif event.key == pygame.K_UP:
-			self._shiftY *= 0.5
+			self._shiftY += 15
 		elif event.key == pygame.K_DOWN:
-			self._shiftY /= 0.5
+			self._shiftY -= 15
 		elif event.key == pygame.K_LEFT:
-			self._shiftX /= 0.8
+			self._shiftX += 15
 		elif event.key == pygame.K_RIGHT:
-			self._shiftX *= 0.8
+			self._shiftX -= 15
 		return True
 
 	def run(self):
