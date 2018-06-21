@@ -307,15 +307,11 @@ class GraphicalInterface(Server, threading.Thread):
 
 		def buildBlock(self):
 			for player in self._graph._playerList:
-				print(player._team)
-				print(player._inventory)
-				print(player._level)
-				print(player._team)
 				self._blocks.append(
 					self.Block (
 						name = player._team,
 						inv = player._inventory,
-						level = player._level,
+						level = int(player._level[0]),
 						team = player._team
 					)
 				)
@@ -329,9 +325,9 @@ class GraphicalInterface(Server, threading.Thread):
 
 			def draw(self, y, graph, screenX):
 				BLACK = (255,255,255)
-				x = screenX - 310
+				x = screenX - 360
 				y = y * 110 + 10
-				pygame.draw.rect(graph._window, BLACK, [x, y, 300, 100], 2)
+				pygame.draw.rect(graph._window, BLACK, [x, y, 350, 100], 2)
 				try:
 					label = graph._font.render(str(self.level),1,(255, 255, 255))
 					graph._window.blit(label, (x +10, y + 10))
@@ -340,9 +336,9 @@ class GraphicalInterface(Server, threading.Thread):
 				try:
 					txt = ""
 					for key, value in self.inventory.items():
-						txt += (key[1] + ":" + str(value) + " ")
-					label = graph._font.render(txt, 1, (255, 255, 255))
-					graph._window.blit(label, (x + 10, y + 30))
+						txt += (key[0] + ":" + str(value) + " ")
+					label = graph._font.render(txt, 1, (0, 0, 0))
+					graph._window.blit(label, (x + 5 , y + 70))
 				except:
 					pass
 				try:
@@ -609,9 +605,6 @@ class GraphicalInterface(Server, threading.Thread):
 	def getPlayerBag(self, ident:int):
 		self.write("pin #" + str(ident))
 		cmd = self.readTh.get_command()
-		print("-"*20)
-		print(cmd + str(ident))
-		print("-"*20)
 		try:
 			cmd = cmd.split(' ')[4:]
 			tab = {
