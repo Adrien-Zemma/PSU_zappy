@@ -69,5 +69,6 @@ void	check_map(tile_t *map, client_t *client);
 int	look_south(server_t *server, client_t *client, int *nb);
 int	look_east(server_t *server, client_t *client, int *nb);
 int	look_west(server_t *server, client_t *client, int *nb);
+int	map_val_pos(int map_size, int pos);
 
 #endif /* !SERVER */

@@ -9,8 +9,11 @@ class IA(threading.Thread):
 
 	def run(self):
 		while True:
+			ret = self.server.look()
+			if ret[0]["food"] > 0:
+				print("taking food!")
+				self.server.take("food")
 			ret = self.server.forward()
-			print(ret)
 			if ret != "ok":
 				print("Can't move forward")
 				exit(84)
