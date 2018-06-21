@@ -16,11 +16,10 @@ static void	remove_client(server_t *server, int fd)
 	server->nb_fd--;
 	for (; server->clients[i] && server->clients[j]; i++) {
 		if (server->clients[j]->fd == fd) {
+			free(server->clients[j]);
 			j++;
 			if (!server->clients[j])
 				break;
-			else
-				free(server->clients[j]);
 		}
 		server->clients[i] = server->clients[j];
 		server->fds[i] = server->fds[j];
