@@ -10,7 +10,7 @@
 int	player_level(server_t *server, client_t *client, char *str)
 {
 	int	id;
-	
+
 	while (*str && *str != '#')
 		str++;
 	if (*str == '#')
@@ -26,5 +26,17 @@ int	player_level(server_t *server, client_t *client, char *str)
 				"plv %d %d", id, server->clients[i]->level);
 	}
 	dprintf(client->fd, "\n");
+	dprintf(client->fd, "ok\n");
 	return OK;
+}
+
+int	forke(server_t *server, client_t *client, char *str)
+{
+	str = str;
+	for (int i = 0; server->clients[i] != NULL; i++) {
+		if (server->clients[i]->id == -1)
+			dprintf(server->clients[i]->fd, "pfk %d\n", client->id);
+	}
+	dprintf(client->fd, "ok\n");
+	return (0);
 }

@@ -10,7 +10,7 @@
 int	player_position(server_t *server, client_t *client, char *str)
 {
 	int	id;
-	
+
 	while (*str && *str != '#')
 		str++;
 	if (*str == '#')
@@ -26,5 +26,6 @@ int	player_position(server_t *server, client_t *client, char *str)
 			id, server->clients[i]->posX,
 			server->clients[i]->posY);
 	}
+	dprintf(client->fd, "ok\n");
 	return OK;
 }
