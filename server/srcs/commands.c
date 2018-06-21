@@ -19,8 +19,8 @@ command_t	**init_commands(t_parse *parse)
 	node[1] = append_command("tna", names_team, 0);
 	node[2] = append_command("mct", map_content, 0);
 	node[3] = append_command("bct", tile_content, 0);
-	node[4] = append_command("plv #", player_level, 0);
-	node[5] = append_command("pin #", player_inventory, 0);
+	node[4] = append_command("plv", player_level, 0);
+	node[5] = append_command("pin", player_inventory, 0);
 	node[6] = append_command("Forward", forward, 7 / (double)parse->freq);
 	node[7] = append_command("Right", right, 7 / (double)parse->freq);
 	node[8] = append_command("Left", left, 7 / (double)parse->freq);
