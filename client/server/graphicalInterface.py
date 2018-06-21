@@ -563,7 +563,7 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def getPlayerPosition(self, name):
 		try:
-			self.write("ppo " + str(name))
+			self.write("ppo #" + str(name))
 			cmd = self.readTh.get_command().split(' ')[1:]
 		except:
 			return None
