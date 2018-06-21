@@ -5,12 +5,12 @@ from server.IA import IA
 
 
 def main():
-	ia = IA(args.name, args.port, args.machine)
+	#ia = IA(args.name, args.port, args.machine)
 	ui = GraphicalInterface(args.port, args.machine)
 	ui.start()
-	ia.start()
-	ia.join()
-	ui.join()
+	#ia.start()
+	#ia.join()
+    #ui.join()
 	print("Main finished")
 
 if __name__ == '__main__':
