@@ -287,7 +287,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self._isAlive = True
 			self._spriteSizeX = 31
 			self._spriteSizeY = 50
-			self._incanting = False
+			self._incanting = True
 			self._isApplause = True
 			self._isPushing = False
 
@@ -442,7 +442,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self.drawChara()
 			self.Hud(self)
 			pygame.display.update()
-			self._clock.tick(5)
+			self._clock.tick(60)
 		pygame.mixer.music.stop
 		pygame.quit()
 		self.readTh.join()
