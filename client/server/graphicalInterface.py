@@ -227,6 +227,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self._items["thystame"] = pygame.image.load(os.path.abspath("assets/items/thystame.png")).convert_alpha()
 		self._items["applause"] = pygame.image.load(os.path.abspath("assets/icon/applause.png")).convert_alpha()
 		self._items["fist"] = pygame.image.load(os.path.abspath("assets/icon/fist.png")).convert_alpha()
+		self._items["cercle"] = pygame.image.load(os.path.abspath("assets/icon/cercle2.png")).convert_alpha()
 		self._itemsPlayer = {
 			"stand": {
 				1 : pygame.image.load(os.path.abspath("assets/perso/stand/north.png")).convert_alpha(),
@@ -280,7 +281,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self._isAlive = True
 			self._spriteSizeX = 31
 			self._spriteSizeY = 50
-			self._incanting = False
+			self._incanting = True
 			self._isApplause = True
 			self._isPushing = False
 
@@ -312,7 +313,8 @@ class GraphicalInterface(Server, threading.Thread):
 						name = player._team,
 						inv = player._inventory,
 						level = int(player._level[0]),
-						team = player._team
+						team = player._team,
+						magic = player._incanting
 					)
 				)
 
@@ -322,6 +324,7 @@ class GraphicalInterface(Server, threading.Thread):
 				self.name = kwargs.get('name')
 				self.inventory = kwargs.get('inv')
 				self.level = kwargs.get('level')
+				self.magic = kwargs.get('magic')
 
 			def draw(self, y, graph, screenX):
 				BLACK = (255,255,255)
@@ -333,6 +336,7 @@ class GraphicalInterface(Server, threading.Thread):
 					graph._window.blit(label, (x +10, y + 10))
 				except:
 					pass
+
 				try:
 					txt = ""
 					for key, value in self.inventory.items():
@@ -341,9 +345,17 @@ class GraphicalInterface(Server, threading.Thread):
 					graph._window.blit(label, (x + 5 , y + 70))
 				except:
 					pass
+
 				try:
 					label = graph._font.render(self.team , 1, (255, 255, 255))
-					graph._window.blit(label, (x + 100, y + 30))
+					graph._window.blit(label, (x + 120, y + 10))
+				except:
+					pass
+
+				try:
+					if self.magic:
+						label = graph._font.render("magic" , 1, (255, 255, 255))
+						graph._window.blit(label, (x + 5, y + 40))
 				except:
 					pass
 
@@ -422,8 +434,8 @@ class GraphicalInterface(Server, threading.Thread):
 			self.updatePerso()
 			self.drawMap()
 			self.drawCaseContent()
-			self.drawChara()
 			self.drawIcon()
+			self.drawChara()
 			self.Hud(self)
 			pygame.display.update()
 			self._clock.tick(5)
