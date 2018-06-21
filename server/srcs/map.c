@@ -17,30 +17,56 @@ void	append_player(tile_t **tile, client_t *client)
 	(*tile)->clients[i + 1] = NULL;
 }
 
-void	reorganize_players(client_t ***clients, int index)
+int	reorganize_players(client_t ***clients, int index)
 {
 	int i;
 
 	for (i = 0; (*clients)[i]; i++);
 	if (index > i)
-		return;
+		return -1;
 	index++;
-	for (; (*clients)[index]; index++) {
+	for (; (*clients)[index]; index++)
 		(*clients)[index - 1] = (*clients)[index];
-	}
 	*clients = realloc(*clients, sizeof(client_t *) * (index));
 	(*clients)[index - 1] = NULL;
+	return (index - 1);
 }
 
-int	remove_player(tile_t **tile, client_t *client)
+void	manage_tile(tile_t *tile, client_t *client)
 {
-	int i;
+	int	size = -1;
 
-	for (i = 0; (*tile)->clients[i] && (*tile)->clients[i] != client; i++);
-	if (!(*tile)->clients[i])
-		return KO;
-	reorganize_players(&(*tile)->clients, i);
+	for (int k = 0; tile->clients[k]; k++) {
+		if (tile->clients[k] == client) {
+			reorganize_players(&tile->clients, k);
+			break;
+		}
+	}
+}
+
+int	remove_player(tile_t ***map, client_t *client)
+{
+	for (int i = 0; map[i]; i++) {
+		for (int j = 0; map[i][j]; j++) {
+			manage_tile(map[i][j], client);
+		}
+	}
+	// for (i = 0; (*tile)->clients[i] && (*tile)->clients[i] != client; i++);
+	// if (!(*tile)->clients[i])
+	// 	return KO;
+	// reorganize_players(&(*tile)->clients, i);
 	return OK;
+}
+
+void	search_players(tile_t ***map)
+{
+	for (int i = 0; map[i]; i++)
+		for (int j = 0; map[i][j]; j++) {
+			for (int k = 0; map[i][j]->clients[k]; k++) {
+				printf("map[%d][%d][%d]:%d\n", i, j, k, map[i][j]->clients[k]->id);
+			}
+	}
+	fflush(NULL);
 }
 
 static void	gen_tile(tile_t **node)
