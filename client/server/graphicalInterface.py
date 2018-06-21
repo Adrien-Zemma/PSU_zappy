@@ -116,17 +116,20 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def connectionOfNewPlay(self, cmd):
 		pos = cmd.split(' ')[1:]
-		self._playerList.append(
-			self.Player(
-				id = int(pos[0][1:]),
-				x = int(pos[1]),
-				y = int(pos[2]),
-				orient = int(pos[3]),
-				level = int(pos[4]),
-				team = str(pos[5]),
-				inventory = self.getPlayerBag(int(pos[0][1:])),
+		try :
+			self._playerList.append(
+				self.Player(
+					id = int(pos[0][1:]),
+					x = int(pos[1]),
+					y = int(pos[2]),
+					orient = int(pos[3]),
+					level = int(pos[4]),
+					team = str(pos[5]),
+					inventory = self.getPlayerBag(int(pos[0][1:])),
+				)
 			)
-		)
+		except:
+			pass
 
 	def expultionCmd(self, cmd):
 		try:
@@ -672,6 +675,7 @@ class GraphicalInterface(Server, threading.Thread):
 		except:
 			return None
 		pass
+
 	def getAllId(self):
 		self.write("gai ")
 		try:
