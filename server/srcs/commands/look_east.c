@@ -7,6 +7,27 @@
 
 #include "server.h"
 
+void	check_map(tile_t *map, client_t *client)
+{
+	if (map->linemate != 0)
+		dprintf(client->fd, "linemate ");
+	if (map->deraumere != 0)
+		dprintf(client->fd, "deraumere ");
+	if (map->sibur != 0)
+		dprintf(client->fd, "sibur ");
+	if (map->mendiane != 0)
+		dprintf(client->fd, "mendiane ");
+	if (map->phiras != 0)
+		dprintf(client->fd, "phiras ");
+	if (map->thystam != 0)
+		dprintf(client->fd, "thystam ");
+	for (int i = 0; map->clients[i] != NULL; i++)
+		dprintf(client->fd, "player ");
+	if (map->food != 0)
+		dprintf(client->fd, "food ");
+	dprintf(client->fd, ",");
+}
+
 void	check_look_east(client_t *client, int *nb, int posX, server_t *server)
 {
 	int	posY = client->posY - 1;

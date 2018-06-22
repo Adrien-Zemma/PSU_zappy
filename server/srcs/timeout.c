@@ -7,6 +7,16 @@
 
 #include "server.h"
 
+struct timeval	*select_time(struct timeval *ret, double time_client)
+{
+	ret = malloc(sizeof(struct timeval));
+	if (!ret)
+		return (NULL);
+	ret->tv_sec = floor(time_client);
+	ret->tv_usec = (double)(time_client - floor(time_client)) * 1000000.0f;
+	return (ret);
+}
+
 struct timeval	*get_select_timeout(server_t *server)
 {
 	struct timeval	*ret = NULL;
@@ -28,12 +38,7 @@ struct timeval	*get_select_timeout(server_t *server)
 		if (cmd && cmd->time > 0 && time_client > cmd->time)
 			time_client = cmd->time;
 	}
-	ret = malloc(sizeof(struct timeval));
-	if (!ret)
-		return (NULL);
-	ret->tv_sec = floor(time_client);
-	ret->tv_usec = (double)(time_client - floor(time_client)) * 1000000.0f;
-	return (ret);
+	return (select_time(ret, time_client));
 }
 
 void	remove_time_clients(server_t *server, double last_time)
