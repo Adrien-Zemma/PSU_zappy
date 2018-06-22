@@ -14,6 +14,7 @@
 	#include <string.h>
 	#include <math.h>
 	#include <signal.h>
+	#include <time.h>
 
 typedef struct command_s command_t;
 typedef struct	tile_s tile_t;
