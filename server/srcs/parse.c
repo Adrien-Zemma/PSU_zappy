@@ -9,7 +9,7 @@
 
 static void	add_arg(t_parse *obj, int id, char **av)
 {
-	if (av[1])
+	if (!av[1])
 		return;
 	switch (id) {
 		case 0:
