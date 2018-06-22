@@ -22,8 +22,8 @@ command_t	**init_other_commands(t_parse *parse, command_t **node, int i)
 	node[20] = append_command("gpt", gtp, 0);
 	node[21] = append_command("Fork", forke, 42 / (double)parse->freq);
 	node[22] = append_command("gai", gai, 0);
-	node[23] = append_command("finish incantation",
-		end_incantation, 300 / (double)parse->freq);
+	node[23] = append_command("Eject",
+		eject, 7 / (double)parse->freq);
 	node[i] = NULL;
 	return (node);
 }
