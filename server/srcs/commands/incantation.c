@@ -29,7 +29,7 @@ static int	compare_tile_incantation(tile_t *tile, tile_t level)
 	tile->sibur >= level.sibur &&
 	tile->mendiane >= level.mendiane &&
 	tile->phiras >= level.phiras &&
-	id >= level.minPlayers)
+	id + 1 >= level.minPlayers)
 		return (1);
 	return (0);
 }
@@ -46,15 +46,28 @@ static void	remove_minerals(tile_t **p_tile, tile_t level)
 
 int	start_incantation(server_t *server, client_t *client, char *str)
 {
+	client_t	*tmp;
+
 	(void)str;
-	client->is_incanting = 1;
 	if (client->level >= 8 || compare_tile_incantation(server->map[client->pos_y][client->pos_x], level_requirement[client->level - 1]) == 0) {
 		dprintf(client->fd, "ko\n");
 		return (KO);
 	}
+	client->is_incanting = 1;
+	for (int i = 0; server->map[client->pos_y][client->pos_x]->clients[i]; i++) {
+		tmp = server->map[client->pos_y][client->pos_x]->clients[i];
+		dprintf(tmp->fd, "Elevation underway\n");
+		queue_append(&tmp->command, append_command(NULL, end_incantation, 300 / (double)server->parse->freq));
+	}
+	return (OK);
+}
+
+int	end_incantation(server_t *server, client_t *client, char *str)
+{
+	(void)str;
 	remove_minerals(&server->map[client->pos_y][client->pos_x], level_requirement[client->level - 1]);
 	client->level++;
 	dprintf(client->fd, "Current level: %d\n", client->level);
 	client->is_incanting = 0;
-	return (OK);
+	return (0);
 }
