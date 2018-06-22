@@ -49,10 +49,6 @@ int	remove_player(tile_t ***map, client_t *client)
 			manage_tile(map[i][j], client);
 		}
 	}
-	// for (i = 0; (*tile)->clients[i] && (*tile)->clients[i] != client; i++);
-	// if (!(*tile)->clients[i])
-	// 	return KO;
-	// reorganize_players(&(*tile)->clients, i);
 	return OK;
 }
 

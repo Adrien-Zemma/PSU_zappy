@@ -78,7 +78,8 @@ static t_parse *check_parse_struct(t_parse *obj)
 		obj = NULL;
 	}
 	else {
-		printf("Port: %d\nWidth: %d\nHeight: %d\nclientsNb: %d\nFreq: %d\n", obj->port, obj->width, obj->height, obj->clientsNb, obj->freq);
+		printf("Port: %d\nWidth: %d\nHeight: %d\nclientsNb: %d\nFreq: %d\n",
+			obj->port, obj->width, obj->height, obj->clientsNb, obj->freq);
 		printf("Names: ");
 		for (int i = 0; obj->teams[i]; i++)
 			printf("%s => ", obj->teams[i]);

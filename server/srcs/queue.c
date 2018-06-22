@@ -8,7 +8,7 @@
 #include "server.h"
 #include "commands.h"
 
-command_t	**queue_init()
+command_t	**queue_init(void)
 {
 	command_t	**queue = malloc(sizeof(command_t *));
 	if (!queue)
