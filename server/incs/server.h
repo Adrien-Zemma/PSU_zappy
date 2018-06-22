@@ -75,5 +75,7 @@ int	look_west(server_t *server, client_t *client, int *nb);
 int	map_val_pos(int map_size, int pos);
 int	check_fd(t_parse *parse, server_t *server, fd_set readfds);
 void	remove_client(server_t *server, int fd);
+int	set_struct_server(server_t *server, t_parse *parse);
+void	free_server(server_t *s);
 
 #endif /* !SERVER */

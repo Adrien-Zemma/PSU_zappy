@@ -12,7 +12,8 @@ void	search_players(tile_t ***map)
 	for (int i = 0; map[i]; i++)
 		for (int j = 0; map[i][j]; j++) {
 			for (int k = 0; map[i][j]->clients[k]; k++) {
-				printf("map[%d][%d][%d]:%d\n", i, j, k, map[i][j]->clients[k]->id);
+				printf("map[%d][%d][%d]:%d\n", i,
+					j, k, map[i][j]->clients[k]->id);
 			}
 	}
 	fflush(NULL);
