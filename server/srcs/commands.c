@@ -32,7 +32,7 @@ command_t	**init_commands(t_parse *parse)
 	command_t	**node = malloc(sizeof(command_t *) * (i + 1));
 
 	if (!node)
-		return NULL;
+		return (NULL);
 	node[0] = append_command("msz", map_size, 0);
 	node[1] = append_command("tna", names_team, 0);
 	node[2] = append_command("mct", map_content, 0);
@@ -56,9 +56,9 @@ command_t	*append_command(char *name,
 	command_t	*node = malloc(sizeof(command_t));
 
 	if (!node)
-		return NULL;
+		return (NULL);
 	node->time = time;
 	node->name = name;
 	node->ptrFnct = ptrFnct;
-	return node;
+	return (node);
 }

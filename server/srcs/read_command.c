@@ -53,7 +53,7 @@ void	read_command(int c1, server_t *server)
 
 	if (str == NULL) {
 		remove_client(server, c1);
-		return ;
+		return;
 	}
 	for (int i = 0; server->clients[i] != NULL; i++){
 		if (server->clients[i]->fd == c1)
