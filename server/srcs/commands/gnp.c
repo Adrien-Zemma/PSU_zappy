@@ -9,7 +9,7 @@
 
 int	get_number_player(server_t *server, client_t *client, char *str)
 {
-	int nb = 0;
+	int	nb = 0;
 
 	(void)str;
 	for (int i = 0; server->clients[i]; i++)

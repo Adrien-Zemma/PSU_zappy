@@ -87,6 +87,5 @@ int	look(server_t *server, client_t *client, char *str)
 			look_west(server, client, nb);
 			break;
 	}
-
-	return OK;
+	return (OK);
 }

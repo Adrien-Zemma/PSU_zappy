@@ -40,7 +40,7 @@ int	right(server_t *server, client_t *client, char *str)
 {
 	(void)str;
 	(void)server;
-	client->orientation = map_val_pos(4, client->orientation + 1) + 1;
+	client->orientation = map_val_pos(3, client->orientation + 1) + 1;
 	dprintf(client->fd, "ok\n");
 	return (OK);
 }
@@ -49,7 +49,7 @@ int	left(server_t *server, client_t *client, char *str)
 {
 	(void)str;
 	(void)server;
-	client->orientation = map_val_pos(4, client->orientation - 1) + 1;
+	client->orientation = map_val_pos(3, client->orientation - 1) + 1;
 	dprintf(client->fd, "ok\n");
 	return (OK);
 }
