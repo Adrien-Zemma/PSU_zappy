@@ -72,3 +72,11 @@ command_t	*copy_cmd(command_t *command, char *name)
 	ret->name = strdup(name);
 	return (ret);
 }
+
+int	block(server_t *server, client_t *client, char *str)
+{
+	(void)server;
+	(void)client;
+	(void)str;
+	return(0);
+}
