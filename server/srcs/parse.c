@@ -9,26 +9,23 @@
 
 static void	add_arg(t_parse *obj, int id, char **av)
 {
+	if (!av[1])
+		return;
 	switch (id) {
 		case 0:
-		if (av[1])
-			obj->port = atoi(av[1]);
+		obj->port = atoi(av[1]);
 		break;
 		case 1:
-		if (av[1])
-			obj->width = atoi(av[1]);
+		obj->width = atoi(av[1]);
 		break;
 		case 2:
-		if (av[1])
-			obj->height = atoi(av[1]);
+		obj->height = atoi(av[1]);
 		break;
 		case 4:
-		if (av[1])
-			obj->clientsNb = atoi(av[1]);
+		obj->clientsNb = atoi(av[1]);
 		break;
 		case 5:
-		if (av[1])
-			obj->freq = atoi(av[1]);
+		obj->freq = atoi(av[1]);
 	}
 }
 
@@ -54,17 +51,16 @@ static char	**get_names_team(char **av)
 
 	for (; *tmp; tmp++)
 		if (strcmp("-n", *tmp) == 0)
-			break ;
+			break;
 	if (!*tmp)
 		return (names);
 	for (++tmp; *tmp; tmp++) {
 		if (*tmp[0] == '-')
-			break ;
+			break;
 		else {
 			names[i] = strdup(*tmp);
 			i++;
 			names = realloc(names, sizeof(char *) * (i + 1));
-
 		}
 	}
 	names[i] = NULL;
@@ -82,7 +78,8 @@ static t_parse *check_parse_struct(t_parse *obj)
 		obj = NULL;
 	}
 	else {
-		printf("Port: %d\nWidth: %d\nHeight: %d\nclientsNb: %d\nFreq: %d\n", obj->port, obj->width, obj->height, obj->clientsNb, obj->freq);
+		printf("Port: %d\nWidth: %d\nHeight: %d\nclientsNb: %d\nFreq: %d\n",
+			obj->port, obj->width, obj->height, obj->clientsNb, obj->freq);
 		printf("Names: ");
 		for (int i = 0; obj->teams[i]; i++)
 			printf("%s => ", obj->teams[i]);
@@ -96,7 +93,7 @@ t_parse	*parse_args(char **av)
 	int	id;
 
 	if (!obj)
-		return NULL;
+		return (NULL);
 	obj->teams = get_names_team(av);
 	if (!obj->teams)
 		free(obj->teams);

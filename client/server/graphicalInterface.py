@@ -67,6 +67,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self._sizeY = None
 		self._mapContent = [[{}]]
 		self.manageConnection()
+		self.daemon = True
 		random.seed()
 		pygame.init()
 		self._clock = pygame.time.Clock()
@@ -109,7 +110,7 @@ class GraphicalInterface(Server, threading.Thread):
 	def Cmd(self, cmd):
 		print(cmd)
 		pass
-	
+
 	def playerLaidEgg(self, cmd):
 		cmd = cmd.plit(' ')[1:]
 		self._eggList.append(self.Egg(cmd[0], cmd[2], cmd[3]))
@@ -183,7 +184,7 @@ class GraphicalInterface(Server, threading.Thread):
 					player._isAlive = False
 		except:
 			pass
-		
+
 	def eggDeathCmd(self, cmd):
 		print(cmd)
 		pass
@@ -231,15 +232,15 @@ class GraphicalInterface(Server, threading.Thread):
 		self._itemsPlayer = {
 			"stand": {
 				1 : pygame.image.load(os.path.abspath("assets/perso/stand/north.png")).convert_alpha(),
-				2 : pygame.image.load(os.path.abspath("assets/perso/stand/east.png")).convert_alpha(),
+				4 : pygame.image.load(os.path.abspath("assets/perso/stand/east.png")).convert_alpha(),
 				3 : pygame.image.load(os.path.abspath("assets/perso/stand/south.png")).convert_alpha(),
-				4 : pygame.image.load(os.path.abspath("assets/perso/stand/west.png")).convert_alpha()
+				2 : pygame.image.load(os.path.abspath("assets/perso/stand/west.png")).convert_alpha()
 			},
 			"move":{
 				1: pygame.image.load(os.path.abspath("assets/perso/move/north.png")).convert_alpha(),
-				2: pygame.image.load(os.path.abspath("assets/perso/move/east.png")).convert_alpha(),
+				4: pygame.image.load(os.path.abspath("assets/perso/move/east.png")).convert_alpha(),
 				3: pygame.image.load(os.path.abspath("assets/perso/move/south.png")).convert_alpha(),
-				4: pygame.image.load(os.path.abspath("assets/perso/move/west.png")).convert_alpha()
+				2: pygame.image.load(os.path.abspath("assets/perso/move/west.png")).convert_alpha()
 			}
 		}
 
@@ -318,7 +319,7 @@ class GraphicalInterface(Server, threading.Thread):
 					self.Block (
 						name = player._team,
 						inv = player._inventory,
-						level = int(player._level[0]),
+						level = player._level,
 						team = player._team,
 						magic = player._incanting,
 						id = player._id
@@ -624,11 +625,11 @@ class GraphicalInterface(Server, threading.Thread):
 	def getPlayerTeam(self, name):
 		self.write("gpt #" + str(name))
 		try:
-			cmd = self.readTh.get_command().split(' ')[1]
+			cmd = self.readTh.get_command()
 		except:
 			return "None"
 		return cmd
-	
+
 	def getPlayerBag(self, ident:int):
 		self.write("pin #" + str(ident))
 		cmd = self.readTh.get_command()
@@ -667,8 +668,8 @@ class GraphicalInterface(Server, threading.Thread):
 	def getPlayerLevel(self, name):
 		self.write("plv #" + str(name))
 		try:
-			cmd = self.readTh.get_command().split(' ')[1:]
-			return cmd[1:]
+			cmd = self.readTh.get_command().split(' ')[2:]
+			return int(cmd[0])
 		except:
 			return None
 		pass

@@ -1,3 +1,10 @@
+##
+## EPITECH PROJECT, 2018
+## Project Name
+## File description:
+## zappy
+##
+
 NAME	= zappy_server
 
 CC	= gcc
@@ -9,10 +16,15 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/commands/connection.c \
 	  ./server/srcs/commands/get_player_pos.c \
 	  ./server/srcs/commands/gnp.c \
+	  ./server/srcs/commands/incantation.c \
 	  ./server/srcs/commands/inventory.c \
 	  ./server/srcs/commands/look.c \
+	  ./server/srcs/commands/look_east.c \
+	  ./server/srcs/commands/look_south.c \
+	  ./server/srcs/commands/look_west.c \
 	  ./server/srcs/commands/map_content.c \
 	  ./server/srcs/commands/map_size.c \
+	  ./server/srcs/manage_tile.c \
 	  ./server/srcs/commands/nb_connect.c \
 	  ./server/srcs/commands/player_inventory.c \
 	  ./server/srcs/commands/player_level.c \
@@ -32,20 +44,18 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/server.c \
 	  ./server/srcs/set_socket.c \
 	  ./server/srcs/timeout.c \
-	  ./server/srcs/commands/look_south.c \
-	  ./server/srcs/commands/look_east.c \
-	  ./server/srcs/commands/look_west.c \
-	  ./server/srcs/utils.c
+	  ./server/srcs/utils.c \
+	  ./server/srcs/set_struct.c
 
 OBJS	= $(SRCS:.c=.o)
 
-CFLAGS = -I./server/incs/
+CFLAGS = -I ./server/incs/
 CFLAGS += -W -Wall -Wextra -g3
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	 $(CC) $(OBJS) -o $(NAME) -lm
+	 $(CC) $(OBJS) -o $(NAME) $(LDFLAGS) -lm
 
 clean:
 	$(RM) $(OBJS)

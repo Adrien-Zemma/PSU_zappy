@@ -7,7 +7,16 @@
 
 #include "server.h"
 
-static void	remove_client(server_t *server, int fd)
+void	malloc_remove_client(server_t *server)
+{
+	server->clients[server->nb_client] = NULL;
+	server->clients = realloc(server->clients,
+		sizeof(client_t *) * (server->nb_client + 1));
+	server->fds = realloc(server->fds,
+		sizeof(int) * (server->nb_fd));
+}
+
+void	remove_client(server_t *server, int fd)
 {
 	size_t	i = 0;
 	size_t	j = 0;
@@ -16,6 +25,9 @@ static void	remove_client(server_t *server, int fd)
 	server->nb_fd--;
 	for (; server->clients[i] && server->clients[j]; i++) {
 		if (server->clients[j]->fd == fd) {
+			free_queue(server->clients[j]->command);
+			(server->clients[j]->id != -1 ?
+				free(server->clients[j]->team) : 0);
 			free(server->clients[j]);
 			j++;
 			if (!server->clients[j])
@@ -25,10 +37,9 @@ static void	remove_client(server_t *server, int fd)
 		server->fds[i] = server->fds[j];
 		j++;
 	}
-	server->clients[server->nb_client] = NULL;
-	server->clients = realloc(server->clients, sizeof(client_t *) * (server->nb_client + 1));
-	server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd));
+	malloc_remove_client(server);
 }
+
 
 void	manage_error(int fd, int state, int *check)
 {
@@ -44,6 +55,28 @@ void	manage_error(int fd, int state, int *check)
 	}
 }
 
+void	check_read_command(server_t *server, char *str, int check)
+{
+	for (int j = 0; server->command[j]; j++) {
+		if (strncmp(server->command[j]->name,
+			str, strlen(server->command[j]->name)) == 0
+		&& (strlen(str) == strlen(server->command[j]->name)
+		|| str[strlen(server->command[j]->name)] == ' ')) {
+			if (server->command[j]->time == 0)
+				server->command[j]->ptrFnct(server,
+					server->clients[check], str);
+			else {
+				queue_append(&server->clients[check]->command,
+					copy_cmd(server->command[j], str));
+				free(str);
+			}
+			return;
+		}
+	}
+	free(str);
+	dprintf(server->clients[check]->fd, "ko\n");
+}
+
 void	read_command(int c1, server_t *server)
 {
 	char	*str = getnextline(c1);
@@ -51,23 +84,12 @@ void	read_command(int c1, server_t *server)
 
 	if (str == NULL) {
 		remove_client(server, c1);
-		return ;
+		return;
 	}
 	for (int i = 0; server->clients[i] != NULL; i++){
 		if (server->clients[i]->fd == c1)
 			check = i;
 	}
 	printf("Client[%d]: %s\n", c1, str);
-	for (int j = 0; server->command[j]; j++) {
-		if (strncmp(server->command[j]->name, str, strlen(server->command[j]->name)) == 0
-		&& (strlen(str) == strlen(server->command[j]->name)
-		|| str[strlen(server->command[j]->name)] == ' ')) {
-			if (server->command[j]->time == 0)
-				server->command[j]->ptrFnct(server, server->clients[check], str);
-			else
-				queue_append(&server->clients[check]->command, copy_cmd(server->command[j], str));
-			return;
-		}
-	}
-	dprintf(server->clients[check]->fd, "ko\n");
+	check_read_command(server, str, check);
 }

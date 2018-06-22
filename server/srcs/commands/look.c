@@ -7,28 +7,17 @@
 
 #include "server.h"
 
-void	check_map(tile_t *map, client_t *client)
+int	map_val_pos(int map_size, int pos)
 {
-	if (map->linemate != 0)
-		dprintf(client->fd, "linemate ");
-	if (map->deraumere != 0)
-		dprintf(client->fd, "deraumere ");
-	if (map->sibur != 0)
-		dprintf(client->fd, "sibur ");
-	if (map->mendiane != 0)
-		dprintf(client->fd, "mendiane ");
-	if (map->phiras != 0)
-		dprintf(client->fd, "phiras ");
-	if (map->thystam != 0)
-		dprintf(client->fd, "thystam ");
-	for (int i = 0; map->clients[i] != NULL; i++)
-		dprintf(client->fd, "player ");
-	if (map->food != 0)
-		dprintf(client->fd, "food ");
-	dprintf(client->fd, ",");
+	while (pos < 0)
+		pos += map_size;
+	while (pos >= map_size)
+		pos -= map_size;
+	return pos;
 }
 
-void	check_look_north(client_t *client, int *nb, int posY, server_t *server)
+void	check_look_north(client_t *client,
+	int *nb, int posY, server_t *server)
 {
 	int	posX = client->posX - 1;
 	int	check;
@@ -39,14 +28,20 @@ void	check_look_north(client_t *client, int *nb, int posY, server_t *server)
 		if (posX - nb[0] < 0) {
 			check = posX - nb[0];
 			posX = server->parse->width - check;
-			check_map(server->map[posY][posX], client);
+			check_map(server->map[map_val_pos(server->parse->height,
+				posY)][map_val_pos(server->parse->width, posX)],
+				client);
 		}
 		else if (posX - nb[0] > (server->parse->width - 1)){
 			posX = (posX) - server->parse->width;
-			check_map(server->map[posY][posX - nb[0]], client);
+			check_map(server->map[map_val_pos(server->parse->height,
+				posY)][map_val_pos(server->parse->width,
+				posX - nb[0])], client);
 		}
 		else  {
-			check_map(server->map[posY][posX - nb[0]], client);
+			check_map(server->map[map_val_pos(server->parse->height,
+				posY)][map_val_pos(server->parse->width,
+				posX - nb[0])], client);
 		}
 	} while (i++ - nb[0] < 1 + nb[0] - 1);
 }

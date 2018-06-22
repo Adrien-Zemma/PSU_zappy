@@ -13,9 +13,10 @@
 	#include "map.h"
 	#include <string.h>
 	#include <math.h>
+	#include <signal.h>
 
 typedef struct command_s command_t;
-typedef struct	tile tile_t;
+typedef struct	tile_s tile_t;
 
 typedef	struct client_s
 {
@@ -33,6 +34,7 @@ typedef	struct client_s
 	int	id;
 	int	orientation;
 	char	*team;
+	int	is_incanting;
 	command_t	**command;
 }	client_t;
 
@@ -48,6 +50,7 @@ typedef	struct server_s
 	t_parse	*parse;
 }	server_t;
 
+void	free_queue(command_t **queue);
 int	set_socket(t_parse *parse, server_t *server);
 char	*getnextline(int fd);
 int	start_server(t_parse *parse, server_t *server);
@@ -69,5 +72,10 @@ void	check_map(tile_t *map, client_t *client);
 int	look_south(server_t *server, client_t *client, int *nb);
 int	look_east(server_t *server, client_t *client, int *nb);
 int	look_west(server_t *server, client_t *client, int *nb);
+int	map_val_pos(int map_size, int pos);
+int	check_fd(t_parse *parse, server_t *server, fd_set readfds);
+void	remove_client(server_t *server, int fd);
+int	set_struct_server(server_t *server, t_parse *parse);
+void	free_server(server_t *s);
 
 #endif /* !SERVER */
