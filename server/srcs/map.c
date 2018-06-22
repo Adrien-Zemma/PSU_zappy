@@ -81,15 +81,15 @@ static tile_t	**gen_line(int w)
 	tile_t	**node = malloc(sizeof(tile_t *) * (w + 1));
 
 	if (!node)
-		return NULL;
+		return (NULL);
 	for (int i = 0; i < w; i++) {
 		node[i] = malloc(sizeof(tile_t));
 		if (!node[i])
-			return NULL;
+			return (NULL);
 		gen_tile(&node[i]);
 	}
 	node[w] = NULL;
-	return node;
+	return (node);
 }
 
 tile_t	***init_map(int weight, int height)
@@ -97,11 +97,11 @@ tile_t	***init_map(int weight, int height)
 	tile_t	***tiles = malloc(sizeof(tile_t **) * (height + 1));
 
 	if (!tiles)
-		return NULL;
+		return (NULL);
 	for (int i = 0; i < height; i++) {
 		tiles[i] = gen_line(weight);
 		if (!tiles[i])
-			return NULL;
+			return (NULL);
 	}
 	tiles[height] = NULL;
 	return tiles;
