@@ -29,6 +29,7 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/commands/player_inventory.c \
 	  ./server/srcs/commands/player_level.c \
 	  ./server/srcs/commands/player_position.c \
+	  ./server/srcs/commands/fork.c \
 	  ./server/srcs/commands/rotate_player.c \
 	  ./server/srcs/commands/set_object.c \
 	  ./server/srcs/commands/take_object.c \
