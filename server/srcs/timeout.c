@@ -49,7 +49,7 @@ void	remove_time_clients(server_t *server, double last_time)
 		cmd = queue_get(&server->clients[i]->command);
 		if (cmd) {
 			cmd->time -= last_time;
-			if (cmd->time - 0.0000001 < 0) {
+			if (cmd->time - 0.000001 < 0) {
 				cmd->ptrFnct(server,
 					server->clients[i],
 					cmd->name);

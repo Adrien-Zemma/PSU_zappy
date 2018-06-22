@@ -39,14 +39,14 @@ class IA(threading.Thread):
 		cmd = self.server.forward()
 		if cmd == "ko":
 			return
-		if self.dir == 0:
-			self.pos[0] = map(self.server.mapSize[0], self.pos[0] + 1)
-		elif self.dir == 1:
-			self.pos[1] = map(self.server.mapSize[1], self.pos[1] + 1)
-		elif self.dir == 2:
-			self.pos[0] = map(self.server.mapSize[0], self.pos[0] - 1)
-		elif self.dir == 3:
-			self.pos[1] = map(self.server.mapSize[1], self.pos[1] - 1)
+		#if self.dir == 0:
+		#	self.pos[0] = map(self.server.mapSize[0], self.pos[0] + 1)
+		#elif self.dir == 1:
+		#	self.pos[1] = map(self.server.mapSize[1], self.pos[1] + 1)
+		#elif self.dir == 2:
+		#	self.pos[0] = map(self.server.mapSize[0], self.pos[0] - 1)
+		#elif self.dir == 3:
+		#	self.pos[1] = map(self.server.mapSize[1], self.pos[1] - 1)
 
 	def left(self):
 		print("left")
