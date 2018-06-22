@@ -21,7 +21,7 @@ int	forwardY(server_t *server, client_t *client)
 		else
 			client->posX++;
 	}
-	return OK;
+	return (OK);
 }
 
 int	forward(server_t *server, client_t *client, char *str)
@@ -42,9 +42,11 @@ int	forward(server_t *server, client_t *client, char *str)
 			client->posX++;
 	}
 	forwardY(server, client);
-	append_player(&server->map[client->posY][client->posX], client);
+	printf("Forward to X,Y:%d:%d\n", map_val_pos(server->parse->width, client->posX), map_val_pos(server->parse->height, client->posY));
+	fflush(NULL);
+	append_player(&server->map[map_val_pos(server->parse->height, client->posY)][map_val_pos(server->parse->width, client->posX)], client);
 	dprintf(client->fd, "ok\n");
-	return OK;
+	return (OK);
 }
 
 int	right(server_t *server, client_t *client, char *str)
@@ -66,7 +68,7 @@ int	right(server_t *server, client_t *client, char *str)
 			break ;
 	}
 	dprintf(client->fd, "ok\n");
-	return OK;
+	return (OK);
 }
 
 int	left(server_t *server, client_t *client, char *str)
@@ -88,5 +90,5 @@ int	left(server_t *server, client_t *client, char *str)
 			break;
 	}
 	dprintf(client->fd, "ok\n");
-	return OK;
+	return (OK);
 }
