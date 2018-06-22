@@ -2,67 +2,19 @@ import os
 import sys
 import random
 import pygame
+from .hud import *
+from .minerals import Map
 from .Commands import Commands
 import threading
-
 from .Server import Server
 from .Threads import ThreadRead
-
-
-class MaterialCoord():
-	def __init__(self, **kwargs):
-		try:
-			self.name = kwargs.get('name')
-			self.spriteSize = kwargs.get('spriteSize')
-			self.maxItem = kwargs.get('maxItem')
-			self.x = kwargs.get('x')
-			self.y = kwargs.get('y')
-		except KeyError:
-			print("Cant find index for Tile")
-		self.coords = []
-		self.buildCoordOfItems(self.x, self.y)
-
-	def buildCoordOfItems(self, x, y):
-		for _ in range(self.maxItem):
-			tmpX = (x * self.spriteSize) + random.randint(0,
-                                                 (self.spriteSize * 0.8)) + self.spriteSize
-			tmpY = (y * self.spriteSize) + random.randint(0, (self.spriteSize * 0.8))
-			tmpIsoX = tmpX - tmpY
-			tmpIsoY = (tmpX + tmpY) / 2
-			self.coords.append((tmpIsoX, tmpIsoY))
-
-
-class Tile():
-	def __init__(self, maxItem, spriteSize, x, y):
-		self.content = {
-        	        "food": MaterialCoord(name="food", maxItem=maxItem, spriteSize=spriteSize, x=x, y=y),
-        	        "sibur": MaterialCoord(name="sibur", maxItem=maxItem, spriteSize=spriteSize, x=x, y=y),
-        	        "phiras": MaterialCoord(name="phiras", maxItem=maxItem, spriteSize=spriteSize, x=x, y=y),
-        	        "thystame": MaterialCoord(name="thystame", maxItem=maxItem, spriteSize=spriteSize, x=x, y=y),
-        	        "linemate": MaterialCoord(name="linemate", maxItem=maxItem, spriteSize=spriteSize, x=x, y=y),
-        	        "mendiane": MaterialCoord(name="mendiane", maxItem=maxItem, spriteSize=spriteSize, x=x, y=y),
-        	        "deraumere": MaterialCoord(name="deraumere", maxItem=maxItem, spriteSize=spriteSize, x=x, y=y),
-		}
-
-
-class Map():
-	def __init__(self, **kwargs):
-		self.x = kwargs.get('x')
-		self.y = kwargs.get('y')
-		self.maxItem = kwargs.get('maxItem')
-		self.spriteSize = kwargs.get('spriteSize')
-		self.content = [[]]
-		for y in range(self.y):
-			self.content.append([])
-			for x in range(self.x):
-				self.content[y].append(Tile(self.maxItem, self.spriteSize, x, y))
-
 
 class GraphicalInterface(Server, threading.Thread):
 	def __init__(self, port=4242, ip="localhost"):
 		super().__init__(port, ip)
 		threading.Thread.__init__(self)
 		self.readTh.start()
+		self.buidCommande()
 		self._sizeX = None
 		self._sizeY = None
 		self._mapContent = [[{}]]
@@ -86,25 +38,28 @@ class GraphicalInterface(Server, threading.Thread):
 		self._map = Map(x = self._sizeX, y = self._sizeY, spriteSize = self._spriteSize, maxItem = self._maxItemPerCase)
 		self.buildWindow()
 		self.buildItem()
+		self.builPlayerSprite()
 		self.buildPlayer()
-		self._commands = Commands(commands= {
-			"pex" : self.expultionCmd,
-			"pbc" : self.broadcastCmd,
-			"pic" : self.incantationStartCmd,
-			"pie" : self.incantationEndCmd,
-			"pfk" : self.Cmd,
-			"pnw" : self.connectionOfNewPlay,
-			"pdr" : self.resourceDropCmd,
-			"pgt" : self.resourcesCollectedCmd,
-			"pdi" : self.deathCmd,
-			"enw" : self.playerLaidEgg,
-			"eht" : self.eggHatchingCmd,
-			"ebo" : self.Cmd,
-			"edi" : self.eggDeathCmd,
-			"seg" : self.endGameCmd,
-			"smg" : self.incomingMessageCmd,
-			"suc" : self.unknowCommandCmd,
-			"sbp" : self.commandParamCmd
+
+	def buidCommande(self):
+		self._commands = Commands(commands={
+			"pex": self.expultionCmd,
+			"pbc": self.broadcastCmd,
+			"pic": self.incantationStartCmd,
+			"pie": self.incantationEndCmd,
+			"pfk": self.Cmd,
+			"pnw": self.connectionOfNewPlay,
+			"pdr": self.resourceDropCmd,
+			"pgt": self.resourcesCollectedCmd,
+			"pdi": self.deathCmd,
+			"enw": self.playerLaidEgg,
+			"eht": self.eggHatchingCmd,
+			"ebo": self.Cmd,
+			"edi": self.eggDeathCmd,
+			"seg": self.endGameCmd,
+			"smg": self.incomingMessageCmd,
+			"suc": self.unknowCommandCmd,
+			"sbp": self.commandParamCmd
 		})
 
 	def Cmd(self, cmd):
@@ -232,21 +187,22 @@ class GraphicalInterface(Server, threading.Thread):
 		self._items["applause"] = pygame.image.load(os.path.abspath("assets/icon/applause.png")).convert_alpha()
 		self._items["fist"] = pygame.image.load(os.path.abspath("assets/icon/fist.png")).convert_alpha()
 		self._items["cercle"] = pygame.image.load(os.path.abspath("assets/icon/cercle2.png")).convert_alpha()
+		
+	def builPlayerSprite(self):
 		self._itemsPlayer = {
 			"stand": {
-				1 : pygame.image.load(os.path.abspath("assets/perso/stand/north.png")).convert_alpha(),
-				2 : pygame.image.load(os.path.abspath("assets/perso/stand/east.png")).convert_alpha(),
-				3 : pygame.image.load(os.path.abspath("assets/perso/stand/south.png")).convert_alpha(),
-				4 : pygame.image.load(os.path.abspath("assets/perso/stand/west.png")).convert_alpha()
+				1: pygame.image.load(os.path.abspath("assets/perso/stand/north.png")).convert_alpha(),
+				2: pygame.image.load(os.path.abspath("assets/perso/stand/east.png")).convert_alpha(),
+				3: pygame.image.load(os.path.abspath("assets/perso/stand/south.png")).convert_alpha(),
+				4: pygame.image.load(os.path.abspath("assets/perso/stand/west.png")).convert_alpha()
 			},
-			"move":{
+			"move": {
 				1: pygame.image.load(os.path.abspath("assets/perso/move/north.png")).convert_alpha(),
 				2: pygame.image.load(os.path.abspath("assets/perso/move/east.png")).convert_alpha(),
 				3: pygame.image.load(os.path.abspath("assets/perso/move/south.png")).convert_alpha(),
 				4: pygame.image.load(os.path.abspath("assets/perso/move/west.png")).convert_alpha()
 			}
 		}
-
 
 	def buildPlayer(self):
 		nb = self.getAllId()
@@ -270,14 +226,11 @@ class GraphicalInterface(Server, threading.Thread):
 						orient = int(pos[3])
 					)
 				)
-				print(item)
 			except:
 				continue
 
-
-
 	class Player():
-		def __init__(self, **kwargs):
+		def __init__(self,**kwargs):
 			self._id = kwargs.get('id')
 			self._posX = kwargs.get('x')
 			self._posY = kwargs.get('y')
@@ -301,81 +254,6 @@ class GraphicalInterface(Server, threading.Thread):
 			self._posX = 0
 			self._posY = 0
 
-	class Hud():
-		def __init__(self, graphical):
-			self._hasDraw = False
-			self._fontsize = 25
-			self._graph = graphical
-			self._blocks = []
-			self.buildBlock()
-			self.drawBlock()
-
-		def drawBlock(self):
-			y = 0
-			for el in self._blocks:
-				el.draw(y, self._graph, self._graph._winSizeX)
-				y += 1
-
-		def buildBlock(self):
-			for player in self._graph._playerList:
-				self._blocks.append(
-					self.Block (
-						name = player._team,
-						inv = player._inventory,
-						level = player._level,
-						team = player._team,
-						magic = player._incanting,
-						id = player._id
-					)
-				)
-
-		class Block():
-			def __init__(self, **kwargs):
-				self.id = kwargs.get('id')
-				self.team = kwargs.get('team')
-				self.name = kwargs.get('name')
-				self.inventory = kwargs.get('inv')
-				self.level = kwargs.get('level')
-				self.magic = kwargs.get('magic')
-
-			def draw(self, y, graph, screenX):
-				BLACK = (112,112,112)
-				x = screenX - 360
-				y = y * 110 + 10
-				pygame.draw.rect(graph._window, BLACK, [x, y, 350, 100], 2)
-				try:
-					label = graph._font.render(str(self.level), 1, (255, 255, 255))
-					graph._window.blit(label, (x +10, y + 10))
-				except:
-					pass
-				try:
-					label = graph._font.render(str(self.id), 1, (255, 255, 255))
-					graph._window.blit(label, (screenX - 30, y + 10))
-				except:
-					pass
-
-				try:
-					txt = ""
-					for key, value in self.inventory.items():
-						txt += (key[0] + ":" + str(value) + " ")
-					label = graph._font.render(txt, 1, (0, 0, 0))
-					graph._window.blit(label, (x + 5 , y + 70))
-				except:
-					pass
-
-				try:
-					label = graph._font.render(self.team , 1, (255, 255, 255))
-					graph._window.blit(label, (x + 120, y + 10))
-				except:
-					pass
-
-				try:
-					if self.magic:
-						label = graph._font.render("magic" , 1, (255, 255, 255))
-						graph._window.blit(label, (x + 5, y + 40))
-				except:
-					pass
-
 	def manageConnection(self):
 		cmd = self.readTh.get_command()
 		if cmd == "WELCOME":
@@ -384,7 +262,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self._sizeX = int(cmd[0])
 			self._sizeY = int(cmd[1])
 			print("Frequence: ", self.readTh.get_command().split(' ')[1:])
-			self._mapContent = self.get_map()
+			self._mapContent = self.getMap()
 			cmd = self.readTh.get_command()
 			while cmd is not None:
 				self.teams.append(cmd.split(' ')[1:][0])
@@ -410,22 +288,22 @@ class GraphicalInterface(Server, threading.Thread):
 		status = True
 		pygame.mixer.music.play()
 		while status:
-			cmd = self.readTh.get_command(False)
-			if cmd is not None:
-				self._commands.parse(cmd)
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					status = False
 				if event.type == pygame.KEYDOWN:
 					status = self.manageKeys(event)
 			self._window.blit(self._background, (0, 0))
+			cmd = self.readTh.get_command(True, 1.5)
+			if cmd is not None:
+				self._commands.parse(cmd)
+			self._mapContent = self.getMap()
 			self.updatePerso()
-			self._mapContent = self.get_map()
 			self.drawMap()
 			self.drawCaseContent()
 			self.drawIcon()
 			self.drawChara()
-			self.Hud(self)
+			Hud(self)
 			pygame.display.update()
 			self._clock.tick(60)
 		pygame.mixer.music.stop
@@ -441,7 +319,6 @@ class GraphicalInterface(Server, threading.Thread):
 				player._orientaton = int(cmd[3])
 				player._inventory = self.getPlayerBag(player._id)
 				player._level = self.getPlayerLevel(player._id)
-
 			except:
 				pass
 
@@ -500,7 +377,7 @@ class GraphicalInterface(Server, threading.Thread):
 						0,
 						player._spriteSizeX,
 						player._spriteSizeY
-                                        ),
+					),
 					(tmp2X, tmp2Y)
 				)
 			if player._frame > 1:
@@ -561,41 +438,26 @@ class GraphicalInterface(Server, threading.Thread):
 			return None
 		return cmd
 
-	def get_map_size(self):
-        	self.write("msz")
-        	cmd = self.readTh.get_command().split(' ')[1:]
-        	return cmd
+	def getMapSize(self):
+		self.write("msz")
+		cmd = self.readTh.get_command().split(' ')[1:]
+		return cmd
 
-	def get_number_player(self):
+	def getNumberPlayer(self):
 		self.write("gnp")
 		tmp = self.readTh.get_command().split(' ')[1:]
 		return tmp
 
-	def get_map(self):
+	def getMap(self):
 		m = []
 		for y in range(self._sizeY):
 			line = []
 			for x in range(self._sizeX):
-				self.write("btc " + str(x) + " " + str(y))
-				cmd = self.readTh.get_command().split(' ')[3:]
-				print(cmd, file = sys.stderr)
-				try:
-        	        		line.append({
-        	                		"food": int(cmd[0]),
-        	                		"linemate": int(cmd[1]),
-        	                		"deraumere": int(cmd[2]),
-        	                		"sibur": int(cmd[3]),
-        	                		"mendiane": int(cmd[4]),
-        	                		"phiras": int(cmd[5]),
-        	                		"thystame": int(cmd[6]),
-        	        		})
-				except IndexError:
-					print("Error while creating line from construct map", file=sys.stderr)
-					exit(84)
+				line.append(self.getTile(x, y))
 			m.append(line)
 		return m
 
-	def teams_name(self):
+	def teamsName(self):
 		names = []
 		self.write("tna")
 		cmd = self.readTh.get_command()
@@ -609,10 +471,7 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def getPlayerTeam(self, name):
 		self.write("gpt #" + str(name))
-		try:
-			cmd = self.readTh.get_command()
-		except:
-			return "None"
+		cmd = self.readTh.get_command()
 		return cmd
 
 	def getPlayerBag(self, ident:int):
@@ -633,18 +492,18 @@ class GraphicalInterface(Server, threading.Thread):
 			return None
 		return tab
 
-	def get_tile(self, x:str, y:str):
+	def getTile(self, x:str, y:str):
 		self.write("bct " + str(x) + " " + str(y))
 		cmd = self.readTh.get_command().split(' ')[3:]
 		try:
 			return {
-				"food": cmd[0],
-				"linemate": cmd[1],
-				"deraumere": cmd[2],
-				"sibur": cmd[3],
-				"mendiane": cmd[4],
-				"phiras": cmd[5],
-				"thystame": cmd[6],
+				"food": int(cmd[0]),
+				"linemate": int(cmd[1]),
+				"deraumere": int(cmd[2]),
+				"sibur": int(cmd[3]),
+				"mendiane": int(cmd[4]),
+				"phiras": int(cmd[5]),
+				"thystame": int(cmd[6])
 			}
 		except IndexError:
 			print("Error while getting tile", file=sys.stderr)
@@ -657,13 +516,11 @@ class GraphicalInterface(Server, threading.Thread):
 			return int(cmd[0])
 		except:
 			return None
-		pass
-
+		
 	def getAllId(self):
 		self.write("gai ")
 		try:
 			cmd = self.readTh.get_command().split(' ')[1:]
-			print(cmd)
 			return cmd
 		except:
 			return None

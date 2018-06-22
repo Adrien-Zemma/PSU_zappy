@@ -6,7 +6,7 @@ class Commands():
 			self.commands = args.get("commands", {})
 	def append(self, name: str, fnct):
 		self.commands[name] =  fnct
-	
+
 	def parse(self, command: str):
 		if self.commands is None:
 			return 1
