@@ -10,7 +10,7 @@
 
 command_t	**init_commands(t_parse *parse)
 {
-	const int	i = 23;
+	const int	i = 24;
 	command_t	**node = malloc(sizeof(command_t *) * (i + 1));
 
 	if (!node)
@@ -38,6 +38,7 @@ command_t	**init_commands(t_parse *parse)
 	node[20] = append_command("gpt", gtp, 0);
 	node[21] = append_command("Fork", forke, 42 / (double)parse->freq);
 	node[22] = append_command("gai", gai, 0);
+	node[23] = append_command("Eject", eject, 7 / (double)parse->freq);
 	node[i] = NULL;
 	return node;
 }

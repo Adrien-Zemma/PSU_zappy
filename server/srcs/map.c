@@ -11,6 +11,10 @@ void	append_player(tile_t **tile, client_t *client)
 {
 	int i;
 
+	if (!(*tile)->clients) {
+		(*tile)->clients = malloc(sizeof(client_t *) * 1);
+		(*tile)->clients[0] = NULL;
+	}	
 	for (i = 0; (*tile)->clients[i]; i++);
 	(*tile)->clients = realloc((*tile)->clients, sizeof(client_t *) * (i + 2));
 	(*tile)->clients[i] = client;
