@@ -49,10 +49,6 @@ int	remove_player(tile_t ***map, client_t *client)
 			manage_tile(map[i][j], client);
 		}
 	}
-	// for (i = 0; (*tile)->clients[i] && (*tile)->clients[i] != client; i++);
-	// if (!(*tile)->clients[i])
-	// 	return KO;
-	// reorganize_players(&(*tile)->clients, i);
 	return OK;
 }
 
@@ -69,20 +65,13 @@ void	search_players(tile_t ***map)
 
 static void	gen_tile(tile_t **node)
 {
-	// (*node)->linemate = ADD_MINERAL(0, 2);
-	// (*node)->deraumere = ADD_MINERAL(0, 2);
-	// (*node)->sibur = ADD_MINERAL(0, 2);
-	// (*node)->mendiane = ADD_MINERAL(0, 2);
-	// (*node)->phiras = ADD_MINERAL(0, 2);
-	// (*node)->thystam = ADD_MINERAL(0, 2);
-	// (*node)->food = ADD_MINERAL(0, 2);
-	(*node)->linemate = 1;
-	(*node)->deraumere = 1;
-	(*node)->sibur = 1;
-	(*node)->mendiane = 1;
-	(*node)->phiras = 1;
-	(*node)->thystam = 1;
-	(*node)->food = 1;
+	(*node)->linemate = ADD_MINERAL(0, 2);
+	(*node)->deraumere = ADD_MINERAL(0, 2);
+	(*node)->sibur = ADD_MINERAL(0, 2);
+	(*node)->mendiane = ADD_MINERAL(0, 2);
+	(*node)->phiras = ADD_MINERAL(0, 2);
+	(*node)->thystam = ADD_MINERAL(0, 2);
+	(*node)->food = ADD_MINERAL(0, 2);
 	(*node)->clients = malloc(sizeof(client_t *) * 1);
 	(*node)->clients[0] = NULL;
 }

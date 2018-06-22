@@ -45,5 +45,6 @@ int	look_west(server_t *server, client_t *client, int *nb)
 		nb[0]++;
 		nb[1]++;
 	}
+	dprintf(client->fd, "]");
 	return OK;
 }
