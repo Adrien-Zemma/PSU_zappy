@@ -8,6 +8,24 @@
 #include "commands.h"
 #include "parse.h"
 
+command_t	**init_other_commands(t_parse *parse, command_t **node, int i)
+{
+	node[12] = append_command("Take", take_object, 7 / (double)parse->freq);
+	node[13] = append_command("Connect_nbr", nb_connect, 0);
+	node[14] = append_command("sgt", sgt, 0);
+	node[15] = append_command("sst", sst, 0);
+	node[16] = append_command("Set", set_object, 0);
+	node[17] = append_command("gnp", get_number_player, 0);
+	node[18] = append_command("ppo", get_player_pos, 0);
+	node[19] = append_command("Incantation",
+		start_incantation, 300 / (double)parse->freq);
+	node[20] = append_command("gpt", gtp, 0);
+	node[21] = append_command("Fork", forke, 42 / (double)parse->freq);
+	node[22] = append_command("gai", gai, 0);
+	node[i] = NULL;
+	return (node);
+}
+
 command_t	**init_commands(t_parse *parse)
 {
 	const int	i = 23;
@@ -24,25 +42,16 @@ command_t	**init_commands(t_parse *parse)
 	node[6] = append_command("Forward", forward, 7 / (double)parse->freq);
 	node[7] = append_command("Right", right, 7 / (double)parse->freq);
 	node[8] = append_command("Left", left, 7 / (double)parse->freq);
-	node[9] = append_command("Inventory", inventory, 1 / (double)parse->freq);
+	node[9] = append_command("Inventory",
+		inventory, 1 / (double)parse->freq);
 	node[10] = append_command("Look", look, 7 / (double)parse->freq);
-	node[11] = append_command("Broadcast", broadcast, 7 / (double)parse->freq);
-	node[12] = append_command("Take", take_object, 7 / (double)parse->freq);
-	node[13] = append_command("Connect_nbr", nb_connect, 0);
-	node[14] = append_command("sgt", sgt, 0);
-	node[15] = append_command("sst", sst, 0);
-	node[16] = append_command("Set", set_object, 0);
-	node[17] = append_command("gnp", get_number_player, 0);
-	node[18] = append_command("ppo", get_player_pos, 0);
-	node[19] = append_command("Incantation", start_incantation, 300 / (double)parse->freq);
-	node[20] = append_command("gpt", gtp, 0);
-	node[21] = append_command("Fork", forke, 42 / (double)parse->freq);
-	node[22] = append_command("gai", gai, 0);
-	node[i] = NULL;
-	return node;
+	node[11] = append_command("Broadcast",
+		broadcast, 7 / (double)parse->freq);
+	return (init_other_commands(parse, node, i));
 }
 
-command_t	*append_command(char *name, int (*ptrFnct)(server_t *, client_t *, char *), double time)
+command_t	*append_command(char *name,
+	int (*ptrFnct)(server_t *, client_t *, char *), double time)
 {
 	command_t	*node = malloc(sizeof(command_t));
 
