@@ -43,7 +43,8 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/server.c \
 	  ./server/srcs/set_socket.c \
 	  ./server/srcs/timeout.c \
-	  ./server/srcs/utils.c 
+	  ./server/srcs/utils.c \
+	  ./server/srcs/set_struct.c
 
 OBJS	= $(SRCS:.c=.o)
 

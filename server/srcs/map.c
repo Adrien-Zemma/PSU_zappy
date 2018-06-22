@@ -12,7 +12,8 @@ void	append_player(tile_t **tile, client_t *client)
 	int i;
 
 	for (i = 0; (*tile)->clients[i]; i++);
-	(*tile)->clients = realloc((*tile)->clients, sizeof(client_t *) * (i + 2));
+	(*tile)->clients = realloc((*tile)->clients,
+		sizeof(client_t *) * (i + 2));
 	(*tile)->clients[i] = client;
 	(*tile)->clients[i + 1] = NULL;
 }
@@ -57,7 +58,8 @@ void	search_players(tile_t ***map)
 	for (int i = 0; map[i]; i++)
 		for (int j = 0; map[i][j]; j++) {
 			for (int k = 0; map[i][j]->clients[k]; k++) {
-				printf("map[%d][%d][%d]:%d\n", i, j, k, map[i][j]->clients[k]->id);
+				printf("map[%d][%d][%d]:%d\n", i,
+					j, k, map[i][j]->clients[k]->id);
 			}
 	}
 	fflush(NULL);
