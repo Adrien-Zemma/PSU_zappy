@@ -13,7 +13,7 @@ int	map_val_pos(int map_size, int pos)
 		pos += map_size;
 	while (pos >= map_size)
 		pos -= map_size;
-	return pos;
+	return (pos);
 }
 
 void	check_look_north(client_t *client,
