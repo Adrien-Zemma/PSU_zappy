@@ -55,6 +55,7 @@ int main(int ac, char **av)
 	t_parse	*parse = parse_args(av);
 	server_t	*server = malloc(sizeof(server_t));
 
+	signal(SIGINT, exit_handler);
 	if (!parse || ac < 12) {
 		if (parse && parse->teams)
 			free(parse->teams);
@@ -62,7 +63,6 @@ int main(int ac, char **av)
 		free(server);
 		return (84);
 	}
-	signal(SIGINT, exit_handler);
 	set_struct_server(server, parse);
 	free_tab(parse->teams);
 	free(parse);
