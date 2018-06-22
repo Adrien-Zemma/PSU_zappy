@@ -21,12 +21,9 @@ class IAServer(Server):
 				exit(84)
 			cmd = self.readTh.get_command().split(' ')
 			self.map_size = (cmd[0], cmd[1])
-			print("Setted coords")
-			print(self.map_size)
 
 	def forward(self:object):
 		self.write("Forward")
-		print("Forward", flush=True)
 		return self.readTh.get_command()
 
 	def right(self:object):

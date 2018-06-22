@@ -27,13 +27,15 @@ class IA(threading.Thread):
 		ret = self.server.look()
 		if ret[0]["food"] > 0:
 			self.takeN("food", ret[0]["food"])
-		self.takeN("linemate", incantationRequirements[self.level - 1]["linemate"] - self.inventory["linemate"] - incantationRequirements[self.level - 1]["linemate"] - ret[0]["linemate"])
-		#self.takeN("linemate", 5)
+		for k, _ in self.inventory.items():
+			self.takeN(k, incantationRequirements[self.level - 1][k] - self.inventory[k])
 
 	def takeN(self, object, n):
 		if n < 0:
 			return
 		for i in range(n):
 			ret = self.server.take(object)
-			if ret == "ko":
+			if ret == "ok" and object != "food":
+				self.inventory[object] += 1
+			else:
 				return
