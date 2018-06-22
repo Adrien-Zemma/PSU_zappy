@@ -21,13 +21,13 @@ int	set_client(server_t *server, char *str)
 	client->level = 1;
 	client->is_incanting = 0;
 	client->id = server->nb_client;
-	client->posX = ADD_MINERAL(0, server->parse->width);
-	client->posY = ADD_MINERAL(0, server->parse->height);
+	client->pos_x = ADD_MINERAL(0, server->parse->width);
+	client->pos_y = ADD_MINERAL(0, server->parse->height);
 	client->orientation = ADD_MINERAL(1, 5);
 	client->command = queue_init();
 	if (!client->command)
 		return (84);
-	append_player(&server->map[server->clients[server->nb_client - 1]->posY][server->clients[server->nb_client - 1]->posX],
+	append_player(&server->map[server->clients[server->nb_client - 1]->pos_y][server->clients[server->nb_client - 1]->pos_x],
 		server->clients[server->nb_client - 1]);
 	free(str);
 	return (0);

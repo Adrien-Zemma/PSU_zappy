@@ -24,6 +24,7 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/commands/look_west.c \
 	  ./server/srcs/commands/map_content.c \
 	  ./server/srcs/commands/map_size.c \
+	  ./server/srcs/manage_tile.c \
 	  ./server/srcs/commands/nb_connect.c \
 	  ./server/srcs/commands/player_inventory.c \
 	  ./server/srcs/commands/player_level.c \
@@ -43,12 +44,13 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/server.c \
 	  ./server/srcs/set_socket.c \
 	  ./server/srcs/timeout.c \
-	  ./server/srcs/utils.c 
+	  ./server/srcs/utils.c \
+	  ./server/srcs/set_struct.c
 
 OBJS	= $(SRCS:.c=.o)
 
 CFLAGS = -I ./server/incs/
-CFLAGS += -W -Wall -Wextra
+CFLAGS += -W -Wall -Wextra -g3
 
 all: $(NAME)
 

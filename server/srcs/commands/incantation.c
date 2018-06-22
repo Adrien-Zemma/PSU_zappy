@@ -48,13 +48,13 @@ int	start_incantation(server_t *server, client_t *client, char *str)
 {
 	(void)str;
 	client->is_incanting = 1;
-	if (client->level >= 8 || compare_tile_incantation(server->map[client->posY][client->posX], level_requirement[client->level - 1]) == 0) {
+	if (client->level >= 8 || compare_tile_incantation(server->map[client->pos_y][client->pos_x], level_requirement[client->level - 1]) == 0) {
 		dprintf(client->fd, "ko\n");
-		return KO;
+		return (KO);
 	}
-	remove_minerals(&server->map[client->posY][client->posX], level_requirement[client->level - 1]);
+	remove_minerals(&server->map[client->pos_y][client->pos_x], level_requirement[client->level - 1]);
 	client->level++;
 	dprintf(client->fd, "Current level: %d\n", client->level);
 	client->is_incanting = 0;
-	return OK;
+	return (OK);
 }
