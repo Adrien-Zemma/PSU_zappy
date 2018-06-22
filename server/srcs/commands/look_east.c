@@ -9,21 +9,21 @@
 
 void	check_map(tile_t *map, client_t *client)
 {
-	if (map->linemate != 0)
+	for (size_t i = 0; i < map->linemate; i++)
 		dprintf(client->fd, "linemate ");
-	if (map->deraumere != 0)
+	for (size_t i = 0; i < map->deraumere; i++)
 		dprintf(client->fd, "deraumere ");
-	if (map->sibur != 0)
+	for (size_t i = 0; i < map->sibur; i++)
 		dprintf(client->fd, "sibur ");
-	if (map->mendiane != 0)
+	for (size_t i = 0; i < map->mendiane; i++)
 		dprintf(client->fd, "mendiane ");
-	if (map->phiras != 0)
+	for (size_t i = 0; i < map->phiras; i++)
 		dprintf(client->fd, "phiras ");
-	if (map->thystam != 0)
+	for (size_t i = 0; i < map->thystam; i++)
 		dprintf(client->fd, "thystam ");
 	for (int i = 0; map->clients[i] != NULL; i++)
 		dprintf(client->fd, "player ");
-	if (map->food != 0)
+	for (size_t i = 0; i < map->food; i++)
 		dprintf(client->fd, "food ");
 	dprintf(client->fd, ",");
 }
@@ -45,10 +45,10 @@ void	check_look_east(client_t *client, int *nb, int pos_x, server_t *server)
 			pos_y = pos_y - server->parse->height;
 			check_map(server->map[map_val_pos(server->parse->height, pos_y - nb[0])][map_val_pos(server->parse->width, pos_x)], client);
 		}
-		else{
+		else {
 			check_map(server->map[map_val_pos(server->parse->height, pos_y - nb[0])][map_val_pos(server->parse->width, pos_x)], client);
 		}
-	}while (i++ - nb[0] < 1 + nb[0] - 1);
+	} while (i++ - nb[0] < 1 + nb[0] - 1);
 }
 
 int	look_east(server_t *server, client_t *client, int *nb)

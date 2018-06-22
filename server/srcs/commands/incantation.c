@@ -47,6 +47,7 @@ static void	remove_minerals(tile_t **p_tile, const tile_t *level)
 int	start_incantation(server_t *server, client_t *client, char *str)
 {
 	client_t	*tmp;
+	tile_t		*tile;
 
 	(void)str;
 	if (client->level >= 8
@@ -56,8 +57,9 @@ int	start_incantation(server_t *server, client_t *client, char *str)
 		return (KO);
 	}
 	client->is_incanting = 1;
-	for (int i = 0; server->map[client->pos_y][client->pos_x]->clients[i]; i++) {
-		tmp = server->map[client->pos_y][client->pos_x]->clients[i];
+	tile = server->map[client->pos_y][client->pos_x];
+	for (int i = 0; tile->clients[i]; i++) {
+		tmp = tile->clients[i];
 		dprintf(tmp->fd, "Elevation underway\n");
 		queue_append(&tmp->command,
 			append_command(NULL,
