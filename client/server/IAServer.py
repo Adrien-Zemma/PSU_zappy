@@ -45,6 +45,7 @@ class IAServer(Server):
 		ret = "".join(ret.split())
 		for tile in ret.split(','):
 			datas.append({
+				"food": tile.count("food"),
 				"linemate": tile.count("linemate"),
 				"deraumere": tile.count("deraumere"),
 				"sibur": tile.count("sibur"),
@@ -53,7 +54,6 @@ class IAServer(Server):
 				"thystame": tile.count("thystame"),
 				"player": tile.count("player")
 			})
-		print(datas, flush=True)
 		return datas
 
 	def inventory(self:object):
@@ -71,7 +71,6 @@ class IAServer(Server):
 			except (KeyError, IndexError):
 				print("Error while recepting inventory", file=sys.stderr)
 				exit(84)
-		print(data, flush=True)
 		return data
 
 	def broadcast(self:object, msg:str):

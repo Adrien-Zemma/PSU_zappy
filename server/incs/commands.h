@@ -20,7 +20,7 @@
 
 typedef struct server_s server_t;
 typedef struct client_s client_t;
-typedef struct tile tile_t;
+typedef struct tile_s tile_t;
 
 typedef struct	command_s
 {
@@ -30,7 +30,8 @@ typedef struct	command_s
 }		command_t;
 
 command_t	**init_commands(t_parse *parse);
-command_t	*append_command(char *name, int (*ptrFnct)(server_t *, client_t *, char *), double time);
+command_t	*append_command(char *name,
+	int (*ptrFnct)(server_t *, client_t *, char *), double time);
 int		map_size(server_t *server, client_t *client, char *str);
 int		names_team(server_t *server, client_t *client, char *str);
 int		map_content(server_t *server, client_t *client, char *str);
@@ -53,6 +54,7 @@ int	set_object(server_t *server, client_t *client, char *str);
 int	get_number_player(server_t *server, client_t *client, char *str);
 int	get_player_pos(server_t *server, client_t *client, char *str);
 int	send_connection(client_t **targets, client_t *origin);
+int	start_incantation(server_t *server, client_t *client, char *str);
 int	forke(server_t *server, client_t *client, char *str);
 int	gtp(server_t *server, client_t *client, char *str);
 int	gai(server_t *server, client_t *client, char *str);
