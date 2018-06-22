@@ -18,7 +18,7 @@ def main():
 	for ia in ias:
 		ia.join()
 	if args.graph:
-		ui.join()			
+		ui.join()
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(add_help=False)

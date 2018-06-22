@@ -22,7 +22,7 @@ void	push_somebody(server_t *server, client_t *client)
 		else
 			client->posX++;
 	}
-	forwardY(server, client);	
+	forwardY(server, client);
 }
 
 int	eject(server_t *server, client_t *client, char *str)
@@ -33,14 +33,17 @@ int	eject(server_t *server, client_t *client, char *str)
 	for (clients = 0; server->map[client->posY][client->posX]->clients[clients]; clients++);
 	if (clients == 1) {
 		dprintf(client->fd, "ko\n");
-		return KO;
+		return (KO);
 	}
-	for (int i = 0; i < clients; i++)
+	for (int i = 0; i < clients;) {
 		if (server->map[client->posY][client->posX]->clients[i] != client) {
 			server->map[client->posY][client->posX]->clients[i]->orientation = client->orientation;
 			push_somebody(server, server->map[client->posY][client->posX]->clients[i]);
+			clients--;
 		}
-		
+		else
+			i++;
+	}
 	dprintf(client->fd, "ok\n");
-	return OK;
+	return (OK);
 }
