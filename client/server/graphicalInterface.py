@@ -235,15 +235,15 @@ class GraphicalInterface(Server, threading.Thread):
 		self._itemsPlayer = {
 			"stand": {
 				1 : pygame.image.load(os.path.abspath("assets/perso/stand/north.png")).convert_alpha(),
-				4 : pygame.image.load(os.path.abspath("assets/perso/stand/east.png")).convert_alpha(),
+				2 : pygame.image.load(os.path.abspath("assets/perso/stand/east.png")).convert_alpha(),
 				3 : pygame.image.load(os.path.abspath("assets/perso/stand/south.png")).convert_alpha(),
-				2 : pygame.image.load(os.path.abspath("assets/perso/stand/west.png")).convert_alpha()
+				4 : pygame.image.load(os.path.abspath("assets/perso/stand/west.png")).convert_alpha()
 			},
 			"move":{
 				1: pygame.image.load(os.path.abspath("assets/perso/move/north.png")).convert_alpha(),
-				4: pygame.image.load(os.path.abspath("assets/perso/move/east.png")).convert_alpha(),
+				2: pygame.image.load(os.path.abspath("assets/perso/move/east.png")).convert_alpha(),
 				3: pygame.image.load(os.path.abspath("assets/perso/move/south.png")).convert_alpha(),
-				2: pygame.image.load(os.path.abspath("assets/perso/move/west.png")).convert_alpha()
+				4: pygame.image.load(os.path.abspath("assets/perso/move/west.png")).convert_alpha()
 			}
 		}
 
@@ -291,8 +291,8 @@ class GraphicalInterface(Server, threading.Thread):
 			self._isAlive = True
 			self._spriteSizeX = 31
 			self._spriteSizeY = 50
-			self._incanting = True
-			self._isApplause = True
+			self._incanting = False
+			self._isApplause = False
 			self._isPushing = False
 
 	class Egg():
@@ -384,27 +384,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self._sizeX = int(cmd[0])
 			self._sizeY = int(cmd[1])
 			print("Frequence: ", self.readTh.get_command().split(' ')[1:])
-			m = []
-			for _ in range(self._sizeY):
-				line = []
-				for _ in range(self._sizeX):
-					cmd = self.readTh.get_command().split(' ')
-					cmd = cmd[3:]
-					try:
-        	        			line.append({
-        	        	        		"food": int(cmd[0]),
-        	        	        		"linemate": int(cmd[1]),
-        	        	        		"deraumere": int(cmd[2]),
-        	        	        		"sibur": int(cmd[3]),
-        	        	        		"mendiane": int(cmd[4]),
-        	        	        		"phiras": int(cmd[5]),
-        	        	        		"thystame": int(cmd[6]),
-        	        			})
-					except IndexError:
-						print("Error while creating line from construct map manage connection", file=sys.stderr)
-						exit(84)
-				m.append(line)
-			self._mapContent = m
+			self._mapContent = self.get_map()
 			cmd = self.readTh.get_command()
 			while cmd is not None:
 				self.teams.append(cmd.split(' ')[1:][0])
@@ -440,6 +420,7 @@ class GraphicalInterface(Server, threading.Thread):
 					status = self.manageKeys(event)
 			self._window.blit(self._background, (0, 0))
 			self.updatePerso()
+			self._mapContent = self.get_map()
 			self.drawMap()
 			self.drawCaseContent()
 			self.drawIcon()
@@ -592,11 +573,12 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def get_map(self):
 		m = []
-		self.write("mct")
-		for _ in range(self._sizeY):
+		for y in range(self._sizeY):
 			line = []
-			for _ in range(self._sizeX):
+			for x in range(self._sizeX):
+				self.write("btc " + str(x) + " " + str(y))
 				cmd = self.readTh.get_command().split(' ')[3:]
+				print(cmd, file = sys.stderr)
 				try:
         	        		line.append({
         	                		"food": int(cmd[0]),
