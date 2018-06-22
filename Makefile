@@ -1,3 +1,10 @@
+##
+## EPITECH PROJECT, 2018
+## Project Name
+## File description:
+## zappy
+##
+
 NAME	= zappy_server
 
 CC	= gcc
