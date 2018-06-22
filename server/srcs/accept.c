@@ -9,20 +9,71 @@
 
 int	set_client(server_t *server, char *str)
 {
-	server->clients[server->nb_client - 1]->team = strdup(str);
-	server->clients[server->nb_client - 1]->food = 1;
-	server->clients[server->nb_client - 1]->linemate = 0;
-	server->clients[server->nb_client - 1]->demaumere = 0;
-	server->clients[server->nb_client - 1]->sibur = 0;
-	server->clients[server->nb_client - 1]->mendiane = 0;
-	server->clients[server->nb_client - 1]->phiras = 0;
-	server->clients[server->nb_client - 1]->thystame = 0;
-	server->clients[server->nb_client - 1]->level = 1;
-	server->clients[server->nb_client - 1]->id = server->nb_client;
-	server->clients[server->nb_client - 1]->posX = ADD_MINERAL(0, server->parse->width);
-	server->clients[server->nb_client - 1]->posY = ADD_MINERAL(0, server->parse->height);
-	server->clients[server->nb_client - 1]->orientation = ADD_MINERAL(1, 5);
+	client_t *client = server->clients[server->nb_client - 1];
+	client->team = strdup(str);
+	client->food = 1;
+	client->linemate = 0;
+	client->demaumere = 0;
+	client->sibur = 0;
+	client->mendiane = 0;
+	client->phiras = 0;
+	client->thystame = 0;
+	client->level = 1;
+	client->is_incanting = 0;
+	client->id = server->nb_client;
+	client->posX = ADD_MINERAL(0, server->parse->width);
+	client->posY = ADD_MINERAL(0, server->parse->height);
+	client->orientation = ADD_MINERAL(1, 5);
+	client->command = queue_init();
+	if (!client->command)
+		return (84);
+	append_player(&server->map[server->clients[server->nb_client - 1]->posY][server->clients[server->nb_client - 1]->posX],
+		server->clients[server->nb_client - 1]);
+	free(str);
 	return (0);
+}
+
+void	print_graph_infos(server_t *server, client_t *client)
+{
+	map_size(server, client, NULL);
+	dprintf(client->fd, "sgt %d\n", server->parse->freq);
+	map_content(server, client, NULL);
+	names_team(server, client, NULL);
+}
+
+int	set_graphic(server_t *server, int tmp)
+{
+	server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
+	server->fds[server->nb_fd] = tmp;
+	server->nb_fd++;
+	server->nb_client++;
+	server->clients = realloc(server->clients,
+		sizeof(client_t *) * (1 + server->nb_client));
+	server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
+	server->clients[server->nb_client] = NULL;
+	server->clients[server->nb_client - 1]->fd = tmp;
+	server->clients[server->nb_client - 1]->id = -1;
+	server->clients[server->nb_client - 1]->command = queue_init();
+	print_graph_infos(server, server->clients[server->nb_client - 1]);
+	return (0);
+}
+
+int	alloc_client(server_t *server, int tmp, char *str)
+{
+	server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
+	server->fds[server->nb_fd] = tmp;
+	server->nb_fd++;
+	server->nb_client++;
+	server->clients = realloc(server->clients,
+		sizeof(client_t *) * (1 + server->nb_client));
+	server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
+	server->clients[server->nb_client] = NULL;
+	server->clients[server->nb_client - 1]->fd = tmp;
+	dprintf(tmp, "%d\n", server->nb_client);
+	dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
+	tmp = set_client(server, str);
+	send_connection(server->clients, server->clients[server->nb_client - 1]);
+	return (tmp);
 }
 
 int	set_accept(server_t *server)
@@ -39,30 +90,15 @@ int	set_accept(server_t *server)
 	str = getnextline(tmp);
 	if (!str)
 		return (0);
-	if (strcmp(str, "team graphique") == 0) {
-		printf("add graphique client\n");
-		server->fds[server->nb_fd] = tmp;
-		server->nb_fd++;
-		server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
-		server->nb_client++;
-		server->clients = realloc(server->clients,
-			sizeof(client_t *) * (1 + server->nb_client));
-		server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
-		server->clients[server->nb_client] = NULL;
-		server->clients[server->nb_client - 1]->fd = tmp;
-		dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
-		return (0);
+	if (strcmp(str, "GRAPHIC") == 0) {
+		free(str);
+		return (set_graphic(server, tmp));
 	}
-	server->fds[server->nb_fd] = tmp;
-	server->nb_fd++;
-	server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
-	server->nb_client++;
-	server->clients = realloc(server->clients,
-		sizeof(client_t *) * (1 + server->nb_client));
-	server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
-	server->clients[server->nb_client] = NULL;
-	server->clients[server->nb_client - 1]->fd = tmp;
-	dprintf(tmp, "%d\n", server->nb_client);
-	dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
-	return (set_client(server, str));
+	for (int i = 0; server->parse->teams[i] != NULL; i++)
+		if (strncmp(server->parse->teams[i], str, strlen(server->parse->teams[i])) == 0) {
+			return (alloc_client(server, tmp, str));
+		}
+	free(str);
+	dprintf(tmp, "ko\n");
+	return (0);
 }

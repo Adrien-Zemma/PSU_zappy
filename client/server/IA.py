@@ -1,37 +1,39 @@
 import threading
 
-from .Server import Server
+from .IAServer import IAServer
+from .incantationRequirements import incantationRequirements
 
-
-class Ia(Server, threading.Thread):
-	def __init__(self, team, port, ip="localhost"):
-		super().__init__(port, ip)
+class IA(threading.Thread):
+	def __init__(self, team, port, ip):
 		threading.Thread.__init__(self)
-		self.readTh.start()
-		self.team = team
-		self.team_id = None
-		self.map_size = None
-		self.orientation = 0
-		self.manageConnection()
-
-	def manageConnection(self):
-		cmd = self.readTh.get_command()
-		if cmd == "WELCOME":
-			self.write("team " + self.team)
-			self.team_id = self.readTh.get_command()
-			cmd = self.readTh.get_command().split(' ')
-			self.map_size = (cmd[0], cmd[1])
-			print("Setted coords")
-			print(self.map_size)
-	
-	def forward(self:object):
-		self.write("Forward")
-	
-	def right(self:object):
-		self.write("Right")
-	
-	def left(self:object):
-		self.write("Left")
+		self.server = IAServer(team, port, ip)
+		self.daemon = True
+		self.level = 1
+		self.inventory = {
+			"linemate": 0,
+			"deraumere": 0,
+			"sibur": 0,
+			"mendiane": 0,
+			"phiras": 0,
+			"thystame": 0
+		}
 
 	def run(self):
-		print("Hi IA")
+		while True:
+			self.lookAndTake()
+			self.server.forward()
+
+	def lookAndTake(self):
+		ret = self.server.look()
+		if ret[0]["food"] > 0:
+			self.takeN("food", ret[0]["food"])
+		self.takeN("linemate", incantationRequirements[self.level - 1]["linemate"] - self.inventory["linemate"] - incantationRequirements[self.level - 1]["linemate"] - ret[0]["linemate"])
+		#self.takeN("linemate", 5)
+
+	def takeN(self, object, n):
+		if n < 0:
+			return
+		for i in range(n):
+			ret = self.server.take(object)
+			if ret == "ko":
+				return
