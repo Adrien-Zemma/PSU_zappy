@@ -29,8 +29,8 @@ typedef	struct client_s
 	int	phiras;
 	int	thystame;
 	int	level;
-	int	posX;
-	int	posY;
+	int	pos_x;
+	int	pos_y;
 	int	id;
 	int	orientation;
 	char	*team;

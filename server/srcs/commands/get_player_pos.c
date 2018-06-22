@@ -17,7 +17,7 @@ int	get_player_pos(server_t *server, client_t *client, char *str)
 	if (*str == ' ' && *(str + 1) && *(str + 1) == '#')
 		str++;
 	else
-		return BAD_PARAM;
+		return (BAD_PARAM);
 	str++;
 	client_id = atoi(str);
 	printf("hello:%d|%s\n", client_id, str);
@@ -27,9 +27,9 @@ int	get_player_pos(server_t *server, client_t *client, char *str)
 		if (server->clients[i]->id == client_id) {
 			c = server->clients[i];
 			dprintf(client->fd, "ppo %d %d %d %d\n",
-			client_id, c->posX, c->posY,
+			client_id, c->pos_x, c->pos_y,
 			c->orientation);
 		}
 	}
-	return OK;
+	return (OK);
 }

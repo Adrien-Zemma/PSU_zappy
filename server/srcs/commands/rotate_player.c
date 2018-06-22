@@ -10,16 +10,16 @@
 int	forwardY(server_t *server, client_t *client)
 {
 	if (client->orientation == 3) {
-		if (client->posY == server->parse->height - 1)
-			client->posY = 0;
+		if (client->pos_y == server->parse->height - 1)
+			client->pos_y = 0;
 		else
-			client->posY++;
+			client->pos_y++;
 	}
 	if (client->orientation == 4) {
-		if (client->posX == 0)
-			client->posX = server->parse->width - 1;
+		if (client->pos_x == 0)
+			client->pos_x = server->parse->width - 1;
 		else
-			client->posX++;
+			client->pos_x++;
 	}
 	return OK;
 }
@@ -30,19 +30,19 @@ int	forward(server_t *server, client_t *client, char *str)
 
 	remove_player(server->map, client);
 	if (client->orientation == 1) {
-		if (client->posY == 0)
-			client->posY = server->parse->height - 1;
+		if (client->pos_y == 0)
+			client->pos_y = server->parse->height - 1;
 		else
-			client->posY--;
+			client->pos_y--;
 	}
 	if (client->orientation == 2) {
-		if (client->posX == server->parse->width - 1)
-			client->posX = 0;
+		if (client->pos_x == server->parse->width - 1)
+			client->pos_x = 0;
 		else
-			client->posX++;
+			client->pos_x++;
 	}
 	forwardY(server, client);
-	append_player(&server->map[client->posY][client->posX], client);
+	append_player(&server->map[client->pos_y][client->pos_x], client);
 	dprintf(client->fd, "ok\n");
 	return OK;
 }
