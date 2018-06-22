@@ -59,5 +59,7 @@ int	forke(server_t *server, client_t *client, char *str);
 int	gtp(server_t *server, client_t *client, char *str);
 int	gai(server_t *server, client_t *client, char *str);
 int	end_incantation(server_t *server, client_t *client, char *str);
+int	eject(server_t *server, client_t *client, char *str);
+int	forwardY(server_t *server, client_t *client);
 
 #endif /* !COMMANDS_H_ */
