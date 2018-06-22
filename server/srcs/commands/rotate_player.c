@@ -7,42 +7,31 @@
 
 #include "server.h"
 
-int	forwardY(server_t *server, client_t *client)
+int	push_client(server_t *server, client_t *client, size_t orientation)
 {
-	if (client->orientation == 3) {
-		if (client->pos_y == server->parse->height - 1)
-			client->pos_y = 0;
-		else
-			client->pos_y++;
+	remove_player(server->map, client);
+	switch (orientation) {
+		case 1:
+			client->pos_y = map_val_pos(server->parse->height, client->pos_y - 1);
+			break;
+		case 2:
+			client->pos_x = map_val_pos(server->parse->width, client->pos_x + 1);
+			break;
+		case 3:
+			client->pos_y = map_val_pos(server->parse->height, client->pos_y + 1);
+			break;
+		case 4:
+			client->pos_x = map_val_pos(server->parse->width, client->pos_x - 1);
+			break;
 	}
-	if (client->orientation == 4) {
-		if (client->pos_x == 0)
-			client->pos_x = server->parse->width - 1;
-		else
-			client->pos_x++;
-	}
+	append_player(&server->map[client->pos_y][client->pos_x], client);
 	return OK;
 }
 
 int	forward(server_t *server, client_t *client, char *str)
 {
-	str = str;
-
-	remove_player(server->map, client);
-	if (client->orientation == 1) {
-		if (client->pos_y == 0)
-			client->pos_y = server->parse->height - 1;
-		else
-			client->pos_y--;
-	}
-	if (client->orientation == 2) {
-		if (client->pos_x == server->parse->width - 1)
-			client->pos_x = 0;
-		else
-			client->pos_x++;
-	}
-	forwardY(server, client);
-	append_player(&server->map[client->pos_y][client->pos_x], client);
+	(void) str;
+	push_client(server, client, client->orientation);
 	dprintf(client->fd, "ok\n");
 	return OK;
 }
@@ -51,20 +40,7 @@ int	right(server_t *server, client_t *client, char *str)
 {
 	(void)str;
 	(void)server;
-	switch (client->orientation) {
-		case 1:
-			client->orientation = 2;
-			break ;
-		case 2:
-			client->orientation = 3;
-			break ;
-		case 3:
-			client->orientation = 4;
-			break ;
-		case 4:
-			client->orientation = 1;
-			break ;
-	}
+	client->orientation = map_val_pos(4, client->orientation + 1) + 1;
 	dprintf(client->fd, "ok\n");
 	return OK;
 }
@@ -73,20 +49,7 @@ int	left(server_t *server, client_t *client, char *str)
 {
 	(void)str;
 	(void)server;
-	switch(client->orientation) {
-		case 1:
-			client->orientation = 4;
-			break;
-		case 2:
-			client->orientation = 1;
-			break;
-		case 3:
-			client->orientation = 2;
-			break;
-		case 4:
-			client->orientation = 3;
-			break;
-	}
+	client->orientation = map_val_pos(4, client->orientation - 1) + 1;
 	dprintf(client->fd, "ok\n");
 	return OK;
 }
