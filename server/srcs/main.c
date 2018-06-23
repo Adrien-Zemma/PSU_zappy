@@ -26,7 +26,6 @@ int	start_server(t_parse *parse, server_t *server)
 
 void	free_server(server_t *s)
 {
-	free(s->fds);
 	for (int i = 0; s->command[i]; i++)
 		free(s->command[i]);
 	free(s->command);
@@ -36,6 +35,7 @@ void	free_server(server_t *s)
 	for (int i = 0; s->parse->teams[i]; i++)
 		free(s->parse->teams[i]);
 	free(s->parse->teams);
+	free(s->fds);
 	free_map(s->map);
 	free(s->parse);
 	free(s);
