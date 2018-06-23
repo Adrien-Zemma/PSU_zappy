@@ -26,6 +26,11 @@ void	remove_client(server_t *server, int fd)
 	for (; server->clients[i] && server->clients[j]; i++) {
 		if (server->clients[j]->fd == fd) {
 			free_queue(server->clients[j]->command);
+			printf("max_players: %d\n", server->clients[j]->team->max_players);
+			if (server->clients[j]->team->max_players
+			> server->clients[j]->team->absolute_max_players)
+				server->clients[j]->team->max_players--;
+			printf("max_players: %d\n", server->clients[j]->team->max_players);
 			server->clients[j]->team->current_players--;
 			free(server->clients[j]);
 			j++;
