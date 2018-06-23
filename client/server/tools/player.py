@@ -25,7 +25,7 @@ class Player():
 
 	def _getTeam(self):
 		self._tools.write("gai #" + self.id)
-		cmd = self._tools.readTh().get_commande(False, None)
+		cmd = self._tools.readTh.get_command()
 		try:
 			if (cmd != "ko"):
 				cmd = cmd.split(' ')[1:]
@@ -35,7 +35,7 @@ class Player():
 
 	def _getPose(self):
 		self._tools.write("ppo #" + self.id)
-		cmd = self._tools.readTh().get_commande(False, None)
+		cmd = self._tools.readTh.get_command()
 		try:
 			if (cmd != "ko"):
 				cmd = cmd.split(' ')[2:]
@@ -51,7 +51,7 @@ class Player():
 
 	def _getBag(self):
 		self._tools.write("pin #" + self.id)
-		cmd = self._tools.readTh().get_commande(False, None)
+		cmd = self._tools.readTh.get_command()
 		try:
 			if (cmd != "ko"):
 				cmd = cmd.split(' ')[4:]
@@ -69,7 +69,7 @@ class Player():
 
 	def _getLevel(self):
 		self._tools.write("plv #" + self.id)
-		cmd = self._tools.readTh().get_commande(False, None)
+		cmd = self._tools.readTh.get_command()
 		try:
 			if (cmd != "ko"):
 				cmd = cmd.split(' ')[2:]

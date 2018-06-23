@@ -41,4 +41,4 @@ class Images():
 						0,
 						self._spriteSizeX,
 						self._spriteSizeY
-                                        ),
+                                        )

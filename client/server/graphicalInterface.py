@@ -30,15 +30,15 @@ class GraphicalInterface(Server, threading.Thread):
 		self._sizeX = self.mapSize[0]
 		self._sizeY = self.mapSize[1]
 		self._mapResources = MapRessources(
-			x=self.mapSize[0],
-			y=self.mapSize[0],
-			sprite=self._window.getSpriteSize()
+			x = self.mapSize[0],
+			y = self.mapSize[0],
+			sprite = self._window.getSpriteSize()
 		)
 		self._map = Map(
-			x=self._sizeX,
-			y=self._sizeY,
-			tools=self._tools,
-			set=self._mapResources
+			x = self._sizeX,
+			y = self._sizeY,
+			tools = self._tools,
+			set = self._mapResources
 		)
 		self._buildPlayer()
 		
@@ -75,9 +75,9 @@ class GraphicalInterface(Server, threading.Thread):
 		self._window.drawField(int(self._sizeX), int(self._sizeY))
 		self._window.drawMap(self._map)
 		for player in self._players:
-			self._window.draw(player)
+			self._window.drawPlayer(player)
 		pygame.display.update()
-		self._window.clock.tick(60)
+		self._window.clock.tick(3)
 
 	def run(self):
 		while(self._window.running()):

@@ -4,6 +4,7 @@ from .map import Map
 from .tools import Tools
 from .image import Images
 from .player import Player
+from pygame import Surface
 
 class Window():
 	def __init__(self, sizeY, sizeX):
@@ -78,44 +79,44 @@ class Window():
 	def drawBack(self):
 		self._window.blit(self._sprite.get("back"), (0, 0))
 	
-	def _drawPlayerMagic(toDraw, pos):
+	def _drawPlayerMagic(self, toDraw, x, y):
 		if toDraw.magic:
 			self._window.blit(
 				self._sprite.get("magic"),
-				pos
+				(x, y)
 			)
-	def _drawPlayerPos(toDraw, pos):
+	def _drawPlayerPos(self, toDraw, x, y):
 		self._window.blit(
 			self._sprite.getFrame(
 				toDraw.moving,
 				toDraw.o,
 				toDraw.frame
 			),
-			pos
+			(x, y)
 		)
 
-	def _drawPLayerIcon(toDraw, pos):
+	def _drawPLayerIcon(self, toDraw, x, y):
 		if toDraw.speak:
 			self._window.blit(
 				self._sprite.get("speak"),
-				pos
+				(x, y)
 			)
 		if toDraw.pushing:
 			self._window.blit(
 				self._sprite.get("pushing"),
-				pos
+				(x, y)
 			)
 
 
 	def drawPlayer(self, toDraw):
-		if toDraw.frame > 2:
-			todraw.frame = 0
+		if toDraw.frame > :
+			toDraw.frame = -1
+		toDraw.frame += 1
 		tmpX = (toDraw.x * self._spriteSize)
 		tmpY = (toDraw.y * self._spriteSize)
 		tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 5 * 4
 		tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 5 * 4
-		pos = (tmp2X, tmp2Y)
-		self._drawPlayerMagic(toDraw, pos)
-		self._drawPlayerPos(toDraw, pos)
-		self._drawPLayerIcon(toDraw, pos)
+		self._drawPlayerMagic(toDraw, tmp2X, tmp2X)
+		self._drawPlayerPos(toDraw, tmp2X, tmp2X)
+		self._drawPLayerIcon(toDraw, tmp2X, tmp2X)
 		
