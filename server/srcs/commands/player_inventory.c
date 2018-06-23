@@ -7,6 +7,16 @@
 
 #include "server.h"
 
+static void	print_player_inventory(client_t *client, int fd, int id)
+{
+	dprintf(fd, "pin %d %d %d %d %d %d %d %d %d %d\n",
+		id, client->pos_x, client->pos_y,
+		client->food, client->linemate,
+		client->demaumere, client->sibur,
+		client->mendiane, client->phiras,
+		client->thystame);
+}
+
 int	player_inventory(server_t *server, client_t *client, char *str)
 {
 	int	id;
@@ -20,12 +30,8 @@ int	player_inventory(server_t *server, client_t *client, char *str)
 	id = atoi(str);
 	for (int i = 0; server->clients[i] != NULL; i++) {
 		if (server->clients[i]->id == id)
-			dprintf(client->fd, "pin %d %d %d %d %d %d %d %d %d %d\n",
-			id, server->clients[i]->pos_x, server->clients[i]->pos_y,
-			server->clients[i]->food, server->clients[i]->linemate,
-			server->clients[i]->demaumere, server->clients[i]->sibur,
-			server->clients[i]->mendiane, server->clients[i]->phiras,
-			server->clients[i]->thystame);
+			print_player_inventory(server->clients[i],
+						client->fd, id);
 	}
 	return (OK);
 }

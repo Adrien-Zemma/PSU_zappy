@@ -13,7 +13,8 @@ int	nb_connect(server_t *server, client_t *client, char *str)
 
 	str = str;
 	for (int i = 0; server->clients[i] != NULL; i++) {
-		if (strcmp(client->team->name, server->clients[i]->team->name) == 0)
+		if (strcmp(client->team->name,
+			server->clients[i]->team->name) == 0)
 			nb++;
 	}
 	dprintf(client->fd, "%d\n", server->parse->max_client - nb);

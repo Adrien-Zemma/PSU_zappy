@@ -7,7 +7,10 @@
 
 #include "server.h"
 
-void	check_look_west(client_t *client, int *nb, int pos_x, server_t *server)
+void	check_look_west(client_t *client,
+			int *nb,
+			int pos_x,
+			server_t *server)
 {
 	int	pos_y = client->pos_y - 1;
 	int	tmp;

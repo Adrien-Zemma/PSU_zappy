@@ -21,11 +21,9 @@ int	player_position(server_t *server, client_t *client, char *str)
 		return (BAD_PARAM);
 	}
 	id = atoi(str);
-	for (int i = 0; server->clients[i] != NULL; i++) {
+	for (int i = 0; server->clients[i] != NULL; i++)
 		if (server->clients[i]->id == id)
-			dprintf(client->fd, "ppo %d %d %d\n",
-			id, server->clients[i]->pos_x,
-			server->clients[i]->pos_y);
-	}
+			dprintf(client->fd, "ppo %d %d %d\n", id,
+			server->clients[i]->pos_x, server->clients[i]->pos_y);
 	return (OK);
 }

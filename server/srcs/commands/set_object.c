@@ -38,17 +38,9 @@ int	set_other_other(server_t *server, client_t *client, char *str)
 	return (OK);
 }
 
-int	set_other_object(server_t *server, client_t *client, char *str)
+int	set_other_bis_object(server_t *server, client_t *client, char *str)
 {
-	if (strcmp("deraumere", str) == 0) {
-		if (client->demaumere != 0) {
-			client->demaumere--;
-			server->map[client->pos_y][client->pos_x]->deraumere++;
-			dprintf(client->fd, "ok\n");
-			return (send_pdr(server, client));
-		}
-	}
-	else if (strcmp("sibur", str) == 0) {
+	if (strcmp("sibur", str) == 0) {
 		if (client->sibur != 0) {
 			client->sibur--;
 			server->map[client->pos_y][client->pos_x]->sibur++;
@@ -67,6 +59,27 @@ int	set_other_object(server_t *server, client_t *client, char *str)
 	return (set_other_other(server, client, str));
 }
 
+int	set_other_object(server_t *server, client_t *client, char *str)
+{
+	if (strcmp("food", str) == 0) {
+		if (client->food != 0) {
+			client->food--;
+			server->map[client->pos_y][client->pos_x]->food++;
+			dprintf(client->fd, "ok\n");
+			return (send_pdr(server, client));
+		}
+	}
+	else if (strcmp("deraumere", str) == 0) {
+		if (client->demaumere != 0) {
+			client->demaumere--;
+			server->map[client->pos_y][client->pos_x]->deraumere++;
+			dprintf(client->fd, "ok\n");
+			return (send_pdr(server, client));
+		}
+	}
+	return (set_other_bis_object(server, client, str));
+}
+
 int	set_object(server_t *server, client_t *client, char *str)
 {
 	while (*str && *str != ' ')
@@ -79,14 +92,6 @@ int	set_object(server_t *server, client_t *client, char *str)
 		if (client->linemate != 0) {
 			client->linemate--;
 			server->map[client->pos_y][client->pos_x]->linemate++;
-			dprintf(client->fd, "ok\n");
-			return (send_pdr(server, client));
-		}
-	}
-	else if (strcmp("food", str) == 0) {
-		if (client->food != 0) {
-			client->food--;
-			server->map[client->pos_y][client->pos_x]->food++;
 			dprintf(client->fd, "ok\n");
 			return (send_pdr(server, client));
 		}

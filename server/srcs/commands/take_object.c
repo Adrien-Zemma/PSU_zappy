@@ -38,17 +38,9 @@ int	take_other_other(server_t *server, client_t *client, char *str)
 	return (OK);
 }
 
-int	take_other_object(server_t *server, client_t *client, char *str)
+int	take_other_bis_object(server_t *server, client_t *client, char *str)
 {
-	if (strcmp("deraumere", str) == 0) {
-		if (server->map[client->pos_y][client->pos_x]->deraumere != 0) {
-			server->map[client->pos_y][client->pos_x]->deraumere--;
-			client->demaumere++;
-			dprintf(client->fd, "ok\n");
-			return (send_pgt(server, client));
-		}
-	}
-	else if (strcmp("sibur", str) == 0) {
+	if (strcmp("sibur", str) == 0) {
 		if (server->map[client->pos_y][client->pos_x]->sibur != 0) {
 			server->map[client->pos_y][client->pos_x]->sibur--;
 			client->sibur++;
@@ -67,6 +59,27 @@ int	take_other_object(server_t *server, client_t *client, char *str)
 	return (take_other_other(server, client, str));
 }
 
+int	take_other_object(server_t *server, client_t *client, char *str)
+{
+	if (strcmp("food", str) == 0){
+		if (server->map[client->pos_y][client->pos_x]->food != 0) {
+			server->map[client->pos_y][client->pos_x]->food--;
+			client->food++;
+			dprintf(client->fd, "ok\n");
+			return (send_pgt(server, client));
+		}
+	}
+	else if (strcmp("deraumere", str) == 0) {
+		if (server->map[client->pos_y][client->pos_x]->deraumere != 0) {
+			server->map[client->pos_y][client->pos_x]->deraumere--;
+			client->demaumere++;
+			dprintf(client->fd, "ok\n");
+			return (send_pgt(server, client));
+		}
+	}
+	return (take_other_bis_object(server, client, str));
+}
+
 
 int	take_object(server_t *server, client_t *client, char *str)
 {
@@ -80,14 +93,6 @@ int	take_object(server_t *server, client_t *client, char *str)
 		if (server->map[client->pos_y][client->pos_x]->linemate != 0) {
 			server->map[client->pos_y][client->pos_x]->linemate--;
 			client->linemate++;
-			dprintf(client->fd, "ok\n");
-			return (send_pgt(server, client));
-		}
-	}
-	else if (strcmp("food", str) == 0){
-		if (server->map[client->pos_y][client->pos_x]->food != 0) {
-			server->map[client->pos_y][client->pos_x]->food--;
-			client->food++;
 			dprintf(client->fd, "ok\n");
 			return (send_pgt(server, client));
 		}
