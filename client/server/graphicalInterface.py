@@ -71,10 +71,11 @@ class GraphicalInterface(Server, threading.Thread):
 		pass
 
 	def draw(self):
+		self._window.drawBack()
+		self._window.drawField(int(self._sizeX), int(self._sizeY))
 		self._window.drawMap(self._map)
-		#self._window.draw(self._map)
-		#for player in self._players:
-		#	self._window.draw(player)
+		for player in self._players:
+			self._window.draw(player)
 		pygame.display.update()
 		self._window.clock.tick(60)
 

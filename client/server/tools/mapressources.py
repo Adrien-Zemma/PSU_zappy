@@ -18,9 +18,7 @@ class MaterialCoord():
 		for _ in range(self.maxItem):
 			tmpX = (x * self.spriteSize) + random.randint(0, (self.spriteSize * 0.8)) + self.spriteSize
 			tmpY = (y * self.spriteSize) + random.randint(0, (self.spriteSize * 0.8))
-			tmpIsoX = tmpX - tmpY
-			tmpIsoY = (tmpX + tmpY) / 2
-			self.coords.append((tmpIsoX, tmpIsoY))
+			self.coords.append((tmpX, tmpY))
 
 	def get(self, nb):
 		return self.coords[nb]

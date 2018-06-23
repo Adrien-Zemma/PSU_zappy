@@ -8,6 +8,13 @@ class Player():
 		self._getPose()
 		self._getBag()
 		self._getLevel()
+		self.oldX = 0
+		self.oldY = 0
+		self.frame = 0
+		self.speak = False
+		self.magic = False
+		self.moving = False
+		self.pushing = False
 
 	def update(self):
 		self._getTeam()
@@ -32,10 +39,13 @@ class Player():
 		try:
 			if (cmd != "ko"):
 				cmd = cmd.split(' ')[2:]
-		
 			self.x = int(cmd[0])
 			self.y = int(cmd[1])
 			self.o = int(cmd[2])
+			if self.x != self.oldX or self.y != self.oldY:
+				moving = True
+			else:
+				moving  = False
 		except:
 			print("Error on buid Pos", file=sys.stderr)
 

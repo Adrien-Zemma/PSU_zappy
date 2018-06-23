@@ -10,7 +10,7 @@ class Window():
 		self._winSizeY = sizeY
 		self._winSizeX = sizeX
 		self._fontsize = 24
-		self._spriteSize = 200
+		self._spriteSize = 100
 		self.clock = pygame.time.Clock()
 		self._son = pygame.mixer.music.load(os.path.abspath("assets/sound.wav"))
 		self._son = pygame.mixer.music.set_volume(0.5)
@@ -46,22 +46,29 @@ class Window():
 					return False
 				if event.type == pygame.KEYDOWN:
 					return self.manageKeys(event)
-		return True
-
-	def _toIso(self, coord):
-		tmp2X = (coord[0] - coord[1]) + self._shiftX
-		tmp2Y = ((coord[0] + coord[1]) / 2) + self._shiftY
-		return(tmp2X, tmp2Y)
-		
+		return True		
 	
 	def _drawCase(self, case):
 		for key, value in case.content.items():
 			for pos in value:
+				tmp2X = (pos[0] - pos[1]) + self._shiftX
+				tmp2Y = ((pos[0] + pos[1]) / 2) + self._shiftY
 				self._window.blit(
-					self._sprite._items[key],
-					pos
+					self._sprite.get(key),
+					(tmp2X, tmp2Y)
 				)
-		pass
+
+	def drawField(self, sizeX, sizeY):
+		for y in range(sizeY):
+			for x in range(sizeX):
+				tmpX = (x * self._spriteSize)
+				tmpY = (y * self._spriteSize)
+				tmp2X = (tmpX - tmpY) + self._shiftX
+				tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY
+				self._window.blit(
+					self._sprite.get("case"),
+					(tmp2X, tmp2Y)
+				)
 
 	def drawMap(self, field):
 		for line in field.content:
@@ -69,8 +76,46 @@ class Window():
 				self._drawCase(case)
 
 	def drawBack(self):
-		self._window.blit(self._sprite._items["back"], (0, 0))
-		pass
+		self._window.blit(self._sprite.get("back"), (0, 0))
+	
+	def _drawPlayerMagic(toDraw, pos):
+		if toDraw.magic:
+			self._window.blit(
+				self._sprite.get("magic"),
+				pos
+			)
+	def _drawPlayerPos(toDraw, pos):
+		self._window.blit(
+			self._sprite.getFrame(
+				toDraw.moving,
+				toDraw.o,
+				toDraw.frame
+			),
+			pos
+		)
+
+	def _drawPLayerIcon(toDraw, pos):
+		if toDraw.speak:
+			self._window.blit(
+				self._sprite.get("speak"),
+				pos
+			)
+		if toDraw.pushing:
+			self._window.blit(
+				self._sprite.get("pushing"),
+				pos
+			)
+
 
 	def drawPlayer(self, toDraw):
-		pass
+		if toDraw.frame > 2:
+			todraw.frame = 0
+		tmpX = (toDraw.x * self._spriteSize)
+		tmpY = (toDraw.y * self._spriteSize)
+		tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 5 * 4
+		tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 5 * 4
+		pos = (tmp2X, tmp2Y)
+		self._drawPlayerMagic(toDraw, pos)
+		self._drawPlayerPos(toDraw, pos)
+		self._drawPLayerIcon(toDraw, pos)
+		
