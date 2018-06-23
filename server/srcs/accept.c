@@ -11,7 +11,7 @@ int	set_client(server_t *server, char *str)
 {
 	client_t *client = server->clients[server->nb_client - 1];
 	client->team = strdup(str);
-	client->food = 1;
+	client->food = 10;
 	client->linemate = 0;
 	client->demaumere = 0;
 	client->sibur = 0;
