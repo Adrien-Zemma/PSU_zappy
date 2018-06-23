@@ -4,6 +4,9 @@ import pygame
 class Images():
 	def __init__(self):
 		self._items = {}
+		self._items["back"] = pygame.image.load(
+			os.path.abspath("assets/back.jpg")).convert()
+
 		self._items["case"] = pygame.image.load(
 			os.path.abspath("assets/ground2.png")).convert_alpha()
 		self._items["food"] = pygame.image.load(

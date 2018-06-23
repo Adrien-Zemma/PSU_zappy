@@ -33,7 +33,7 @@ class Map():
 		for y in range(self.sizeY):
 			for x in range(self.sizeX):
 				for key , value in data[y][x].items():
-					for item in value:
+					for item in range(value):
 						self.content[y][x].add(
 							key,
 							self._set.get(

@@ -2,16 +2,16 @@ import os
 import sys
 import random
 import pygame
-from .Commands import Commands
 import threading
+from .tools.map import Map
 from .Server import Server
+from .tools.tools import Tools
+from .Commands import Commands
+from .tools.image import Images
 from .Threads import ThreadRead
-from .window import Window
-from .mapressources import MapRessources
-from .tools import Tools
-from .image import Images
-from .player import Player
-from .map import Map
+from .tools.window import Window
+from .tools.player import Player
+from .tools.mapressources import MapRessources
 
 class GraphicalInterface(Server, threading.Thread):
 	def __init__(self, port=4242, ip="localhost"):
@@ -23,7 +23,6 @@ class GraphicalInterface(Server, threading.Thread):
 		self.manageConnection()
 		self.daemon = True
 		pygame.init()
-		self._clock = pygame.time.Clock()
 		self._tools = Tools(self.write, self.readTh)
 		self._window = Window(1080, 1920)
 		self._window.setImages(Images())
@@ -72,8 +71,12 @@ class GraphicalInterface(Server, threading.Thread):
 		pass
 
 	def draw(self):
-		self._window.draw(None)
-		self._window.draw(self._map)
+		self._window.drawMap(self._map)
+		#self._window.draw(self._map)
+		#for player in self._players:
+		#	self._window.draw(player)
+		pygame.display.update()
+		self._window.clock.tick(60)
 
 	def run(self):
 		while(self._window.running()):
