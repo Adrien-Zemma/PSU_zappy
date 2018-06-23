@@ -12,6 +12,7 @@ class Window():
 		self._winSizeX = sizeX
 		self._fontsize = 24
 		self._spriteSize = 100
+		self._maxFrame = 2
 		self.clock = pygame.time.Clock()
 		self._son = pygame.mixer.music.load(os.path.abspath("assets/sound.wav"))
 		self._son = pygame.mixer.music.set_volume(0.5)
@@ -109,7 +110,7 @@ class Window():
 
 
 	def drawPlayer(self, toDraw):
-		if toDraw.frame > :
+		if toDraw.frame > self._maxFrame:
 			toDraw.frame = -1
 		toDraw.frame += 1
 		tmpX = (toDraw.x * self._spriteSize)

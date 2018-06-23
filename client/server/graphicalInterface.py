@@ -41,9 +41,16 @@ class GraphicalInterface(Server, threading.Thread):
 			set = self._mapResources
 		)
 		self._buildPlayer()
+		self.buidCommande()
 		
 	def buidCommande(self):
-		self._commands = {}
+		cmd = {
+			"pnw":self._connectionOfaNewPlayer
+		}
+		self._commands = Commands()
+	
+	def _connectionOfaNewPlayer(self, cmd):
+		print(cmd)
 	
 	def manageConnection(self):
 		cmd = self.readTh.get_command()
@@ -68,7 +75,11 @@ class GraphicalInterface(Server, threading.Thread):
 			)
 
 	def getUnexpectCommande(self):
+		cmd = self._tools.readTh.get_command(False, None)
+		if (cmd is not None):
+			self._commands.parse(cmd)
 		pass
+	
 
 	def draw(self):
 		self._window.drawBack()
@@ -82,8 +93,7 @@ class GraphicalInterface(Server, threading.Thread):
 	def run(self):
 		while(self._window.running()):
 			self.getUnexpectCommande()
-			self._map.update()
 			for player in self._players:
 				player.update()
+			self._map.update()
 			self.draw()
-		pass

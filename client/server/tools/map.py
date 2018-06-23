@@ -45,7 +45,6 @@ class Map():
 						)
 
 	def _getTile(self, x: str, y: str):
-		self._tools.write("bct " + str(x) + " " + str(y))
 		try:
 			cmd = self._tools.readTh.get_command().split(' ')[3:]
 			return {
@@ -62,6 +61,7 @@ class Map():
 
 	def _getMap(self):
 		m = []
+		self._tools.write("mct")
 		for y in range(self.sizeY):
 			line = []
 			for x in range(self.sizeX):
