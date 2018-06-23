@@ -40,15 +40,21 @@ static int	size_map(tile_t ***map, char c)
 	return (i);
 }
 
-static void	broadcast_client(tile_t ***map, client_t *original, client_t *target, char *msg)
+static void	broadcast_client(tile_t ***map,
+				client_t *original,
+				client_t *target,
+				char *msg)
 {
 	int no_tile = 0;
 	int x_path = 0;
 	int y_path = 0;
 
-	if (original->pos_x != target->pos_x || original->pos_y != target->pos_y) {
-		x_path = smallest_path(original->pos_x, target->pos_x, size_map(map, 'x'));
-		y_path = smallest_path(original->pos_y, target->pos_y, size_map(map, 'y'));
+	if (original->pos_x != target->pos_x
+	|| original->pos_y != target->pos_y) {
+		x_path = smallest_path(original->pos_x,
+					target->pos_x, size_map(map, 'x'));
+		y_path = smallest_path(original->pos_y,
+					target->pos_y, size_map(map, 'y'));
 		if (x_path < 0 && y_path >= 0)
 			no_tile = tile_in_quarter(1, y_path, x_path);
 		else if (x_path >= 0 && y_path > 0)
@@ -70,8 +76,10 @@ int	broadcast(server_t *server, client_t *client, char *str)
 	else
 		return (BAD_PARAM);
 	for (int i = 0; server->clients[i]; i++)
-		if (server->clients[i] != client && server->clients[i]->id != -1)
-			broadcast_client(server->map, client, server->clients[i], str);
+		if (server->clients[i] != client
+		&& server->clients[i]->id != -1)
+			broadcast_client(server->map, client,
+					server->clients[i], str);
 	dprintf(client->fd, "ok\n");
 	return (OK);
 }

@@ -5,7 +5,6 @@ from server.IA import IA
 import signal
 import sys
 
-
 def main():
 	ias = []
 	for i in range(args.nbIA):

@@ -18,7 +18,9 @@ const tile_t level_requirement[] = {
 	{6, 2, 2, 2, 2, 2, 1, 0, NULL},
 };
 
-static int	compare_tile_incantation(client_t *origin, tile_t *tile, const tile_t *level)
+static int	compare_tile_incantation(client_t *origin,
+					tile_t *tile,
+					const tile_t *level)
 {
 	int id = 0;
 
@@ -49,27 +51,25 @@ void	remove_minerals(tile_t **p_tile, const tile_t *level)
 
 int	start_incantation(server_t *server, client_t *client, char *str)
 {
-	client_t	*tmp;
-	tile_t		*tile;
+	tile_t	*tile = server->map[client->pos_y][client->pos_x];
 
 	(void)str;
 	if (client->level >= 8
-	|| compare_tile_incantation(client, server->map[client->pos_y][client->pos_x],
+	|| compare_tile_incantation(client, tile,
 				&level_requirement[client->level - 1]) == 0) {
 		dprintf(client->fd, "ko\n");
 		return (KO);
 	}
 	client->is_incanting = 1;
-	tile = server->map[client->pos_y][client->pos_x];
 	for (int i = 0; tile->clients[i]; i++) {
-		tmp = tile->clients[i];
-		dprintf(tmp->fd, "Elevation underway\n");
-		if (tmp == client)
+		dprintf(tile->clients[i]->fd, "Elevation underway\n");
+		if (tile->clients[i] == client)
 			queue_append(&client->command,
 				append_command(NULL,
-				end_incantation, 300 / (double)server->parse->freq));
+				end_incantation,
+				300 / (double)server->parse->freq));
 		else
-			queue_append(&tmp->command,
+			queue_append(&tile->clients[i]->command,
 				append_command(NULL,
 				block, 300 / (double)server->parse->freq));
 	}
@@ -78,23 +78,24 @@ int	start_incantation(server_t *server, client_t *client, char *str)
 
 int	end_incantation(server_t *server, client_t *client, char *str)
 {
-	(void)str;
-	int st = 0;
-	client_t **clients = server->map[client->pos_y][client->pos_x]->clients;
+	int	st = 0;
+	tile_t	*tile = server->map[client->pos_y][client->pos_x];
+	client_t **clients = tile->clients;
 
-	if (compare_tile_incantation(client, server->map[client->pos_y][client->pos_x],
+	(void)str;
+	if (compare_tile_incantation(client, tile,
 				&level_requirement[client->level - 1]) == 0) {
-					dprintf(client->fd, "ko\n");
-					st = 1;
-					remove_minerals(&server->map[client->pos_y][client->pos_x],
-						&level_requirement[client->level - 1]);
-				}
+		dprintf(client->fd, "ko\n");
+		st = 1;
+		remove_minerals(&tile, &level_requirement[client->level - 1]);
+	}
 	else
 		for (int i = 0; clients[i]; i++)
 			clients[i]->level++;
 	for (int i = 0; clients[i]; i++) {
 		if (clients[i] != client || !st)
-			dprintf(clients[i]->fd, "Current level: %d\n", client->level);
+			dprintf(clients[i]->fd, "Current level: %d\n",
+				client->level);
 		clients[i]->is_incanting = 0;
 	}
 	return (0);

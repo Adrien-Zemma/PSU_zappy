@@ -10,20 +10,18 @@
 int	push_client(server_t *server, client_t *client, size_t orientation)
 {
 	remove_player(server->map, client);
-	switch (orientation) {
-		case 1:
-			client->pos_y = map_val_pos(server->parse->height, client->pos_y - 1);
-			break;
-		case 2:
-			client->pos_x = map_val_pos(server->parse->width, client->pos_x + 1);
-			break;
-		case 3:
-			client->pos_y = map_val_pos(server->parse->height, client->pos_y + 1);
-			break;
-		case 4:
-			client->pos_x = map_val_pos(server->parse->width, client->pos_x - 1);
-			break;
-	}
+	if (orientation == 1)
+		client->pos_y = map_val_pos(server->parse->height,
+						client->pos_y - 1);
+	else if (orientation == 2)
+		client->pos_x = map_val_pos(server->parse->width,
+						client->pos_x + 1);
+	if (orientation == 3)
+		client->pos_y = map_val_pos(server->parse->height,
+						client->pos_y + 1);
+	else if (orientation == 4)
+		client->pos_x = map_val_pos(server->parse->width,
+						client->pos_x - 1);
 	append_player(&server->map[client->pos_y][client->pos_x], client);
 	return (OK);
 }

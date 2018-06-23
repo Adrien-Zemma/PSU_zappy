@@ -28,7 +28,10 @@ void	check_map(tile_t *map, client_t *client)
 	dprintf(client->fd, ",");
 }
 
-void	check_look_east(client_t *client, int *nb, int pos_x, server_t *server)
+void	check_look_east(client_t *client,
+			int *nb,
+			int pos_x,
+			server_t *server)
 {
 	int	pos_y = client->pos_y - 1;
 	int	tmp;
