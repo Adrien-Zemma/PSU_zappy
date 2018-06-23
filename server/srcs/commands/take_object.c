@@ -11,13 +11,14 @@ static int	send_pgt(server_t *server, client_t *client)
 {
 	for (int i = 0; server->clients[i] != NULL; i++)
 		if (server->clients[i]->id == -1)
-			dprintf(server->clients[i]->fd, "pgt %d 1\n", client->fd);
+			dprintf(server->clients[i]->fd, "pgt %d 1\n",
+				client->fd);
 	return (OK);
 }
 
 int	take_other_other(server_t *server, client_t *client, char *str)
 {
-	if (strcmp("phiras", str) == 0){
+	if (strcmp("phiras", str) == 0) {
 		if (server->map[client->pos_y][client->pos_x]->phiras != 0) {
 			server->map[client->pos_y][client->pos_x]->phiras--;
 			client->phiras++;
@@ -25,8 +26,8 @@ int	take_other_other(server_t *server, client_t *client, char *str)
 			return (send_pgt(server, client));
 		}
 	}
-	else if (strcmp("thystame", str) == 0){
-		if (server->map[client->pos_y][client->pos_x] != 0){
+	else if (strcmp("thystame", str) == 0) {
+		if (server->map[client->pos_y][client->pos_x] != 0) {
 			server->map[client->pos_y][client->pos_x]->thystam--;
 			client->thystame++;
 			dprintf(client->fd, "ok\n");
@@ -39,7 +40,7 @@ int	take_other_other(server_t *server, client_t *client, char *str)
 
 int	take_other_object(server_t *server, client_t *client, char *str)
 {
-	if (strcmp("deraumere", str) == 0){
+	if (strcmp("deraumere", str) == 0) {
 		if (server->map[client->pos_y][client->pos_x]->deraumere != 0) {
 			server->map[client->pos_y][client->pos_x]->deraumere--;
 			client->demaumere++;
@@ -47,7 +48,7 @@ int	take_other_object(server_t *server, client_t *client, char *str)
 			return (send_pgt(server, client));
 		}
 	}
-	else if (strcmp("sibur", str) == 0){
+	else if (strcmp("sibur", str) == 0) {
 		if (server->map[client->pos_y][client->pos_x]->sibur != 0) {
 			server->map[client->pos_y][client->pos_x]->sibur--;
 			client->sibur++;
@@ -55,7 +56,7 @@ int	take_other_object(server_t *server, client_t *client, char *str)
 			return (send_pgt(server, client));
 		}
 	}
-	else if (strcmp("mendiane", str) == 0){
+	else if (strcmp("mendiane", str) == 0) {
 		if (server->map[client->pos_y][client->pos_x]->mendiane != 0) {
 			server->map[client->pos_y][client->pos_x]->mendiane--;
 			client->mendiane++;

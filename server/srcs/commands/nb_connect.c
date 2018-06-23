@@ -17,5 +17,5 @@ int	nb_connect(server_t *server, client_t *client, char *str)
 			nb++;
 	}
 	dprintf(client->fd, "%d\n", server->parse->clientsNb - nb);
-	return OK;
+	return (OK);
 }

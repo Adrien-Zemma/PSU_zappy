@@ -23,6 +23,7 @@ class IA(threading.Thread):
 
 	def run(self):
 		while True:
+			self.inventory = self.server.inventory()
 			self.lookAndTake()
 			if self.pos[0] == self.server.mapSize[0] - 1:
 				self.left()

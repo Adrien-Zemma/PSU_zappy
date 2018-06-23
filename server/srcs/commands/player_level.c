@@ -15,18 +15,18 @@ int	player_level(server_t *server, client_t *client, char *str)
 		str++;
 	if (*str == '#')
 		str++;
-	else{
+	else {
 		printf("Error level player\n");
-		return BAD_PARAM;
+		return (BAD_PARAM);
 	}
 	id = atoi(str);
-	for (int i = 0; server->clients[i] != NULL; i++){
+	for (int i = 0; server->clients[i] != NULL; i++) {
 		if (server->clients[i]->id == id)
-			dprintf(client->fd,
-				"plv %d %d", id, server->clients[i]->level);
+			dprintf(client->fd, "plv %d %d",
+				id, server->clients[i]->level);
 	}
 	dprintf(client->fd, "\n");
-	return OK;
+	return (OK);
 }
 
 int	gtp(server_t *server, client_t *client, char *str)
