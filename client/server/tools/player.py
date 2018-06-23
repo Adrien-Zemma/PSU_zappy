@@ -25,36 +25,33 @@ class Player():
 
 	def _getTeam(self):
 		self._tools.write("gai #" + self.id)
-		cmd = self._tools.readTh.get_command()
+	
+	def setTeam(self, cmd):
 		try:
-			if (cmd != "ko"):
-				cmd = cmd.split(' ')[1:]
 			self.team = cmd[0]
 		except:
-			print("Error on buid Team", file = sys.stderr)
+			print("Error on buid Team", file=sys.stderr)
 
 	def _getPose(self):
 		self._tools.write("ppo #" + self.id)
-		cmd = self._tools.readTh.get_command()
+		
+	def setPose(self, cmd):
 		try:
-			if (cmd != "ko"):
-				cmd = cmd.split(' ')[2:]
 			self.x = int(cmd[0])
 			self.y = int(cmd[1])
 			self.o = int(cmd[2])
 			if self.x != self.oldX or self.y != self.oldY:
-				moving = True
+				self.moving = True
 			else:
-				moving  = False
+				self.moving = False
 		except:
 			print("Error on buid Pos", file=sys.stderr)
 
 	def _getBag(self):
 		self._tools.write("pin #" + self.id)
-		cmd = self._tools.readTh.get_command()
+		
+	def setBag(self, cmd):
 		try:
-			if (cmd != "ko"):
-				cmd = cmd.split(' ')[4:]
 			self.bag = {
 				"food": int(cmd[0]),
 				"linemate": int(cmd[1]),
@@ -69,11 +66,9 @@ class Player():
 
 	def _getLevel(self):
 		self._tools.write("plv #" + self.id)
-		cmd = self._tools.readTh.get_command()
-		try:
-			if (cmd != "ko"):
-				cmd = cmd.split(' ')[2:]
 		
+	def setLevel(self, cmd):
+		try:
 			self.level = int(cmd[0])
 		except:
 			print("Error on buid Level", file=sys.stderr)

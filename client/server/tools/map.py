@@ -3,13 +3,24 @@ import sys
 class Map():
 	def __init__(self, **kwargs):
 		self.content = [[]]
+		self._trueMap = [[{}]]
 		self.sizeX = int(kwargs.get('x'))
 		self.sizeY = int(kwargs.get('y'))
 		self._tools = kwargs.get('tools')
 		self._set = kwargs.get('set')
 		for y in range(self.sizeY):
 			self.content.append([])
+			self._trueMap.append([])
 			for x in range(self.sizeX):
+				self._trueMap[y].append({
+					"food": 0,
+					"linemate": 0,
+					"deraumere": 0,
+					"sibur": 0,
+					"mendiane": 0,
+					"phiras": 0,
+					"thystame": 0,
+				})
 				self.content[y].append(
 					self.Tile(x, y)
 				)
@@ -29,10 +40,9 @@ class Map():
 			self.content[index].append(coord)
 	
 	def update(self):
-		data = self._getMap()
 		for y in range(self.sizeY):
 			for x in range(self.sizeX):
-				for key , value in data[y][x].items():
+				for key, value in self._trueMap[y][x].items():
 					for item in range(value):
 						self.content[y][x].add(
 							key,
@@ -60,11 +70,25 @@ class Map():
 			print("Error while getting tile", file = sys.stderr)
 
 	def _getMap(self):
-		m = []
 		self._tools.write("mct")
-		for y in range(self.sizeY):
-			line = []
-			for x in range(self.sizeX):
-				line.append(self._getTile(x, y))
-			m.append(line)
-		return m
+
+	def addTile(self, cmd):
+		#try:
+			cmd = cmd.split(' ')[1:]
+			x = int (cmd[0])
+			y = int (cmd[1])
+			save = cmd
+			cmd = cmd[2:]
+			tmp = {
+				"food": int(cmd[0]),
+				"linemate": int(cmd[1]),
+				"deraumere": int(cmd[2]),
+				"sibur": int(cmd[3]),
+				"mendiane": int(cmd[4]),
+				"phiras": int(cmd[5]),
+				"thystame": int(cmd[6])
+			}
+			self._trueMap[y][x] = tmp
+		#except:
+		#	print("Error while getting tile", file = sys.stderr)
+		#	print(save)

@@ -19,7 +19,6 @@ class GraphicalInterface(Server, threading.Thread):
 		threading.Thread.__init__(self)
 		self.readTh.start()
 		random.seed()
-		self.buidCommande()
 		self.manageConnection()
 		self.daemon = True
 		pygame.init()
@@ -31,7 +30,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self._sizeY = self.mapSize[1]
 		self._mapResources = MapRessources(
 			x = self.mapSize[0],
-			y = self.mapSize[0],
+			y = self.mapSize[1],
 			sprite = self._window.getSpriteSize()
 		)
 		self._map = Map(
@@ -42,15 +41,36 @@ class GraphicalInterface(Server, threading.Thread):
 		)
 		self._buildPlayer()
 		self.buidCommande()
+
+	def managePlayer(self, cmd):
+		cmd = cmd.split(' ')
+		if (cmd[0] == "pnw"):
+			self._players.append(
+				Player(
+					cmd[1],
+					self._tools
+				)
+			)
+		for player in self._players:
+			if (cmd[0] == "pin"):
+				player.setBag(cmd[2:])
+			if (cmd[0] == "ppo"):
+				player.setPose(cmd[2:])
+			if (cmd[0] == "plv"):
+				player.setLevel(cmd[2:])
+			if (cmd[0] == "gpt"):
+				player.setTeam(cmd[2:])
+		pass
 		
 	def buidCommande(self):
 		cmd = {
-			"pnw":self._connectionOfaNewPlayer
+			"pnw": self.managePlayer,
+			"bct": self._map.addTile,
+			"ppo": self.managePlayer,
+			"plv": self.managePlayer,
+			"pin": self.managePlayer
 		}
-		self._commands = Commands()
-	
-	def _connectionOfaNewPlayer(self, cmd):
-		print(cmd)
+		self._commands = Commands(commands = cmd)
 	
 	def manageConnection(self):
 		cmd = self.readTh.get_command()
@@ -75,11 +95,12 @@ class GraphicalInterface(Server, threading.Thread):
 			)
 
 	def getUnexpectCommande(self):
-		cmd = self._tools.readTh.get_command(False, None)
-		if (cmd is not None):
-			self._commands.parse(cmd)
-		pass
-	
+		while True:
+			cmd = self._tools.readTh.get_command(True, 0.5)
+			if (cmd is not None):
+				self._commands.parse(cmd)
+			else:
+				break
 
 	def draw(self):
 		self._window.drawBack()
@@ -90,8 +111,17 @@ class GraphicalInterface(Server, threading.Thread):
 		pygame.display.update()
 		self._window.clock.tick(3)
 
+	def updateMap(self):
+		self._tools.write("mct")
+	
+	def updatePlayer(self):
+		for player in self._players:
+			player.update()
+
 	def run(self):
 		while(self._window.running()):
+			self.updateMap()
+			self.updatePlayer()
 			self.getUnexpectCommande()
 			for player in self._players:
 				player.update()
