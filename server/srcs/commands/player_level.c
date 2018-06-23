@@ -42,7 +42,8 @@ int	gtp(server_t *server, client_t *client, char *str)
 	id = atoi(str);
 	for (int i = 0; server->clients[i] != NULL; i++) {
 		if (server->clients[i]->id == id)
-			dprintf(client->fd, "%s\n", server->clients[i]->team);
+			dprintf(client->fd, "%s\n",
+				server->clients[i]->team->name);
 	}
 	return (0);
 }

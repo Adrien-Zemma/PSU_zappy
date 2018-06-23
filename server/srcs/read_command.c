@@ -26,8 +26,7 @@ void	remove_client(server_t *server, int fd)
 	for (; server->clients[i] && server->clients[j]; i++) {
 		if (server->clients[j]->fd == fd) {
 			free_queue(server->clients[j]->command);
-			(server->clients[j]->id != -1 ?
-				free(server->clients[j]->team) : 0);
+			server->clients[j]->team->current_players--;
 			free(server->clients[j]);
 			j++;
 			if (!server->clients[j])

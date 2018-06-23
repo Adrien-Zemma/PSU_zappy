@@ -31,6 +31,7 @@ void	free_server(server_t *s)
 	free(s->command);
 	for (int i = 0; s->clients[i];)
 		remove_client(s, s->clients[i]->fd);
+	free(s->teams);
 	free(s->clients);
 	for (int i = 0; s->parse->teams[i]; i++)
 		free(s->parse->teams[i]);
