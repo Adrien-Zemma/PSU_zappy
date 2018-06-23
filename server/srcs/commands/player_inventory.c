@@ -18,7 +18,7 @@ int	player_inventory(server_t *server, client_t *client, char *str)
 	else
 		return (BAD_PARAM);
 	id = atoi(str);
-	for (int i = 0; server->clients[i] != NULL; i++){
+	for (int i = 0; server->clients[i] != NULL; i++) {
 		if (server->clients[i]->id == id)
 			dprintf(client->fd, "pin %d %d %d %d %d %d %d %d %d %d\n",
 			id, server->clients[i]->pos_x, server->clients[i]->pos_y,
