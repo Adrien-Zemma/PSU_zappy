@@ -49,6 +49,7 @@ int	check_all_fd(struct timeval *tv, server_t *server,
 	remove_time_clients(server, backup_time);
 	if (good_select(readfds, server) == 84)
 		return (84);
+	check_dead(server, backup_time);
 	return (0);
 }
 

@@ -36,6 +36,7 @@ SRCS	= ./server/srcs/accept.c \
 	  ./server/srcs/commands/teams_name.c \
 	  ./server/srcs/commands/tile_content.c \
 	  ./server/srcs/commands/eject.c \
+	  ./server/srcs/commands/check_dead.c \
 	  ./server/srcs/commands.c \
 	  ./server/srcs/getnextline.c \
 	  ./server/srcs/main.c \

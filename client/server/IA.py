@@ -13,6 +13,7 @@ class IA(threading.Thread):
 		self.pos = [0, 0]
 		self.dir = 0
 		self.inventory = {
+			"food": 0,
 			"linemate": 0,
 			"deraumere": 0,
 			"sibur": 0,
@@ -64,7 +65,8 @@ class IA(threading.Thread):
 		if ret[0]["food"] > 0:
 			self.takeN("food", ret[0]["food"])
 		for k, _ in self.inventory.items():
-			self.takeN(k, incantationRequirements[self.level - 1][k] - self.inventory[k])
+			if k != "food":
+				self.takeN(k, incantationRequirements[self.level - 1][k] - self.inventory[k])
 
 	def takeN(self, object, n):
 		if n < 0:

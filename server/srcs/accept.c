@@ -25,6 +25,7 @@ int	set_client(server_t *server, char *str)
 	client->pos_y = ADD_MINERAL(0, server->parse->height);
 	client->orientation = ADD_MINERAL(1, 5);
 	client->command = queue_init();
+	client->time = 0;
 	if (!client->command)
 		return (84);
 	append_player(&server->map[server->clients[server->nb_client - 1]->pos_y][server->clients[server->nb_client - 1]->pos_x],

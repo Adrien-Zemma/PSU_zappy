@@ -32,7 +32,7 @@ struct timeval	*get_select_timeout(server_t *server)
 		}
 	}
 	if (time_client == -1)
-		return (NULL);
+		return (select_time(ret, 0.1));
 	for (; server->clients[i] != NULL; i++) {
 		cmd = queue_get(&server->clients[i]->command);
 		if (cmd && cmd->time > 0 && time_client > cmd->time)

@@ -36,6 +36,7 @@ typedef	struct client_s
 	int	orientation;
 	char	*team;
 	int	is_incanting;
+	double	time;
 	command_t	**command;
 }	client_t;
 

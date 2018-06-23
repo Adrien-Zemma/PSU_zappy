@@ -21,6 +21,11 @@ class IAServer(Server):
 			cmd = self.readTh.get_command().split(' ')
 			self.mapSize = (int(cmd[0]), int(cmd[1]))
 
+	def checkCmd(self:object, cmd:str):
+		if cmd == "dead":
+			exit(0)
+		return cmd
+
 	def forward(self:object):
 		self.write("Forward")
 		return self.readTh.get_command()
@@ -53,7 +58,7 @@ class IAServer(Server):
 		return datas
 
 	def inventory(self:object):
-		self.write("inventory")
+		self.write("Inventory")
 		ret = self.readTh.get_command()
 		data = dict()
 		ret = ret[1:-1]
