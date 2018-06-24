@@ -29,39 +29,39 @@ typedef struct	team_s
 	int	current_players;
 }		team_t;
 
-typedef	struct client_s
+typedef struct		client_s
 {
-	int	fd;
-	int	food;
-	int	linemate;
-	int	demaumere;
-	int	sibur;
-	int	mendiane;
-	int	phiras;
-	int	thystame;
-	int	level;
-	int	pos_x;
-	int	pos_y;
-	int	id;
-	int	orientation;
-	team_t	*team;
-	int	is_incanting;
-	double	time;
+	int		fd;
+	int		food;
+	int		linemate;
+	int		demaumere;
+	int		sibur;
+	int		mendiane;
+	int		phiras;
+	int		thystame;
+	int		level;
+	int		pos_x;
+	int		pos_y;
+	int		id;
+	int		orientation;
+	team_t		*team;
+	int		is_incanting;
+	double		time;
 	command_t	**command;
-}	client_t;
+}			client_t;
 
-typedef	struct server_s
+typedef struct		server_s
 {
-	int	fd;
-	int	*fds;
-	int	nb_fd;
+	int		fd;
+	int		*fds;
+	int		nb_fd;
 	command_t	**command;
 	client_t	**clients;
 	tile_t		***map;
-	int	nb_client;
-	t_parse	*parse;
-	team_t	*teams;
-}	server_t;
+	int		nb_client;
+	t_parse		*parse;
+	team_t		*teams;
+}			server_t;
 
 void	free_queue(command_t **queue);
 int	set_socket(t_parse *parse, server_t *server);
