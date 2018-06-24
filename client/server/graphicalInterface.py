@@ -166,3 +166,4 @@ class GraphicalInterface(Server, threading.Thread):
 			t = pygame.time.get_ticks()
 			deltaTime = (t - time) / 1000
 			time = t
+		pygame.quit()
