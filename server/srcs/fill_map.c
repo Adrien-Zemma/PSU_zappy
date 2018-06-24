@@ -39,7 +39,7 @@ static void	add_map(server_t *s, tile_t ***map, int id)
 void	add_if_empty(server_t *serv, tile_t ***map)
 {
 	tile_t	stock = {0, 0, 0, 0, 0, 0, 0, 0, NULL};
-	int	max = (serv->parse->width * serv->parse->height) / 6;
+	int	max = (serv->parse->width * serv->parse->height) / 2;
 
 	for (int i = 0; map[i]; i++)
 		for (int j = 0; map[i][j]; j++)
