@@ -173,6 +173,8 @@ class Window():
 	def drawHud(self, toDraw):
 		y = 0
 		for player in toDraw:
+			if not player.alive:
+				continue
 			tmp = self.Block(
 				name=player.team,
 				inv=player.bag,
@@ -183,5 +185,14 @@ class Window():
 			)
 			tmp.draw(y, self._window, self._winSizeX, self._font)
 			y += 1
-		
-		
+	
+	def drawMagic(self, toDraw):
+		for pos in toDraw:
+			tmpX = (pos[0] * self._spriteSize)
+			tmpY = (pos[1] * self._spriteSize)
+			tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 5 * 4
+			tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 5 * 4
+			self._window.blit(
+				self._sprite.get("magic"),
+				(tmp2X, tmp2Y)
+			)

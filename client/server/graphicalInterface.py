@@ -28,6 +28,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self.mapSize = self._tools.getMapSize()
 		self._sizeX = self.mapSize[0]
 		self._sizeY = self.mapSize[1]
+		self._listMagic = []
 		self._mapResources = MapRessources(
 			x = self.mapSize[0],
 			y = self.mapSize[1],
@@ -42,20 +43,23 @@ class GraphicalInterface(Server, threading.Thread):
 		self._buildPlayer()
 		self.buidCommande()
 
+	def playerConnection(self, cmd):
+		cmd = cmd.split(' ')
+		self._players.append(
+			Player(
+				cmd[1][1:],
+				self._tools
+			)
+		)
+
+
 	def managePlayer(self, cmd):
 		cmd = cmd.split(' ')
-		if (cmd[0] == "pnw"):
-			self._players.append(
-				Player(
-					cmd[1][1:],
-					self._tools
-				)
-			)
 		for player in self._players:
 			if (player.id != cmd[1]):
 				continue
 			if (cmd[0] == "pin"):
-				player.setBag(cmd[2:])
+				player.setBag(cmd[4:])
 			if (cmd[0] == "ppo"):
 				player.setPose(cmd[2:])
 			if (cmd[0] == "plv"):
@@ -68,16 +72,31 @@ class GraphicalInterface(Server, threading.Thread):
 				player.speak = True
 			if (cmd[0] == "pdi"):
 				player.alive = False
+
+	def manageMagic(self, cmd):
+		cmd = cmd.split(' ')
+		if cmd[0] == "pic":
+			self._listMagic.append((cmd[1], cmd[2]))
+		else:
+			try:
+				self._listMagic.remove((cmd[1], cmd[2]))
+			except:
+				pass
 		pass
 		
 	def buidCommande(self):
 		cmd = {
 			"bct": self._map.addTile,
+			"pnw": self.playerConnection,
 			"gpt": self.managePlayer,
-			"pnw": self.managePlayer,
 			"ppo": self.managePlayer,
 			"plv": self.managePlayer,
-			"pin": self.managePlayer
+			"pin": self.managePlayer,
+			"pdi": self.managePlayer,
+			"pbc": self.managePlayer,
+			"pex": self.managePlayer,
+			"pic": self.manageMagic,
+			"pie": self.manageMagic
 		}
 		self._commands = Commands(commands = cmd)
 	
@@ -115,6 +134,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self._window.drawBack()
 		self._window.drawField(int(self._sizeX), int(self._sizeY))
 		self._window.drawMap(self._map)
+		self._window.drawMagic(self._listMagic)
 		for player in self._players:
 			self._window.drawPlayer(player)
 		self._window.drawHud(self._players)
