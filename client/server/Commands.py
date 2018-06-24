@@ -6,9 +6,9 @@ class Commands():
 			self.commands = args.get("commands", {})
 	def append(self, name: str, fnct):
 		self.commands[name] =  fnct
-	
+
 	def parse(self, command: str):
-		if self.commands is None:
+		if self.commands is None or command == "" or command is None:
 			return 1
 		try:
 			self.commands[command.split(' ')[0]](command)

@@ -33,7 +33,7 @@ typedef struct	s_parse
 	int	width;
 	int	height;
 	char	**teams;
-	int	clientsNb;
+	int	max_client;
 	int	freq;
 }		t_parse;
 
@@ -41,6 +41,6 @@ t_parse	*parse_args(char **av);
 int	check_arg(char *command);
 void	free_tab(char **args);
 
-extern const char commands_name[6][64];
+extern const char	commands_name[6][64];
 
 #endif /* !PARSE_H_ */

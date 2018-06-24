@@ -41,11 +41,24 @@ int	good_select(fd_set readfds, server_t *server)
 	return (ret);
 }
 
+int	check_all_fd(struct timeval *tv, server_t *server,
+	double backup_time, fd_set readfds)
+{
+	if (tv)
+		free(tv);
+	remove_time_clients(server, backup_time);
+	if (good_select(readfds, server) == 84)
+		return (84);
+	check_dead(server, backup_time);
+	return (0);
+}
+
 int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 {
 	int		best_fd = big_fd(server);
 	struct timeval	*tv = get_select_timeout(server);
-	double		backup_time = tv ? (tv->tv_sec + (double)(tv->tv_usec / 1000000.0f)) : 0;
+	double		backup_time = tv ?
+	(tv->tv_sec + (double)(tv->tv_usec / 1000000.0f)) : 0;
 	int		ret;
 
 	parse = parse;
@@ -53,15 +66,12 @@ int	check_fd(t_parse *parse, server_t *server, fd_set readfds)
 	FD_SET(server->fd, &readfds);
 	for (int i = 0; i < server->nb_fd; i++)
 		FD_SET(server->fds[i], &readfds);
-	ret = select((server->fd > best_fd ? server->fd : best_fd) + 1, &readfds, NULL, NULL, tv);
+	ret = select((server->fd > best_fd ? server->fd : best_fd) + 1,
+		&readfds, NULL, NULL, tv);
 	if (ret == -1)
 		return (84);
 	if (ret != 0)
-		backup_time = tv ? (tv->tv_sec + (double)(tv->tv_usec / 1000000.0f)) : 0;
-	if (tv)
-		free(tv);
-	remove_time_clients(server, backup_time);
-	if (good_select(readfds, server) == 84)
-		return (84);
-	return (0);
+		backup_time = tv ?
+		(tv->tv_sec + (double)(tv->tv_usec / 1000000.0f)) : 0;
+	return (check_all_fd(tv, server, backup_time, readfds));
 }

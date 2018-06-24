@@ -13,66 +13,33 @@ int	map_val_pos(int map_size, int pos)
 		pos += map_size;
 	while (pos >= map_size)
 		pos -= map_size;
-	return pos;
+	return (pos);
 }
 
-void	check_map(tile_t *map, client_t *client)
+void	check_look_north(client_t *client,
+	int *nb, int pos_y, server_t *server)
 {
-	if (map->linemate != 0)
-		dprintf(client->fd, "linemate ");
-	if (map->deraumere != 0)
-		dprintf(client->fd, "deraumere ");
-	if (map->sibur != 0)
-		dprintf(client->fd, "sibur ");
-	if (map->mendiane != 0)
-		dprintf(client->fd, "mendiane ");
-	if (map->phiras != 0)
-		dprintf(client->fd, "phiras ");
-	if (map->thystam != 0)
-		dprintf(client->fd, "thystam ");
-	for (int i = 0; map->clients[i] != NULL; i++)
-		dprintf(client->fd, "player ");
-	if (map->food != 0)
-		dprintf(client->fd, "food ");
-	dprintf(client->fd, ",");
-}
-
-void	check_look_north(client_t *client, int *nb, int posY, server_t *server)
-{
-	int	posX = client->posX - 1;
-	int	check;
+	int	pos_x = client->pos_x - 1;
+	int	tmp;
 	int	i = 0;
 
 	do {
-		posX++;
-		if (posX - nb[0] < 0) {
-			check = posX - nb[0];
-			posX = server->parse->width - check;
-			check_map(server->map[map_val_pos(server->parse->height, posY)][map_val_pos(server->parse->width, posX)], client);
-		}
-		else if (posX - nb[0] > (server->parse->width - 1)){
-			posX = (posX) - server->parse->width;
-			check_map(server->map[map_val_pos(server->parse->height, posY)][map_val_pos(server->parse->width, posX - nb[0])], client);
-		}
-		else  {
-			check_map(server->map[map_val_pos(server->parse->height, posY)][map_val_pos(server->parse->width, posX - nb[0])], client);
-		}
+		pos_y = map_val_pos(server->parse->height, pos_y);
+		pos_x = map_val_pos(server->parse->width, pos_x + 1);
+		tmp = map_val_pos(server->parse->width, pos_x - nb[0]);
+		check_map(server->map[pos_y][tmp], client);
 	} while (i++ - nb[0] < 1 + nb[0] - 1);
 }
 
 int	look_north(server_t *server, client_t *client, int *nb)
 {
-	int	posY;
+	int	pos_y;
 
 	dprintf(client->fd, "[");
-
-	posY = client->posY;
+	pos_y = client->pos_y;
 	for (int i = 0; i < client->level + 1; i++) {
-		check_look_north(client, nb, posY, server);
-		if (posY - 1 < 0)
-			posY = server->parse->height - 1;
-		else
-			posY--;
+		check_look_north(client, nb, pos_y, server);
+		pos_y = map_val_pos(server->parse->height, pos_y - 1);
 		nb[0]++;
 		nb[1]++;
 	}
@@ -101,6 +68,5 @@ int	look(server_t *server, client_t *client, char *str)
 			look_west(server, client, nb);
 			break;
 	}
-
-	return OK;
+	return (OK);
 }

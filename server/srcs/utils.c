@@ -7,7 +7,8 @@
 
 #include "parse.h"
 
-const char commands_name[][64] = {
+const char	commands_name[][64] =
+{
 	"-p",
 	"-x",
 	"-y",
@@ -42,7 +43,7 @@ int	c_count(char *str, char c)
 	for (int i = 0; str[i]; i++)
 		if (str[i] == c)
 			n++;
-	return n;
+	return (n);
 }
 
 char	*parse_command(char *command, char c, int nb)
@@ -65,5 +66,5 @@ char	*parse_command(char *command, char c, int nb)
 	}
 	new[size - 2] = '\0';
 	new[size - 1] = '\0';
-	return new;
+	return (new);
 }

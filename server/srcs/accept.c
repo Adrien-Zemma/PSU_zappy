@@ -7,11 +7,9 @@
 
 #include "server.h"
 
-int	set_client(server_t *server, char *str)
+int	set_client(server_t *server, char *str, client_t *client)
 {
-	client_t *client = server->clients[server->nb_client - 1];
-	client->team = strdup(str);
-	client->food = 1;
+	client->food = 10;
 	client->linemate = 0;
 	client->demaumere = 0;
 	client->sibur = 0;
@@ -21,16 +19,15 @@ int	set_client(server_t *server, char *str)
 	client->level = 1;
 	client->is_incanting = 0;
 	client->id = server->nb_client;
-	client->posX = ADD_MINERAL(0, server->parse->width);
-	client->posY = ADD_MINERAL(0, server->parse->height);
+	client->pos_x = ADD_MINERAL(0, server->parse->width);
+	client->pos_y = ADD_MINERAL(0, server->parse->height);
 	client->orientation = ADD_MINERAL(1, 5);
 	client->command = queue_init();
-	if (!client->command)
-		return (84);
-	append_player(&server->map[server->clients[server->nb_client - 1]->posY][server->clients[server->nb_client - 1]->posX],
-		server->clients[server->nb_client - 1]);
+	client->time = 0;
+	append_player(&server->map[client->pos_y][client->pos_x], client);
+	client->team = find_team(server, str);
 	free(str);
-	return (0);
+	return (client->fd);
 }
 
 void	print_graph_infos(server_t *server, client_t *client)
@@ -60,6 +57,8 @@ int	set_graphic(server_t *server, int tmp)
 
 int	alloc_client(server_t *server, int tmp, char *str)
 {
+	client_t	*client;
+
 	server->fds = realloc(server->fds, sizeof(int) * (server->nb_fd + 1));
 	server->fds[server->nb_fd] = tmp;
 	server->nb_fd++;
@@ -69,11 +68,15 @@ int	alloc_client(server_t *server, int tmp, char *str)
 	server->clients[server->nb_client - 1] = malloc(sizeof(client_t));
 	server->clients[server->nb_client] = NULL;
 	server->clients[server->nb_client - 1]->fd = tmp;
-	dprintf(tmp, "%d\n", server->nb_client);
-	dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
-	tmp = set_client(server, str);
-	send_connection(server->clients, server->clients[server->nb_client - 1]);
-	return (tmp);
+	client = server->clients[server->nb_client - 1];
+	tmp = set_client(server, str, client);
+	if (!client->team
+	|| client->team->max_players - ++client->team->current_players < 0) {
+		dprintf(client->fd, "ko\n");
+		remove_client(server, client->fd);
+		return (tmp);
+	}
+	return (write_map(tmp, client, server));
 }
 
 int	set_accept(server_t *server)
@@ -88,17 +91,5 @@ int	set_accept(server_t *server)
 		perror("accept :");
 	dprintf(tmp, "WELCOME\n");
 	str = getnextline(tmp);
-	if (!str)
-		return (0);
-	if (strcmp(str, "GRAPHIC") == 0) {
-		free(str);
-		return (set_graphic(server, tmp));
-	}
-	for (int i = 0; server->parse->teams[i] != NULL; i++)
-		if (strncmp(server->parse->teams[i], str, strlen(server->parse->teams[i])) == 0) {
-			return (alloc_client(server, tmp, str));
-		}
-	free(str);
-	dprintf(tmp, "ko\n");
-	return (0);
+	return (check_str_accept(tmp, str, server));
 }

@@ -7,6 +7,16 @@
 
 #include "server.h"
 
+struct timeval	*select_time(struct timeval *ret, double time_client)
+{
+	ret = malloc(sizeof(struct timeval));
+	if (!ret)
+		return (NULL);
+	ret->tv_sec = floor(time_client);
+	ret->tv_usec = (double)(time_client - floor(time_client)) * 1000000.0f;
+	return (ret);
+}
+
 struct timeval	*get_select_timeout(server_t *server)
 {
 	struct timeval	*ret = NULL;
@@ -22,18 +32,13 @@ struct timeval	*get_select_timeout(server_t *server)
 		}
 	}
 	if (time_client == -1)
-		return (NULL);
+		return (select_time(ret, 0.1));
 	for (; server->clients[i] != NULL; i++) {
 		cmd = queue_get(&server->clients[i]->command);
 		if (cmd && cmd->time > 0 && time_client > cmd->time)
 			time_client = cmd->time;
 	}
-	ret = malloc(sizeof(struct timeval));
-	if (!ret)
-		return (NULL);
-	ret->tv_sec = floor(time_client);
-	ret->tv_usec = (double)(time_client - floor(time_client)) * 1000000.0f;
-	return (ret);
+	return (select_time(ret, time_client));
 }
 
 void	remove_time_clients(server_t *server, double last_time)
@@ -44,7 +49,7 @@ void	remove_time_clients(server_t *server, double last_time)
 		cmd = queue_get(&server->clients[i]->command);
 		if (cmd) {
 			cmd->time -= last_time;
-			if (cmd->time - 0.001 < 0) {
+			if (cmd->time - 0.000001 < 0) {
 				cmd->ptrFnct(server,
 					server->clients[i],
 					cmd->name);
@@ -66,4 +71,12 @@ command_t	*copy_cmd(command_t *command, char *name)
 	ret->ptrFnct = command->ptrFnct;
 	ret->name = strdup(name);
 	return (ret);
+}
+
+int	block(server_t *server, client_t *client, char *str)
+{
+	(void)server;
+	(void)client;
+	(void)str;
+	return (0);
 }

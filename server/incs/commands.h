@@ -8,15 +8,15 @@
 #ifndef COMMANDS_H_
 	#define COMMANDS_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "server.h"
-#include "map.h"
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+	#include "server.h"
+	#include "map.h"
 
-#define OK 0
-#define BAD_PARAM 1
-#define KO 2
+	#define OK 0
+	#define BAD_PARAM 1
+	#define KO 2
 
 typedef struct server_s server_t;
 typedef struct client_s client_t;
@@ -30,12 +30,13 @@ typedef struct	command_s
 }		command_t;
 
 command_t	**init_commands(t_parse *parse);
-command_t	*append_command(char *name, int (*ptrFnct)(server_t *, client_t *, char *), double time);
-int		map_size(server_t *server, client_t *client, char *str);
-int		names_team(server_t *server, client_t *client, char *str);
-int		map_content(server_t *server, client_t *client, char *str);
-int		tile_content(server_t *server, client_t *client, char *str);
-void		draw_tile(tile_t ***map, int fd, int i, int j);
+command_t	*append_command(char *name,
+		int (*ptrFnct)(server_t *, client_t *, char *), double time);
+int	map_size(server_t *server, client_t *client, char *str);
+int	names_team(server_t *server, client_t *client, char *str);
+int	map_content(server_t *server, client_t *client, char *str);
+int	tile_content(server_t *server, client_t *client, char *str);
+void	draw_tile(tile_t ***map, int fd, int i, int j);
 int	player_level(server_t *server, client_t *client, char *str);
 int	player_inventory(server_t *server, client_t *client, char *str);
 int	player_position(server_t *server, client_t *client, char *str);
@@ -57,5 +58,12 @@ int	start_incantation(server_t *server, client_t *client, char *str);
 int	forke(server_t *server, client_t *client, char *str);
 int	gtp(server_t *server, client_t *client, char *str);
 int	gai(server_t *server, client_t *client, char *str);
+int	end_incantation(server_t *server, client_t *client, char *str);
+int	eject(server_t *server, client_t *client, char *str);
+int	forwardY(server_t *server, client_t *client);
+int	push_client(server_t *server, client_t *client, size_t orientation);
+int	block(server_t *server, client_t *client, char *str);
+int	dead(server_t *server, client_t *client, char *str);
+int	check_dead(server_t *server, double time);
 
 #endif /* !COMMANDS_H_ */
