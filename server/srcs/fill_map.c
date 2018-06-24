@@ -44,7 +44,7 @@ void	add_if_empty(server_t *serv, tile_t ***map)
 	for (int i = 0; map[i]; i++)
 		for (int j = 0; map[i][j]; j++)
 			add_tile(&stock, map[i][j]);
-	(stock.food < max ? add_map(serv, serv->map, 0) : 0);
+	(stock.food < max * 2 ? add_map(serv, serv->map, 0) : 0);
 	(stock.linemate < max ? add_map(serv, serv->map, 1) : 0);
 	(stock.deraumere < max ? add_map(serv, serv->map, 2) : 0);
 	(stock.sibur < max ? add_map(serv, serv->map, 3) : 0);
