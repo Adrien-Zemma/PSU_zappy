@@ -59,13 +59,14 @@ class GraphicalInterface(Server, threading.Thread):
 			if (cmd[0] == "plv"):
 				player.setLevel(cmd[2:])
 			if (cmd[0] == "gpt"):
-				player.setTeam(cmd[2:])
+				player.setTeam(cmd[1:])
 		pass
 		
 	def buidCommande(self):
 		cmd = {
-			"pnw": self.managePlayer,
 			"bct": self._map.addTile,
+			"gpt": self.managePlayer,
+			"pnw": self.managePlayer,
 			"ppo": self.managePlayer,
 			"plv": self.managePlayer,
 			"pin": self.managePlayer
@@ -89,14 +90,16 @@ class GraphicalInterface(Server, threading.Thread):
 	def _buildPlayer(self):
 		self._players = []
 		ids = self._tools.getAllId()
+		print(ids)
 		for el in ids:
+			print(el)
 			self._players.append(
 				Player(el, self._tools)
 			)
 
 	def getUnexpectCommande(self):
 		while True:
-			cmd = self._tools.readTh.get_command(True, 0.5)
+			cmd = self._tools.readTh.get_command(True, 0.1)
 			if (cmd is not None):
 				self._commands.parse(cmd)
 			else:
@@ -109,7 +112,7 @@ class GraphicalInterface(Server, threading.Thread):
 		for player in self._players:
 			self._window.drawPlayer(player)
 		pygame.display.update()
-		self._window.clock.tick(3)
+		self._window.clock.tick(60)
 
 	def updateMap(self):
 		self._tools.write("mct")
@@ -123,7 +126,5 @@ class GraphicalInterface(Server, threading.Thread):
 			self.updateMap()
 			self.updatePlayer()
 			self.getUnexpectCommande()
-			for player in self._players:
-				player.update()
 			self._map.update()
 			self.draw()

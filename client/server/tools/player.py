@@ -7,11 +7,6 @@ class Player():
 		self.x = 0
 		self.y = 0
 		self.o = 1
-
-		self._getTeam()
-		self._getPose()
-		self._getBag()
-		self._getLevel()
 		self.oldX = 0
 		self.oldY = 0
 		self.frame = 0
@@ -19,6 +14,10 @@ class Player():
 		self.magic = False
 		self.moving = False
 		self.pushing = False
+		self._getTeam()
+		self._getPose()
+		self._getBag()
+		self._getLevel()
 
 	def update(self):
 		self._getTeam()

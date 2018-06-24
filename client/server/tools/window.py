@@ -118,6 +118,6 @@ class Window():
 		tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 5 * 4
 		tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 5 * 4
 		self._drawPlayerMagic(toDraw, tmp2X, tmp2X)
-		self._drawPlayerPos(toDraw, tmp2X, tmp2X)
-		self._drawPLayerIcon(toDraw, tmp2X, tmp2X)
+		self._drawPlayerPos(toDraw, tmp2X, tmp2Y)
+		self._drawPLayerIcon(toDraw, tmp2X, tmp2Y)
 		
