@@ -79,7 +79,7 @@ class GraphicalInterface(Server, threading.Thread):
 	def manageMagic(self, cmd):
 		cmd = cmd.split(' ')
 		if cmd[0] == "pic":
-			self._sound("magic")
+			self._sound.play("magic")
 			self._listMagic.append((cmd[1], cmd[2]))
 		else:
 			try:

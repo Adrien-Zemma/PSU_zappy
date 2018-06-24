@@ -21,9 +21,9 @@ class Images():
 		self._itemsPlayer = {
 			False: {
 				1: pygame.image.load(os.path.abspath("assets/perso/stand/north.png")).convert_alpha(),
-				2: pygame.image.load(os.path.abspath("assets/perso/stand/east.png")).convert_alpha(),
+				4: pygame.image.load(os.path.abspath("assets/perso/stand/east.png")).convert_alpha(),
 				3: pygame.image.load(os.path.abspath("assets/perso/stand/south.png")).convert_alpha(),
-				4: pygame.image.load(os.path.abspath("assets/perso/stand/west.png")).convert_alpha()
+				2: pygame.image.load(os.path.abspath("assets/perso/stand/west.png")).convert_alpha()
 			},
 			True: {
 				1: pygame.image.load(os.path.abspath("assets/perso/move/north.png")).convert_alpha(),
