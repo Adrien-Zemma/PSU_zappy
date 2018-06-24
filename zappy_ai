@@ -1,7 +1,9 @@
+#!/bin/env python3
+
 import argparse
 
-from server.graphicalInterface import GraphicalInterface
-from server.IA import IA
+from client.server.graphicalInterface import GraphicalInterface
+from client.server.IA import IA
 import signal
 import sys
 
