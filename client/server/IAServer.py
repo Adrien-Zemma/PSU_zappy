@@ -6,6 +6,9 @@ class IAServer(Server):
 		super().__init__(port, ip)
 		self.readTh.start()
 		self.team = team
+		self.port = port
+		self.ip = ip
+		self.ias = []
 		self.teamId = None
 		self.mapSize = None
 		self.level = 1
@@ -24,6 +27,8 @@ class IAServer(Server):
 
 	def checkCmd(self:object, cmd:str):
 		if cmd == "dead":
+			for ia in self.ias:
+				ia.join()
 			exit(0)
 		elif cmd == "Elevation underway":
 			cmd = self.checkCmd(self.readTh.get_command())
@@ -99,7 +104,11 @@ class IAServer(Server):
 
 	def fork(self:object):
 		self.write("Fork")
-		return self.checkCmd(self.readTh.get_command())
+		cmd = self.checkCmd(self.readTh.get_command())
+		from .IA import IA
+		self.ias.append(IA(self.team, self.port, self.ip))
+		self.ias[len(self.ias) - 1].start()
+		return cmd
 
 	def eject(self:object):
 		self.write("Eject")

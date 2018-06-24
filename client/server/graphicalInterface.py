@@ -83,7 +83,7 @@ class GraphicalInterface(Server, threading.Thread):
 			except:
 				pass
 		pass
-		
+
 	def buidCommande(self):
 		cmd = {
 			"bct": self._map.addTile,
@@ -99,7 +99,7 @@ class GraphicalInterface(Server, threading.Thread):
 			"pie": self.manageMagic
 		}
 		self._commands = Commands(commands = cmd)
-	
+
 	def manageConnection(self):
 		cmd = self.readTh.get_command()
 		if cmd == "WELCOME":
@@ -143,13 +143,17 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def updateMap(self):
 		self._tools.write("mct")
-	
+
 	def updatePlayer(self):
 		for player in self._players:
 			player.update()
 
 	def run(self):
-		while(self._window.running()):
+		deltaTime = 0
+		time = pygame.time.get_ticks()
+		while(True):
+			if self._window.running(deltaTime) == False:
+				return
 			self.updateMap()
 			self.updatePlayer()
 			self.getUnexpectCommande()
@@ -157,3 +161,6 @@ class GraphicalInterface(Server, threading.Thread):
 				print(player.team)
 			self._map.update()
 			self.draw()
+			t = pygame.time.get_ticks()
+			deltaTime = (t - time) / 1000
+			time = t
