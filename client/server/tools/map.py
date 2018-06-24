@@ -38,10 +38,22 @@ class Map():
 			}
 		def add(self, index, coord):
 			self.content[index].append(coord)
+
+		def clear(self):
+			self.content = {
+				"food": [],
+				"linemate": [],
+				"deraumere": [],
+				"sibur": [],
+				"mendiane": [],
+				"phiras": [],
+				"thystame": []
+			}
 	
 	def update(self):
 		for y in range(self.sizeY):
 			for x in range(self.sizeX):
+				self.content[y][x].clear()
 				for key, value in self._trueMap[y][x].items():
 					for item in range(value):
 						self.content[y][x].add(
@@ -73,11 +85,10 @@ class Map():
 		self._tools.write("mct")
 
 	def addTile(self, cmd):
-		#try:
+		try:
 			cmd = cmd.split(' ')[1:]
 			x = int (cmd[0])
 			y = int (cmd[1])
-			save = cmd
 			cmd = cmd[2:]
 			tmp = {
 				"food": int(cmd[0]),
@@ -89,6 +100,5 @@ class Map():
 				"thystame": int(cmd[6])
 			}
 			self._trueMap[y][x] = tmp
-		#except:
-		#	print("Error while getting tile", file = sys.stderr)
-		#	print(save)
+		except:
+			print("Error while getting tile", file = sys.stderr)
