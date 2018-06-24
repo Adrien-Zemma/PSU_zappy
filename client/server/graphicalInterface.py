@@ -61,7 +61,7 @@ class GraphicalInterface(Server, threading.Thread):
 			if (cmd[0] == "plv"):
 				player.setLevel(cmd[2:])
 			if (cmd[0] == "gpt"):
-				player.setTeam(cmd[1:])
+				player.setTeam(cmd[2:])
 			if (cmd[0] == "pex"):
 				player.pushing = True
 			if (cmd[0] == "pbc"):
@@ -133,5 +133,7 @@ class GraphicalInterface(Server, threading.Thread):
 			self.updateMap()
 			self.updatePlayer()
 			self.getUnexpectCommande()
+			for player in self._players:
+				print(player.team)
 			self._map.update()
 			self.draw()
