@@ -25,11 +25,14 @@ void	remove_client(server_t *server, int fd)
 	server->nb_fd--;
 	for (; server->clients[i] && server->clients[j]; i++) {
 		if (server->clients[j]->fd == fd) {
+			if (server->clients[j]->id != -1
+				&& server->clients[j]->team) {
+				if (server->clients[j]->team->max_players
+				> server->clients[j]->team->absolute_max_players)
+					server->clients[j]->team->max_players--;
+				server->clients[j]->team->current_players--;
+			}
 			free_queue(server->clients[j]->command);
-			if (server->clients[j]->team->max_players
-			> server->clients[j]->team->absolute_max_players)
-				server->clients[j]->team->max_players--;
-			server->clients[j]->team->current_players--;
 			free(server->clients[j]);
 			if (!server->clients[++j])
 				break;
