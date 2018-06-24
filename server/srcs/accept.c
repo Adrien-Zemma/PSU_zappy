@@ -76,11 +76,7 @@ int	alloc_client(server_t *server, int tmp, char *str)
 		remove_client(server, client->fd);
 		return (tmp);
 	}
-	dprintf(tmp, "%d\n",
-		client->team->max_players - client->team->current_players);
-	dprintf(tmp, "%d %d\n", server->parse->width, server->parse->height);
-	send_connection(server->clients, client);
-	return (tmp);
+	return (write_map(tmp, client, server));
 }
 
 int	set_accept(server_t *server)
@@ -95,17 +91,5 @@ int	set_accept(server_t *server)
 		perror("accept :");
 	dprintf(tmp, "WELCOME\n");
 	str = getnextline(tmp);
-	if (!str)
-		return (0);
-	if (strcmp(str, "GRAPHIC") == 0) {
-		free(str);
-		return (set_graphic(server, tmp));
-	}
-	for (int i = 0; server->parse->teams[i] != NULL; i++)
-		if (strncmp(server->parse->teams[i], str,
-			strlen(server->parse->teams[i])) == 0)
-			return (alloc_client(server, tmp, str));
-	free(str);
-	dprintf(tmp, "ko\n");
-	return (0);
+	return (check_str_accept(tmp, str, server));
 }
