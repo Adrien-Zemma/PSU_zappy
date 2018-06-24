@@ -110,6 +110,8 @@ class Window():
 
 
 	def drawPlayer(self, toDraw):
+		if not toDraw.alive:
+			return
 		if toDraw.frame > self._maxFrame:
 			toDraw.frame = -1
 		toDraw.frame += 1
