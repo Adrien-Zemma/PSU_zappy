@@ -23,6 +23,53 @@ class Window():
 		label = self._font.render("Loading...", 1, (255, 255, 255))
 		self._window.blit(label, (self._winSizeX / 2, self._winSizeY / 2))
 
+	class Block():
+			def __init__(self, **kwargs):
+				self.id = kwargs.get('id')
+				self.team = kwargs.get('team')
+				self.name = kwargs.get('name')
+				self.inventory = kwargs.get('inv')
+				self.level = kwargs.get('level')
+				self.magic = kwargs.get('magic')
+			
+			def draw(self, y, win, screenX, font):
+				BLACK = (112, 112, 112)
+				x = screenX - 360
+				y = y * 110 + 10
+				pygame.draw.rect(win, BLACK, [x, y, 350, 100], 2)
+				try:
+					label = font.render(str(self.level), 1, (255, 255, 255))
+					win.blit(label, (x + 10, y + 10))
+				except:
+					pass
+				try:
+					label = font.render("#" + str(self.id), 1, (255, 255, 255))
+					win.blit(label, (screenX - 80, y + 10))
+				except:
+					pass
+
+				try:
+					txt = ""
+					for key, value in self.inventory.items():
+						txt += (key[0] + ":" + str(value) + " ")
+					label = font.render(txt, 1, (0, 0, 0))
+					win.blit(label, (x + 5, y + 70))
+				except:
+					pass
+
+				try:
+					label = font.render(self.team, 1, (255, 255, 255))
+					win.blit(label, (x + 120, y + 10))
+				except:
+					pass
+
+				try:
+					if self.magic:
+						label = font.render("magic", 1, (255, 255, 255))
+						win.blit(label, (x + 5, y + 40))
+				except:
+					pass
+
 	def setImages(self, imgs):
 		self._sprite = imgs
 	
@@ -122,4 +169,19 @@ class Window():
 		self._drawPlayerMagic(toDraw, tmp2X, tmp2X)
 		self._drawPlayerPos(toDraw, tmp2X, tmp2Y)
 		self._drawPLayerIcon(toDraw, tmp2X, tmp2Y)
+	
+	def drawHud(self, toDraw):
+		y = 0
+		for player in toDraw:
+			tmp = self.Block(
+				name=player.team,
+				inv=player.bag,
+				level=player.level,
+				team=player.team,
+				magic=player.magic,
+				id=player.id
+			)
+			tmp.draw(y, self._window, self._winSizeX, self._font)
+			y += 1
+		
 		

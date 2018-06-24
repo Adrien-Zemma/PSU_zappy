@@ -10,6 +10,7 @@ class Player():
 		self.oldX = 0
 		self.oldY = 0
 		self.frame = 0
+		self.team = ""
 		self.alive = True
 		self.speak = False
 		self.magic = False

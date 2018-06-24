@@ -51,10 +51,7 @@ class GraphicalInterface(Server, threading.Thread):
 					self._tools
 				)
 			)
-		print(cmd)
 		for player in self._players:
-			print("#"*16)
-			print(player.id, cmd[1])
 			if (player.id != cmd[1]):
 				continue
 			if (cmd[0] == "pin"):
@@ -120,7 +117,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self._window.drawMap(self._map)
 		for player in self._players:
 			self._window.drawPlayer(player)
-			pygame.display.update()
+		self._window.drawHud(self._players)
 		pygame.display.update()
 		self._window.clock.tick(60)
 
