@@ -11,6 +11,7 @@ from .tools.image import Images
 from .Threads import ThreadRead
 from .tools.window import Window
 from .tools.player import Player
+from .tools.sound import Sound
 from .tools.mapressources import MapRessources
 
 class GraphicalInterface(Server, threading.Thread):
@@ -24,6 +25,7 @@ class GraphicalInterface(Server, threading.Thread):
 		pygame.init()
 		self._tools = Tools(self.write, self.readTh)
 		self._window = Window(1080, 1920)
+		self._sound = Sound()
 		self._window.setImages(Images())
 		self.mapSize = self._tools.getMapSize()
 		self._sizeX = self.mapSize[0]
@@ -45,6 +47,7 @@ class GraphicalInterface(Server, threading.Thread):
 
 	def playerConnection(self, cmd):
 		cmd = cmd.split(' ')
+		self._sound.play("spaw")
 		self._players.append(
 			Player(
 				cmd[1][1:],
@@ -70,11 +73,13 @@ class GraphicalInterface(Server, threading.Thread):
 			if (cmd[0] == "pbc"):
 				player.speak = True
 			if (cmd[0] == "pdi"):
+				self._sound.play("death")
 				player.alive = False
 
 	def manageMagic(self, cmd):
 		cmd = cmd.split(' ')
 		if cmd[0] == "pic":
+			self._sound("magic")
 			self._listMagic.append((cmd[1], cmd[2]))
 		else:
 			try:

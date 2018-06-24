@@ -95,5 +95,6 @@ int	check_str_accept(int tmp, char *str, server_t *server);
 int	set_graphic(server_t *server, int tmp);
 int	alloc_client(server_t *server, int tmp, char *str);
 int	write_map(int tmp, client_t *client, server_t *server);
+void	add_if_empty(server_t *serv, tile_t ***map);
 
 #endif /* !SERVER */
