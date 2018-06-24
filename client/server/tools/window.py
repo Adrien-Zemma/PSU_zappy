@@ -117,9 +117,6 @@ class Window():
 		tmpY = (toDraw.y * self._spriteSize)
 		tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 5 * 4
 		tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 5 * 4
-		print("-"*16)
-		print(toDraw.id)
-		print("-"*16)
 		self._drawPlayerMagic(toDraw, tmp2X, tmp2X)
 		self._drawPlayerPos(toDraw, tmp2X, tmp2Y)
 		self._drawPLayerIcon(toDraw, tmp2X, tmp2Y)

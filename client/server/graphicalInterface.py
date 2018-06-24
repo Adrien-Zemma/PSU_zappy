@@ -47,11 +47,16 @@ class GraphicalInterface(Server, threading.Thread):
 		if (cmd[0] == "pnw"):
 			self._players.append(
 				Player(
-					cmd[1],
+					cmd[1][1:],
 					self._tools
 				)
 			)
+		print(cmd)
 		for player in self._players:
+			print("#"*16)
+			print(player.id, cmd[1])
+			if (player.id != cmd[1]):
+				continue
 			if (cmd[0] == "pin"):
 				player.setBag(cmd[2:])
 			if (cmd[0] == "ppo"):
