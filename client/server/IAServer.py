@@ -8,6 +8,7 @@ class IAServer(Server):
 		self.team = team
 		self.teamId = None
 		self.mapSize = None
+		self.level = 1
 		self.manageConnection()
 
 	def manageConnection(self):
@@ -24,6 +25,11 @@ class IAServer(Server):
 	def checkCmd(self:object, cmd:str):
 		if cmd == "dead":
 			exit(0)
+		elif cmd == "Elevation underway":
+			cmd = self.readTh.get_command()
+			sp = cmd.split(":")
+			if sp[0] == "Current level":
+				self.level = int(sp[1])
 		return cmd
 
 	def forward(self:object):
@@ -61,7 +67,7 @@ class IAServer(Server):
 		self.write("Inventory")
 		ret = self.checkCmd(self.readTh.get_command())
 		data = dict()
-		ret = ret[1:-1]
+		ret = ret[2:-2]
 		for tile in ret.split(','):
 			cmd = tile.split(' ')
 			try:
