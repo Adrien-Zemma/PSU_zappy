@@ -87,11 +87,12 @@ int	end_incantation(server_t *server, client_t *client, char *str)
 				&level_requirement[client->level - 1]) == 0) {
 		dprintf(client->fd, "ko\n");
 		st = 1;
-		remove_minerals(&tile, &level_requirement[client->level - 1]);
 	}
-	else
+	else {
+		remove_minerals(&tile, &level_requirement[client->level - 1]);
 		for (int i = 0; clients[i]; i++)
 			clients[i]->level++;
+	}
 	for (int i = 0; clients[i]; i++) {
 		if (clients[i] != client || !st)
 			dprintf(clients[i]->fd, "Current level: %d\n",
