@@ -90,9 +90,7 @@ class GraphicalInterface(Server, threading.Thread):
 	def _buildPlayer(self):
 		self._players = []
 		ids = self._tools.getAllId()
-		print(ids)
 		for el in ids:
-			print(el)
 			self._players.append(
 				Player(el, self._tools)
 			)
@@ -111,6 +109,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self._window.drawMap(self._map)
 		for player in self._players:
 			self._window.drawPlayer(player)
+			pygame.display.update()
 		pygame.display.update()
 		self._window.clock.tick(60)
 
