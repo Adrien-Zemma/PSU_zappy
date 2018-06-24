@@ -11,6 +11,7 @@ class Player():
 		self.oldY = 0
 		self.frame = 0
 		self.team = ""
+		self.level = 1
 		self.alive = True
 		self.speak = False
 		self.magic = False
