@@ -155,9 +155,7 @@ class GraphicalInterface(Server, threading.Thread):
 	def run(self):
 		deltaTime = 0
 		time = pygame.time.get_ticks()
-		while(True):
-			if self._window.running(deltaTime) == False:
-				return
+		while(self._window.running(deltaTime)):
 			self.updateMap()
 			self.updatePlayer()
 			self.getUnexpectCommande()
