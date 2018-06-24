@@ -3,6 +3,7 @@ import pygame
 from pygame import *
 class Sound():
 	def __init__(self):
+		pygame.mixer.init(44100, -16,2,2048)
 		pygame.mixer.music.load(os.path.abspath("assets/sound.wav"))
 		pygame.mixer.music.play()
 		pygame.mixer.music.set_volume(0.5)
