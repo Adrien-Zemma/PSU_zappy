@@ -1,5 +1,6 @@
 import sys
 from .Server import Server
+import queue
 
 class IAServer(Server):
 	def __init__(self, team, port, ip):
@@ -12,6 +13,7 @@ class IAServer(Server):
 		self.teamId = None
 		self.mapSize = None
 		self.level = 1
+		self.broadcasts = queue.Queue()
 		self.manageConnection()
 
 	def manageConnection(self):
@@ -35,6 +37,9 @@ class IAServer(Server):
 			sp = cmd.split(":")
 			if sp[0] == "Current level" and len(sp) >= 2:
 				self.level = int(sp[1])
+		else:
+			if cmd.split(',')[0].split(' ')[0] == "message":
+				self.broadcasts.put(cmd)
 		return cmd
 
 	def forward(self:object):
@@ -91,6 +96,8 @@ class IAServer(Server):
 			except (KeyError, IndexError):
 				print("Error while recepting inventory", file=sys.stderr)
 				exit(84)
+			except (ValueError):
+				return data
 		return data
 
 	def broadcast(self:object, msg:str):
@@ -103,6 +110,8 @@ class IAServer(Server):
 		return ret
 
 	def fork(self:object):
+		if len(self.ias) >= 1:
+			return "ok"
 		self.write("Fork")
 		cmd = self.checkCmd(self.readTh.get_command())
 		from .IA import IA

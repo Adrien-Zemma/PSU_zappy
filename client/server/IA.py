@@ -4,6 +4,7 @@ from .IAServer import IAServer
 from .incantationRequirements import incantationRequirements
 from .utils import map
 import os
+import queue
 
 class IA(threading.Thread):
 	def __init__(self, team, port, ip):
@@ -30,18 +31,85 @@ class IA(threading.Thread):
 				self.incantation()
 			self.level = self.server.level
 			self.updateInventory()
+			if self.inventory["food"] < 20 or self.findPlayer() == False:
+				self.idle()
 			self.lookAndTake()
-			if self.pos[0] == self.server.mapSize[0] - 1:
-				self.left()
-				self.forward()
-				self.left()
-			elif self.pos[0] == 0:
-				self.right()
-				self.forward()
-				self.right()
+
+	def idle(self):
+		if self.pos[0] == self.server.mapSize[0] - 1:
+			self.left()
 			self.forward()
+			self.left()
+		elif self.pos[0] == 0:
+			self.right()
+			self.forward()
+			self.right()
+		self.forward()
+
+	def findPlayer(self):
+		try:
+			broadcast = self.server.broadcasts.get(True, 0.1)
+			self.server.broadcasts.task_done()
+		except queue.Empty:
+			broadcast = None
+		if broadcast is not None:
+			begin = broadcast.split(' ')
+			if len(begin) < 2:
+				return False
+			self.follow(int(begin[1]))
+			return True
+		return False
+
+	def follow(self, direction):
+		if direction <= 0 or direction > 8:
+			return
+		r = (self.server.mapSize[0] + self.server.mapSize[1]) / 4
+		for i in range(r):
+			ret = self.server.look()
+			if ret[0]["food"] > 0:
+				self.takeN("food", ret[0]["food"])
+			if ret[0]["player"] >= 2:
+				return
+			if direction == 1:
+				self.forward();
+			elif direction == 2:
+				self.forward()
+				self.left()
+				self.forward()
+				self.right()
+			elif direction == 3:
+				self.left()
+				self.forward()
+				direction = 1
+			elif direction == 4:
+				self.left()
+				self.forward()
+				self.left()
+				self.forward()
+				direction = 8
+			elif direction == 5:
+				self.left()
+				self.left()
+				self.forward()
+				direction = 1
+			elif direction == 6:
+				self.right()
+				self.forward()
+				self.right()
+				self.forward()
+				direction = 2
+			elif direction == 7:
+				self.right()
+				self.forward()
+				direction = 1
+			elif direction == 8:
+				self.forward()
+				self.right()
+				self.forward()
+				self.left()
 
 	def checkIncantation(self):
+		ret = self.server.look()
 		if (self.inventory["linemate"] >= incantationRequirements[self.level - 1]["linemate"]
 		and self.inventory["deraumere"] >= incantationRequirements[self.level - 1]["deraumere"]
 		and self.inventory["sibur"] >= incantationRequirements[self.level - 1]["sibur"]
@@ -103,6 +171,7 @@ class IA(threading.Thread):
 			if k != "player":
 				for i in range(incantationRequirements[self.level - 1][k] - ret[0][k]):
 					self.server.set(k)
+		self.server.broadcast("Come here to get level " + str(self.level + 1) + "\n")
 		if self.server.incantation() == "ko":
 			if self.server.checkCmd(self.server.readTh.get_command()) == "ko":
 				self.server.fork()
