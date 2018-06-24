@@ -38,6 +38,6 @@ class ThreadRead(threading.Thread):
 		"""
 		cmd = self._read()
 		while True:
-			#TODO:print("Putting [" + cmd + "]")
+			print("Putting [" + cmd + "]")
 			self.queue.put(cmd)
 			cmd = self._read()

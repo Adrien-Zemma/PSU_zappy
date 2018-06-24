@@ -58,6 +58,10 @@ int	start_incantation(server_t *server, client_t *client, char *str)
 	|| compare_tile_incantation(client, tile,
 				&level_requirement[client->level - 1]) == 0) {
 		dprintf(client->fd, "ko\n");
+		queue_append(&client->command,
+			append_command(NULL,
+			end_incantation,
+			300 / (double)server->parse->freq));
 		return (KO);
 	}
 	client->is_incanting = 1;
