@@ -16,6 +16,17 @@ void	malloc_remove_client(server_t *server)
 		sizeof(int) * (server->nb_fd + 1));
 }
 
+static void	free_ia(server_t *server, int j)
+{
+	if (server->clients[j]->id != -1 && server->clients[j]->team) {
+		if (server->clients[j]->team->max_players >
+		server->clients[j]->team->absolute_max_players)
+			server->clients[j]->team->max_players--;
+		server->clients[j]->team->current_players--;
+		remove_player(server->map, server->clients[j]);
+	}
+}
+
 void	remove_client(server_t *server, int fd)
 {
 	size_t	i = 0;
@@ -25,15 +36,7 @@ void	remove_client(server_t *server, int fd)
 	server->nb_fd--;
 	for (; server->clients[i] && server->clients[j]; i++) {
 		if (server->clients[j]->fd == fd) {
-			if (server->clients[j]->id != -1
-				&& server->clients[j]->team) {
-				if (server->clients[j]->team->max_players
-				> server->clients[j]->
-				team->absolute_max_players)
-					server->clients[j]->team->max_players--;
-				server->clients[j]->team->current_players--;
-				remove_player(server->map, server->clients[j]);
-			}
+			free_ia(server, j);
 			free_queue(server->clients[j]->command);
 			free(server->clients[j]);
 			if (!server->clients[++j])
@@ -43,20 +46,6 @@ void	remove_client(server_t *server, int fd)
 		server->fds[i] = server->fds[j++];
 	}
 	malloc_remove_client(server);
-}
-
-void	manage_error(int fd, int state, int *check)
-{
-	if (state != BAD_PARAM && state != KO)
-		*check = 1;
-	switch (state) {
-		case BAD_PARAM:
-		dprintf(fd, "sbp\n");
-		break;
-		case KO:
-		dprintf(fd, "ko\n");
-		break;
-	}
 }
 
 void	check_read_command(server_t *server, char *str, int check)
