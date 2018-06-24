@@ -9,7 +9,7 @@
 
 static int	send_pgt(server_t *server, client_t *client)
 {
-	//add_if_empty(server->map);
+	add_if_empty(server, server->map);
 	for (int i = 0; server->clients[i] != NULL; i++)
 		if (server->clients[i]->id == -1)
 			dprintf(server->clients[i]->fd, "pgt %d 1\n",
