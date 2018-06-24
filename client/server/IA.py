@@ -12,18 +12,13 @@ class IA(threading.Thread):
 		self.level = 1
 		self.pos = [0, 0]
 		self.dir = 0
-		self.inventory = {
-			"food": 0,
-			"linemate": 0,
-			"deraumere": 0,
-			"sibur": 0,
-			"mendiane": 0,
-			"phiras": 0,
-			"thystame": 0
-		}
+		self.inventory = self.server.inventory()
 
 	def run(self):
 		while True:
+			if self.checkIncantation() == True:
+				self.incantation()
+			self.level = self.server.level
 			self.inventory = self.server.inventory()
 			self.lookAndTake()
 			if self.pos[0] == self.server.mapSize[0] - 1:
@@ -35,6 +30,16 @@ class IA(threading.Thread):
 				self.forward()
 				self.right()
 			self.forward()
+
+	def checkIncantation(self):
+		if (self.inventory["linemate"] >= incantationRequirements[self.level - 1]["linemate"]
+		and self.inventory["deraumere"] >= incantationRequirements[self.level - 1]["deraumere"]
+		and self.inventory["sibur"] >= incantationRequirements[self.level - 1]["sibur"]
+		and self.inventory["mendiane"] >= incantationRequirements[self.level - 1]["mendiane"]
+		and self.inventory["phiras"] >= incantationRequirements[self.level - 1]["phiras"]
+		and self.inventory["thystame"] >= incantationRequirements[self.level - 1]["thystame"]):
+			return True
+		return False
 
 	def forward(self):
 		print("forward")
@@ -51,12 +56,10 @@ class IA(threading.Thread):
 			self.pos[1] = map(self.server.mapSize[1], self.pos[1] - 1)
 
 	def left(self):
-		print("left")
 		if self.server.left() == "ok":
 			self.dir = map(4, self.dir - 1)
 
 	def right(self):
-		print("right")
 		if self.server.right() == "ok":
 			self.dir = map(4, self.dir + 1)
 
@@ -77,3 +80,11 @@ class IA(threading.Thread):
 				self.inventory[object] += 1
 			else:
 				return
+
+	def incantation(self):
+		ret = self.server.look()
+		for k in incantationRequirements[self.level - 1]:
+			if k != "player":
+				for i in range(incantationRequirements[self.level - 1][k] - ret[0][k]):
+					self.server.set(k)
+		self.server.incantation()

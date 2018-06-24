@@ -8,6 +8,7 @@ class IAServer(Server):
 		self.team = team
 		self.teamId = None
 		self.mapSize = None
+		self.level = 1
 		self.manageConnection()
 
 	def manageConnection(self):
@@ -24,23 +25,28 @@ class IAServer(Server):
 	def checkCmd(self:object, cmd:str):
 		if cmd == "dead":
 			exit(0)
+		elif cmd == "Elevation underway":
+			cmd = self.readTh.get_command()
+			sp = cmd.split(":")
+			if sp[0] == "Current level":
+				self.level = int(sp[1])
 		return cmd
 
 	def forward(self:object):
 		self.write("Forward")
-		return self.readTh.get_command()
+		return self.checkCmd(self.readTh.get_command())
 
 	def left(self:object):
 		self.write("Left")
-		return self.readTh.get_command()
+		return self.checkCmd(self.readTh.get_command())
 
 	def right(self:object):
 		self.write("Right")
-		return self.readTh.get_command()
+		return self.checkCmd(self.readTh.get_command())
 
 	def look(self:object):
 		self.write("Look")
-		ret = self.readTh.get_command()
+		ret = self.checkCmd(self.readTh.get_command())
 		datas = list()
 		ret = ret[1:-2]
 		ret = "".join(ret.split())
@@ -59,9 +65,9 @@ class IAServer(Server):
 
 	def inventory(self:object):
 		self.write("Inventory")
-		ret = self.readTh.get_command()
+		ret = self.checkCmd(self.readTh.get_command())
 		data = dict()
-		ret = ret[1:-1]
+		ret = ret[2:-2]
 		for tile in ret.split(','):
 			cmd = tile.split(' ')
 			try:
@@ -76,29 +82,29 @@ class IAServer(Server):
 
 	def broadcast(self:object, msg:str):
 		self.write("Broadcast " + msg)
-		return self.readTh.get_command()
+		return self.checkCmd(self.readTh.get_command())
 
 	def connectNbr(self:object):
 		self.write("Connect_nbr")
-		ret = self.readTh.get_command()
+		ret = self.checkCmd(self.readTh.get_command())
 		return ret
 
 	def fork(self:object):
 		self.write("Fork")
-		return self.readTh.get_command()
+		return self.checkCmd(self.readTh.get_command())
 
 	def eject(self:object):
 		self.write("Eject")
-		return self.readTh.get_command()
+		return self.checkCmd(self.readTh.get_command())
 
 	def take(self:object, object:str):
 		self.write("Take " + object)
-		return self.readTh.get_command()
+		return self.checkCmd(self.readTh.get_command())
 
 	def set(self:object, object:str):
 		self.write("Set " + object)
-		return self.readTh.get_command()
+		return self.checkCmd(self.readTh.get_command())
 
 	def incantation(self:object):
 		self.write("Incantation")
-		return self.readTh.get_command()
+		return self.checkCmd(self.readTh.get_command())

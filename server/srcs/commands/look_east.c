@@ -24,7 +24,7 @@ void	check_map(tile_t *map, client_t *client)
 	for (int i = 0; i < map->phiras; i++)
 		dprintf(client->fd, "phiras ");
 	for (int i = 0; i < map->thystam; i++)
-		dprintf(client->fd, "thystam ");
+		dprintf(client->fd, "thystame ");
 	dprintf(client->fd, ",");
 }
 
