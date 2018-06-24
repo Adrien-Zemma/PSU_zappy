@@ -4,6 +4,10 @@ class Player():
 	def __init__(self, id, tools):
 		self.id = id
 		self._tools = tools
+		self.x = 0
+		self.y = 0
+		self.o = 1
+
 		self._getTeam()
 		self._getPose()
 		self._getBag()
@@ -24,7 +28,7 @@ class Player():
 
 
 	def _getTeam(self):
-		self._tools.write("gai #" + self.id)
+		self._tools.write("gpt #" + self.id)
 	
 	def setTeam(self, cmd):
 		try:
@@ -41,6 +45,8 @@ class Player():
 			self.y = int(cmd[1])
 			self.o = int(cmd[2])
 			if self.x != self.oldX or self.y != self.oldY:
+				self.oldX = self.x
+				self.oldY = self.y
 				self.moving = True
 			else:
 				self.moving = False
