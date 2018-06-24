@@ -39,6 +39,7 @@ SRCS	=	./server/srcs/accept.c				\
 		./server/srcs/commands/check_dead.c		\
 		./server/srcs/commands.c			\
 		./server/srcs/getnextline.c			\
+		./server/srcs/fill_map.c			\
 		./server/srcs/main.c				\
 		./server/srcs/map.c				\
 		./server/srcs/parse.c				\
