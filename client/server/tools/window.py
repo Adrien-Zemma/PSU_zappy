@@ -16,6 +16,7 @@ class Window():
 		self.clock = pygame.time.Clock()
 		self._son = pygame.mixer.music.load(os.path.abspath("assets/sound.wav"))
 		self._son = pygame.mixer.music.set_volume(0.5)
+		pygame.mixer.music.play()
 		self._font = pygame.font.Font(os.path.abspath("assets/font/Android.ttf"), self._fontsize)
 		self._window = pygame.display.set_mode((self._winSizeX, self._winSizeY))
 		self._shiftX = self._winSizeX / 10 * 4.5
@@ -31,7 +32,7 @@ class Window():
 				self.inventory = kwargs.get('inv')
 				self.level = kwargs.get('level')
 				self.magic = kwargs.get('magic')
-			
+
 			def draw(self, y, win, screenX, font):
 				BLACK = (112, 112, 112)
 				x = screenX - 360
@@ -72,31 +73,33 @@ class Window():
 
 	def setImages(self, imgs):
 		self._sprite = imgs
-	
+
 	def getSpriteSize(self):
 		return self._spriteSize
-	
+
 	def manageKeys(self, event):
 		if event.key == pygame.K_ESCAPE:
 			return False
-		elif event.key == pygame.K_UP:
-			self._shiftY += 15
-		elif event.key == pygame.K_DOWN:
-			self._shiftY -= 15
-		elif event.key == pygame.K_LEFT:
-			self._shiftX += 15
-		elif event.key == pygame.K_RIGHT:
-			self._shiftX -= 15
 		return True
 
-	def running(self):
+	def running(self, deltaTime):
+		speed = 400
+		keys = pygame.key.get_pressed()
+		if keys[pygame.K_UP]:
+			self._shiftY += (speed * deltaTime)
+		if keys[pygame.K_DOWN]:
+			self._shiftY -= (speed * deltaTime)
+		if keys[pygame.K_LEFT]:
+			self._shiftX += (speed * deltaTime)
+		if keys[pygame.K_RIGHT]:
+			self._shiftX -= (speed * deltaTime)
 		for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					return False
 				if event.type == pygame.KEYDOWN:
 					return self.manageKeys(event)
-		return True		
-	
+		return True
+
 	def _drawCase(self, case):
 		for key, value in case.content.items():
 			for pos in value:
@@ -126,7 +129,7 @@ class Window():
 
 	def drawBack(self):
 		self._window.blit(self._sprite.get("back"), (0, 0))
-	
+
 	def _drawPlayerMagic(self, toDraw, x, y):
 		if toDraw.magic:
 			self._window.blit(
@@ -169,10 +172,12 @@ class Window():
 		self._drawPlayerMagic(toDraw, tmp2X, tmp2X)
 		self._drawPlayerPos(toDraw, tmp2X, tmp2Y)
 		self._drawPLayerIcon(toDraw, tmp2X, tmp2Y)
-	
+
 	def drawHud(self, toDraw):
 		y = 0
 		for player in toDraw:
+			if not player.alive:
+				continue
 			tmp = self.Block(
 				name=player.team,
 				inv=player.bag,
@@ -183,5 +188,14 @@ class Window():
 			)
 			tmp.draw(y, self._window, self._winSizeX, self._font)
 			y += 1
-		
-		
+
+	def drawMagic(self, toDraw):
+		for pos in toDraw:
+			tmpX = (pos[0] * self._spriteSize)
+			tmpY = (pos[1] * self._spriteSize)
+			tmp2X = (tmpX - tmpY) + self._shiftX + self._spriteSize / 5 * 4
+			tmp2Y = ((tmpX + tmpY) / 2) + self._shiftY + self._spriteSize / 5 * 4
+			self._window.blit(
+				self._sprite.get("magic"),
+				(tmp2X, tmp2Y)
+			)
