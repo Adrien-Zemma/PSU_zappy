@@ -55,7 +55,7 @@ SRCS	=	./server/srcs/accept.c				\
 OBJS	=	$(SRCS:.c=.o)
 
 CFLAGS	=	-I ./server/incs/
-CFLAGS	+=	-W -Wall -Wextra -g3
+CFLAGS	+=	-W -Wall -Wextra
 
 all:		$(NAME)
 

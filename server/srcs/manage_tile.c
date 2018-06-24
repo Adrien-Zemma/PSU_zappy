@@ -50,5 +50,5 @@ int	remove_player(tile_t ***map, client_t *client)
 			manage_tile(map[i][j], client);
 		}
 	}
-	return OK;
+	return (OK);
 }
