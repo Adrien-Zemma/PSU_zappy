@@ -12,6 +12,15 @@ class Player():
 		self.frame = 0
 		self.team = ""
 		self.level = 1
+		self.bag = {
+				"food": 0,
+				"linemate": 0,
+				"deraumere": 0,
+				"sibur": 0,
+				"mendiane": 0,
+				"phiras": 0,
+				"thystame": 0,
+			}
 		self.alive = True
 		self.speak = False
 		self.magic = False
