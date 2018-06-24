@@ -32,6 +32,7 @@ void	remove_client(server_t *server, int fd)
 				team->absolute_max_players)
 					server->clients[j]->team->max_players--;
 				server->clients[j]->team->current_players--;
+				remove_player(server->map, server->clients[j]);
 			}
 			free_queue(server->clients[j]->command);
 			free(server->clients[j]);
