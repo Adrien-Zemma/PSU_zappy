@@ -15,8 +15,8 @@ class Hud():
 				el.draw(y, self._graph, self._graph._winSizeX)
 				y += 1
 
-		def buildBlock(self):
-			for player in self._graph._playerList:
+		def buildBlock(self, players):
+			for player in players:
 				self._blocks.append(
 					self.Block(
 						name=player._team,
