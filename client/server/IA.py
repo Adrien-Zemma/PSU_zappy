@@ -3,6 +3,7 @@ import threading
 from .IAServer import IAServer
 from .incantationRequirements import incantationRequirements
 from .utils import map
+import os
 
 class IA(threading.Thread):
 	def __init__(self, team, port, ip):
@@ -103,4 +104,5 @@ class IA(threading.Thread):
 				for i in range(incantationRequirements[self.level - 1][k] - ret[0][k]):
 					self.server.set(k)
 		if self.server.incantation() == "ko":
-			self.server.checkCmd(self.server.readTh.get_command())
+			if self.server.checkCmd(self.server.readTh.get_command()) == "ko":
+				self.server.fork()
