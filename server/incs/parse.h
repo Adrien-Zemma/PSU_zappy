@@ -33,7 +33,7 @@ typedef struct	s_parse
 	int	width;
 	int	height;
 	char	**teams;
-	int	clientsNb;
+	int	max_client;
 	int	freq;
 }		t_parse;
 

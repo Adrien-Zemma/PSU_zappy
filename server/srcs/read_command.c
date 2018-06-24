@@ -13,7 +13,7 @@ void	malloc_remove_client(server_t *server)
 	server->clients = realloc(server->clients,
 		sizeof(client_t *) * (server->nb_client + 1));
 	server->fds = realloc(server->fds,
-		sizeof(int) * (server->nb_fd));
+		sizeof(int) * (server->nb_fd + 1));
 }
 
 void	remove_client(server_t *server, int fd)
@@ -25,21 +25,24 @@ void	remove_client(server_t *server, int fd)
 	server->nb_fd--;
 	for (; server->clients[i] && server->clients[j]; i++) {
 		if (server->clients[j]->fd == fd) {
+			if (server->clients[j]->id != -1
+				&& server->clients[j]->team) {
+				if (server->clients[j]->team->max_players
+				> server->clients[j]->
+				team->absolute_max_players)
+					server->clients[j]->team->max_players--;
+				server->clients[j]->team->current_players--;
+			}
 			free_queue(server->clients[j]->command);
-			(server->clients[j]->id != -1 ?
-				free(server->clients[j]->team) : 0);
 			free(server->clients[j]);
-			j++;
-			if (!server->clients[j])
+			if (!server->clients[++j])
 				break;
 		}
 		server->clients[i] = server->clients[j];
-		server->fds[i] = server->fds[j];
-		j++;
+		server->fds[i] = server->fds[j++];
 	}
 	malloc_remove_client(server);
 }
-
 
 void	manage_error(int fd, int state, int *check)
 {

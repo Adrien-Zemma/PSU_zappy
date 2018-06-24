@@ -18,17 +18,19 @@ command_t	**init_other_commands(t_parse *parse, command_t **node, int i)
 	node[17] = append_command("gnp", get_number_player, 0);
 	node[18] = append_command("ppo", get_player_pos, 0);
 	node[19] = append_command("Incantation",
-		start_incantation, 300 / (double)parse->freq);
+		start_incantation, 0);
 	node[20] = append_command("gpt", gtp, 0);
 	node[21] = append_command("Fork", forke, 42 / (double)parse->freq);
 	node[22] = append_command("gai", gai, 0);
+	node[23] = append_command("Eject",
+		eject, 7 / (double)parse->freq);
 	node[i] = NULL;
 	return (node);
 }
 
 command_t	**init_commands(t_parse *parse)
 {
-	const int	i = 23;
+	const int	i = 24;
 	command_t	**node = malloc(sizeof(command_t *) * (i + 1));
 
 	if (!node)

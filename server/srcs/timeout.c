@@ -32,7 +32,7 @@ struct timeval	*get_select_timeout(server_t *server)
 		}
 	}
 	if (time_client == -1)
-		return (NULL);
+		return (select_time(ret, 0.1));
 	for (; server->clients[i] != NULL; i++) {
 		cmd = queue_get(&server->clients[i]->command);
 		if (cmd && cmd->time > 0 && time_client > cmd->time)
@@ -49,7 +49,7 @@ void	remove_time_clients(server_t *server, double last_time)
 		cmd = queue_get(&server->clients[i]->command);
 		if (cmd) {
 			cmd->time -= last_time;
-			if (cmd->time - 0.001 < 0) {
+			if (cmd->time - 0.000001 < 0) {
 				cmd->ptrFnct(server,
 					server->clients[i],
 					cmd->name);
@@ -71,4 +71,12 @@ command_t	*copy_cmd(command_t *command, char *name)
 	ret->ptrFnct = command->ptrFnct;
 	ret->name = strdup(name);
 	return (ret);
+}
+
+int	block(server_t *server, client_t *client, char *str)
+{
+	(void)server;
+	(void)client;
+	(void)str;
+	return (0);
 }

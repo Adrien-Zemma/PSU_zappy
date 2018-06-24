@@ -22,7 +22,7 @@ static void	add_arg(t_parse *obj, int id, char **av)
 		obj->height = atoi(av[1]);
 		break;
 		case 4:
-		obj->clientsNb = atoi(av[1]);
+		obj->max_client = atoi(av[1]);
 		break;
 		case 5:
 		obj->freq = atoi(av[1]);
@@ -37,8 +37,7 @@ static t_parse	*init_parse_struct(void)
 	obj->width = -1;
 	obj->height = -1;
 	obj->teams = NULL;
-	obj->clientsNb = -1;
-	obj->clientsNb = -1;
+	obj->max_client = -1;
 	obj->freq = -1;
 	return (obj);
 }
@@ -71,15 +70,17 @@ static t_parse *check_parse_struct(t_parse *obj)
 {
 	if (obj->port == -1 || obj->width == -1 ||
 	obj->height == -1 || !obj->teams ||
-	obj->clientsNb == -1 || obj->freq == -1) {
+	obj->max_client == -1 || obj->freq == -1) {
 		if (obj->teams)
 			free_tab(obj->teams);
 		free(obj);
 		obj = NULL;
 	}
 	else {
-		printf("Port: %d\nWidth: %d\nHeight: %d\nclientsNb: %d\nFreq: %d\n",
-			obj->port, obj->width, obj->height, obj->clientsNb, obj->freq);
+		printf("Port: %d\nWidth: %d\nHeight: %d\n",
+			obj->port, obj->width, obj->height);
+		printf("Clients Max: %d\nFreq: %d\n",
+			obj->max_client, obj->freq);
 		printf("Names: ");
 		for (int i = 0; obj->teams[i]; i++)
 			printf("%s => ", obj->teams[i]);

@@ -14,9 +14,18 @@
 	#include <string.h>
 	#include <math.h>
 	#include <signal.h>
+	#include <time.h>
 
 typedef struct command_s command_t;
 typedef struct	tile_s tile_t;
+
+typedef struct	team_s
+{
+	char	*name;
+	int	absolute_max_players;
+	int	max_players;
+	int	current_players;
+}		team_t;
 
 typedef	struct client_s
 {
@@ -29,12 +38,13 @@ typedef	struct client_s
 	int	phiras;
 	int	thystame;
 	int	level;
-	int	posX;
-	int	posY;
+	int	pos_x;
+	int	pos_y;
 	int	id;
 	int	orientation;
-	char	*team;
+	team_t	*team;
 	int	is_incanting;
+	double	time;
 	command_t	**command;
 }	client_t;
 
@@ -48,6 +58,7 @@ typedef	struct server_s
 	tile_t		***map;
 	int	nb_client;
 	t_parse	*parse;
+	team_t	*teams;
 }	server_t;
 
 void	free_queue(command_t **queue);
@@ -77,5 +88,10 @@ int	check_fd(t_parse *parse, server_t *server, fd_set readfds);
 void	remove_client(server_t *server, int fd);
 int	set_struct_server(server_t *server, t_parse *parse);
 void	free_server(server_t *s);
+team_t	*find_team(server_t *server, char *name);
+int	check_str_accept(int tmp, char *str, server_t *server);
+int	set_graphic(server_t *server, int tmp);
+int	alloc_client(server_t *server, int tmp, char *str);
+int	write_map(int tmp, client_t *client, server_t *server);
 
 #endif /* !SERVER */

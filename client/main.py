@@ -5,7 +5,6 @@ from server.IA import IA
 import signal
 import sys
 
-
 def main():
 	ias = []
 	for i in range(args.nbIA):
@@ -18,7 +17,7 @@ def main():
 	for ia in ias:
 		ia.join()
 	if args.graph:
-		ui.join()			
+		ui.join()
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(add_help=False)
