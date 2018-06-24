@@ -8,6 +8,8 @@
 #ifndef SERVER_H_
 	#define SERVER_H_
 
+	#define _GNU_SOURCE
+	#include <stdio.h>
 	#include "parse.h"
 	#include "commands.h"
 	#include "map.h"
