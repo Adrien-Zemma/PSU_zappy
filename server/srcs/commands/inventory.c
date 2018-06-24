@@ -13,11 +13,11 @@ int	inventory(server_t *server, client_t *client, char *str)
 
 	str = str;
 	server = server;
-	asprintf(&end, ", mendiane %d, phiras %d, thystame %d ]\n",
+	asprintf(&end, ", mendiane %d, phiras %d, thystame %d]\n",
 		client->mendiane,
 		client->phiras,
 		client->thystame);
-	dprintf(client->fd, "[ food %d, linemate %d, deraumere %d, sibur %d%s",
+	dprintf(client->fd, "[food %d, linemate %d, deraumere %d, sibur %d%s",
 		client->food,
 		client->linemate,
 		client->demaumere,

@@ -26,9 +26,9 @@ class IAServer(Server):
 		if cmd == "dead":
 			exit(0)
 		elif cmd == "Elevation underway":
-			cmd = self.readTh.get_command()
+			cmd = self.checkCmd(self.readTh.get_command())
 			sp = cmd.split(":")
-			if sp[0] == "Current level":
+			if sp[0] == "Current level" and len(sp) >= 2:
 				self.level = int(sp[1])
 		return cmd
 
@@ -67,7 +67,15 @@ class IAServer(Server):
 		self.write("Inventory")
 		ret = self.checkCmd(self.readTh.get_command())
 		data = dict()
-		ret = ret[2:-2]
+		if len(ret) > 3:
+			if ret[1] == ' ':
+				ret = ret[2:]
+			else:
+				ret = ret[1:]
+			if ret[len(ret) - 2] == ' ':
+				ret = ret[:-2]
+			else:
+				ret = ret[:-1]
 		for tile in ret.split(','):
 			cmd = tile.split(' ')
 			try:
