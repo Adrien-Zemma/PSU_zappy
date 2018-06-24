@@ -65,6 +65,12 @@ class GraphicalInterface(Server, threading.Thread):
 				player.setLevel(cmd[2:])
 			if (cmd[0] == "gpt"):
 				player.setTeam(cmd[1:])
+			if (cmd[0] == "pex"):
+				player.pushing = True
+			if (cmd[0] == "pbc"):
+				player.speak = True
+			if (cmd[0] == "pdi"):
+				player.alive = False
 		pass
 		
 	def buidCommande(self):
