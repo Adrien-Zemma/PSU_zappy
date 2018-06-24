@@ -67,7 +67,6 @@ class Player():
 		self._tools.write("pin #" + self.id)
 
 	def setBag(self, cmd):
-		print(cmd)
 		try:
 			self.bag = {
 				"food": int(cmd[0]),

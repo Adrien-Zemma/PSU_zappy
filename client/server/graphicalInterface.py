@@ -159,8 +159,6 @@ class GraphicalInterface(Server, threading.Thread):
 			self.updateMap()
 			self.updatePlayer()
 			self.getUnexpectCommande()
-			for player in self._players:
-				print(player.team)
 			self._map.update()
 			self.draw()
 			t = pygame.time.get_ticks()
