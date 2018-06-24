@@ -52,7 +52,6 @@ class GraphicalInterface(Server, threading.Thread):
 			)
 		)
 
-
 	def managePlayer(self, cmd):
 		cmd = cmd.split(' ')
 		for player in self._players:

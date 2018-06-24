@@ -16,6 +16,7 @@ class Window():
 		self.clock = pygame.time.Clock()
 		self._son = pygame.mixer.music.load(os.path.abspath("assets/sound.wav"))
 		self._son = pygame.mixer.music.set_volume(0.5)
+		pygame.mixer.music.play()
 		self._font = pygame.font.Font(os.path.abspath("assets/font/Android.ttf"), self._fontsize)
 		self._window = pygame.display.set_mode((self._winSizeX, self._winSizeY))
 		self._shiftX = self._winSizeX / 10 * 4.5
