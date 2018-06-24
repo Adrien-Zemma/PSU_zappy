@@ -29,17 +29,16 @@ class Player():
 
 	def _getTeam(self):
 		self._tools.write("gpt #" + self.id)
-	
+
 	def setTeam(self, cmd):
 		try:
-			print(cmd[0])
 			self.team = cmd[0]
 		except:
 			print("Error on buid Team", file=sys.stderr)
 
 	def _getPose(self):
 		self._tools.write("ppo #" + self.id)
-		
+
 	def setPose(self, cmd):
 		try:
 			self.x = int(cmd[0])
@@ -56,7 +55,7 @@ class Player():
 
 	def _getBag(self):
 		self._tools.write("pin #" + self.id)
-		
+
 	def setBag(self, cmd):
 		print(cmd)
 		try:
@@ -74,7 +73,7 @@ class Player():
 
 	def _getLevel(self):
 		self._tools.write("plv #" + self.id)
-		
+
 	def setLevel(self, cmd):
 		try:
 			self.level = int(cmd[0])
