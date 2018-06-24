@@ -22,17 +22,17 @@ class Player():
 		self._getLevel()
 
 	def update(self):
+		self._getBag()
 		self._getTeam()
 		self._getPose()
-		self._getBag()
 		self._getLevel()
-
 
 	def _getTeam(self):
 		self._tools.write("gpt #" + self.id)
 	
 	def setTeam(self, cmd):
 		try:
+			print(cmd[0])
 			self.team = cmd[0]
 		except:
 			print("Error on buid Team", file=sys.stderr)
