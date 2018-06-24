@@ -57,5 +57,5 @@ int	gai(server_t *server, client_t *client, char *str)
 			dprintf(client->fd, " %d", server->clients[i]->id);
 	}
 	dprintf(client->fd, "\n");
-	return 0;
+	return (0);
 }

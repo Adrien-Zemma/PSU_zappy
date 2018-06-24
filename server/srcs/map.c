@@ -60,7 +60,7 @@ tile_t	***init_map(int weight, int height)
 			return (NULL);
 	}
 	tiles[height] = NULL;
-	return tiles;
+	return (tiles);
 }
 
 void	free_map(tile_t ***map)

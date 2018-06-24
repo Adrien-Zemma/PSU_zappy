@@ -18,8 +18,8 @@
 	#include <signal.h>
 	#include <time.h>
 
-typedef struct command_s command_t;
-typedef struct	tile_s tile_t;
+typedef struct command_s	command_t;
+typedef struct tile_s		tile_t;
 
 typedef struct	team_s
 {
