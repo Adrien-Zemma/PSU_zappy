@@ -9,6 +9,8 @@ from pygame import Surface
 
 class Window():
 	def __init__(self, sizeY, sizeX):
+		self.highLightX = -1
+		self.highLightY = -1
 		self._winSizeY = sizeY
 		self._winSizeX = sizeX
 		self._fontsize = 24
@@ -21,8 +23,7 @@ class Window():
 		self._shiftY = self._winSizeY / 10 * 4.5
 		label = self._font.render("Loading...", 1, (255, 255, 255))
 		self._window.blit(label, (self._winSizeX / 2, self._winSizeY / 2))
-		self.highLightX = -1
-		self.highLightY = -1
+		
 
 	class Block():
 			def __init__(self, **kwargs):
@@ -187,6 +188,8 @@ class Window():
 
 
 	def drawPlayer(self, toDraw):
+		if (self.highLightX == toDraw.x and self.highLightY == toDraw.y):
+			toDraw.highLight = True
 		if not toDraw.alive:
 			return
 		if toDraw.frame > self._maxFrame:
@@ -211,7 +214,8 @@ class Window():
 				level=player.level,
 				team=player.team,
 				magic=player.magic,
-				id=player.id
+				id=player.id,
+				light=player.highLight
 			)
 			tmp.draw(y, self._window, self._winSizeX, self._font)
 			y += 1

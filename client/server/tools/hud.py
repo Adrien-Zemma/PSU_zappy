@@ -17,14 +17,17 @@ class Hud():
 
 		def buildBlock(self, players):
 			for player in players:
+				if not player.alive:
+					continue 
 				self._blocks.append(
 					self.Block(
-						name=player._team,
-						inv=player._inventory,
-						level=player._level,
-						team=player._team,
-						magic=player._incanting,
-						id=player._id
+						name = player._team,
+						inv = player._inventory,
+						level = player._level,
+						team = player._team,
+						magic = player._incanting,
+						id = player._id,
+						light = player.highLight
 					)
 				)
 
@@ -36,9 +39,13 @@ class Hud():
 				self.inventory = kwargs.get('inv')
 				self.level = kwargs.get('level')
 				self.magic = kwargs.get('magic')
+				self.highLight = kwargs.get('light')
 
 			def draw(self, y, graph, screenX):
-				BLACK = (112, 112, 112)
+				if (not self.highLight):
+					BLACK = (112, 112, 112)
+				else:
+					BLACK = (224, 17, 30)
 				x = screenX - 360
 				y = y * 110 + 10
 				pygame.draw.rect(graph._window, BLACK, [x, y, 350, 100], 2)
