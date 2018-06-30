@@ -21,6 +21,8 @@ class Window():
 		self._shiftY = self._winSizeY / 10 * 4.5
 		label = self._font.render("Loading...", 1, (255, 255, 255))
 		self._window.blit(label, (self._winSizeX / 2, self._winSizeY / 2))
+		self.highLightX = -1
+		self.highLightY = -1
 
 	class Block():
 			def __init__(self, **kwargs):
@@ -92,11 +94,22 @@ class Window():
 		if keys[pygame.K_RIGHT]:
 			self._shiftX -= (speed * deltaTime)
 		for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					return False
-				if event.type == pygame.KEYDOWN:
-					return self.manageKeys(event)
+			if event.type == pygame.QUIT:
+				return False
+			if event.type == pygame.KEYDOWN:
+				return self.manageKeys(event)
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				self._getClick(event.pos[0], event.pos[1])
 		return True
+
+	def _getClick(self, x, y):
+		x -= self._shiftX
+		y -= self._shiftY
+		x /= self._spriteSize
+		y /= self._spriteSize
+		self.highLightX = int((2 * y + x) / 2) - 1;
+		self.highLightY = int((2 * y - x) / 2);
+		pass
 
 	def _drawCase(self, case):
 		for key, value in case.content.items():
@@ -124,6 +137,22 @@ class Window():
 		for line in field.content:
 			for case in line:
 				self._drawCase(case)
+		if (self.highLightX != -1):
+			BLACK = (0, 0, 0)
+			x = 10
+			y = 10
+			pygame.draw.rect(self._window, BLACK, [x, y, 350, 100], 2)
+			try:
+				tmp = "X:"+str(self.highLightX) + " Y:" + str(self.highLightY)
+				label = self._font.render(tmp, 1, (0, 0, 0))
+				self._window.blit(label, (x + 5, y + 10))
+				txt = ""
+				for key, value in field.content[self.highLightY][self.highLightX].content.items():
+					txt += (key[0] + ":" + str(len(value)) + " ")
+				label = self._font.render(txt, 1, (0, 0, 0))
+				self._window.blit(label, (x + 5, y + 70))
+			except:
+				pass
 
 	def drawBack(self):
 		self._window.blit(self._sprite.get("back"), (0, 0))
