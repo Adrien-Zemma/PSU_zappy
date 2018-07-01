@@ -42,16 +42,6 @@ class IA(threading.Thread):
 				self.level = self.server.level
 				self.state == "idle"
 				print("Level " + str(self.level) + "!")
-			#self.updateInventory()
-			#if self.checkIncantation() == True and self.inventory["food"] >= 15:
-			#	self.incantation()
-			#if self.server.level != self.level:
-			#	self.level = self.server.level
-			#	print("Level " + str(self.level) + "!")
-			#self.updateInventory()
-			#if self.inventory["food"] < 15 or self.findPlayer() == False:
-			#	self.lookAndTake()
-			#	self.idle()
 
 	def idle(self):
 		if self.pos[0] == self.server.mapSize[0] - 1:
