@@ -108,8 +108,8 @@ class Window():
 		y -= self._shiftY
 		x /= self._spriteSize
 		y /= self._spriteSize
-		self.highLightX = int((2 * y + x) / 2) - 1;
-		self.highLightY = int((2 * y - x) / 2);
+		self.highLightX = int((2 * y + x) / 2) - 1
+		self.highLightY = int((2 * y - x) / 2)
 		pass
 
 	def _drawCase(self, case):
@@ -121,6 +121,13 @@ class Window():
 					self._sprite.get(key),
 					(tmp2X, tmp2Y)
 				)
+	def drawTeam(self, toDraw):
+		content = ""
+		for team in toDraw:
+			content += team
+		label = self._font.render(team, 1, (0, 0, 0))
+		self._window.blit(label, ((1920 / 2) - (len(content) * 15), 15))
+
 
 	def drawField(self, sizeX, sizeY):
 		for y in range(sizeY):
@@ -138,20 +145,21 @@ class Window():
 		for line in field.content:
 			for case in line:
 				self._drawCase(case)
-		if (self.highLightX != -1):
+		if (self.highLightX != -1 and self.highLightY != -1):
 			BLACK = (0, 0, 0)
 			x = 10
 			y = 10
-			pygame.draw.rect(self._window, BLACK, [x, y, 350, 100], 2)
 			try:
-				tmp = "X:"+str(self.highLightX) + " Y:" + str(self.highLightY)
-				label = self._font.render(tmp, 1, (0, 0, 0))
-				self._window.blit(label, (x + 5, y + 10))
 				txt = ""
 				for key, value in field.content[self.highLightY][self.highLightX].content.items():
 					txt += (key[0] + ":" + str(len(value)) + " ")
 				label = self._font.render(txt, 1, (0, 0, 0))
 				self._window.blit(label, (x + 5, y + 70))
+				pygame.draw.rect(self._window, BLACK, [x, y, 350, 100], 2)
+				tmp = "X:"+str(self.highLightX) + " Y:" + str(self.highLightY)
+				label = self._font.render(tmp, 1, (0, 0, 0))
+				self._window.blit(label, (x + 5, y + 10))
+
 			except:
 				pass
 

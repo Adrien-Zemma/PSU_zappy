@@ -28,6 +28,7 @@ class GraphicalInterface(Server, threading.Thread):
 		self._sound = Sound()
 		self._window.setImages(Images())
 		self.mapSize = self._tools.getMapSize()
+		self._teamsList = self._tools.getAllTeam()
 		self._sizeX = self.mapSize[0]
 		self._sizeY = self.mapSize[1]
 		self._listMagic = []
@@ -142,6 +143,7 @@ class GraphicalInterface(Server, threading.Thread):
 		for player in self._players:
 			self._window.drawPlayer(player)
 		self._window.drawHud(self._players)
+		self._window.drawTeam(self._teamsList)
 		pygame.display.update()
 		self._window.clock.tick(60)
 

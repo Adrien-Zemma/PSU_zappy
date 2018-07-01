@@ -15,3 +15,10 @@ class Tools():
 			return cmd
 		except:
 			return None
+	def getAllTeam(self):
+		self.write("tna")
+		try:
+			cmd = self.readTh.get_command().split(' ')[1:]
+			return cmd
+		except:
+			return None
