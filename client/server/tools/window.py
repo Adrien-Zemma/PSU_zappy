@@ -124,7 +124,7 @@ class Window():
 	def drawTeam(self, toDraw):
 		content = ""
 		for team in toDraw:
-			content += team
+			content += (team + " ")
 		label = self._font.render(content, 1, (0, 0, 0))
 		self._window.blit(label, ((self._winSizeX / 2) - (len(content) * 15), 15))
 
