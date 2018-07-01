@@ -126,7 +126,7 @@ class Window():
 		for team in toDraw:
 			content += team
 		label = self._font.render(team, 1, (0, 0, 0))
-		self._window.blit(label, ((1920 / 2) - (len(content) * 15), 15))
+		self._window.blit(label, ((self._winSizeX / 2) - (len(content) * 15), 15))
 
 
 	def drawField(self, sizeX, sizeY):
