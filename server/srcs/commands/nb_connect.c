@@ -9,14 +9,13 @@
 
 int	nb_connect(server_t *server, client_t *client, char *str)
 {
-	int	nb = 0;
-
+	(void) server;
 	str = str;
-	for (int i = 0; server->clients[i] != NULL; i++) {
-		if (strcmp(client->team->name,
-			server->clients[i]->team->name) == 0)
-			nb++;
+	if (!client->team) {
+		dprintf(client->fd, "0\n");
+		return (KO);
 	}
-	dprintf(client->fd, "%d\n", server->parse->max_client - nb);
+	dprintf(client->fd, "%d\n",
+		client->team->max_players - client->team->current_players);
 	return (OK);
 }

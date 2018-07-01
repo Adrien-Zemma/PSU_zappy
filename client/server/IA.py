@@ -3,17 +3,19 @@ import threading
 from .IAServer import IAServer
 from .incantationRequirements import incantationRequirements
 from .utils import map
-import os
 import queue
+import sys
 
 class IA(threading.Thread):
 	def __init__(self, team, port, ip):
 		threading.Thread.__init__(self)
 		self.server = IAServer(team, port, ip)
 		self.daemon = True
-		self.level = 1
+		self.level = 0
 		self.pos = [0, 0]
 		self.dir = 0
+		self.look = self.server.look()
+		self.state = "idle"
 		self.inventory = {
 			"food": 0,
 			"linemate": 0,
@@ -27,13 +29,29 @@ class IA(threading.Thread):
 
 	def run(self):
 		while True:
-			if self.checkIncantation() == True:
-				self.incantation()
-			self.level = self.server.level
 			self.updateInventory()
-			if self.inventory["food"] < 20 or self.findPlayer() == False:
+			if self.state == "idle":
 				self.idle()
-			self.lookAndTake()
+				if self.inventory["food"] > 50 and self.checkIncantation() == True:
+					self.state = "incanting"
+			elif self.state == "incanting":
+				if self.inventory["food"] < 10:
+					self.state = "idle"
+				self.incantation()
+			if self.server.level != self.level:
+				self.level = self.server.level
+				self.state == "idle"
+				print("Level " + str(self.level) + "!")
+			#self.updateInventory()
+			#if self.checkIncantation() == True and self.inventory["food"] >= 15:
+			#	self.incantation()
+			#if self.server.level != self.level:
+			#	self.level = self.server.level
+			#	print("Level " + str(self.level) + "!")
+			#self.updateInventory()
+			#if self.inventory["food"] < 15 or self.findPlayer() == False:
+			#	self.lookAndTake()
+			#	self.idle()
 
 	def idle(self):
 		if self.pos[0] == self.server.mapSize[0] - 1:
@@ -56,7 +74,8 @@ class IA(threading.Thread):
 			begin = broadcast.split(' ')
 			if len(begin) < 2:
 				return False
-			self.follow(int(begin[1]))
+			begin = begin[1].split(',')
+			self.follow(int(begin[0]))
 			return True
 		return False
 
@@ -64,11 +83,8 @@ class IA(threading.Thread):
 		if direction <= 0 or direction > 8:
 			return
 		r = (self.server.mapSize[0] + self.server.mapSize[1]) / 4
-		for i in range(r):
-			ret = self.server.look()
-			if ret[0]["food"] > 0:
-				self.takeN("food", ret[0]["food"])
-			if ret[0]["player"] >= 2:
+		for i in range(int(r)):
+			if self.look[0]["player"] >= 1:
 				return
 			if direction == 1:
 				self.forward();
@@ -108,28 +124,43 @@ class IA(threading.Thread):
 				self.forward()
 				self.left()
 
+	def checkTileIncantation(self):
+		if (self.look[0]["linemate"] >= incantationRequirements[self.level - 1]["linemate"]
+		and self.look[0]["deraumere"] >= incantationRequirements[self.level - 1]["deraumere"]
+		and self.look[0]["sibur"] >= incantationRequirements[self.level - 1]["sibur"]
+		and self.look[0]["mendiane"] >= incantationRequirements[self.level - 1]["mendiane"]
+		and self.look[0]["phiras"] >= incantationRequirements[self.level - 1]["phiras"]
+		and self.look[0]["thystame"] >= incantationRequirements[self.level - 1]["thystame"]):
+			return True
+		return False
+
 	def checkIncantation(self):
-		ret = self.server.look()
-		if (self.inventory["linemate"] >= incantationRequirements[self.level - 1]["linemate"]
-		and self.inventory["deraumere"] >= incantationRequirements[self.level - 1]["deraumere"]
-		and self.inventory["sibur"] >= incantationRequirements[self.level - 1]["sibur"]
-		and self.inventory["mendiane"] >= incantationRequirements[self.level - 1]["mendiane"]
-		and self.inventory["phiras"] >= incantationRequirements[self.level - 1]["phiras"]
-		and self.inventory["thystame"] >= incantationRequirements[self.level - 1]["thystame"]
-		and self.inventory["food"] >= 15):
+		if (self.inventory["linemate"] + self.look[0]["linemate"] >= incantationRequirements[self.level - 1]["linemate"]
+		and self.inventory["deraumere"] + self.look[0]["deraumere"] >= incantationRequirements[self.level - 1]["deraumere"]
+		and self.inventory["sibur"] + self.look[0]["sibur"] >= incantationRequirements[self.level - 1]["sibur"]
+		and self.inventory["mendiane"] + self.look[0]["mendiane"] >= incantationRequirements[self.level - 1]["mendiane"]
+		and self.inventory["phiras"] + self.look[0]["phiras"] >= incantationRequirements[self.level - 1]["phiras"]
+		and self.inventory["thystame"] + self.look[0]["thystame"] >= incantationRequirements[self.level - 1]["thystame"]):
 			return True
 		return False
 
 	def updateInventory(self):
 		inventory = self.server.inventory()
 		for k, i in inventory.items():
-			self.inventory[k] = i
+			try:
+				self.inventory[k] = i
+			except (KeyError):
+				print("Key not in the dictionary", file=sys.stderr)
 
 	def forward(self):
-		print("forward")
 		cmd = self.server.forward()
 		if cmd == "ko":
 			return
+		self.look = self.server.look()
+		if self.look[0]["food"] > 0:
+			self.takeN("food", self.look[0]["food"])
+		if self.inventory["food"] > 20:
+			self.lookAndTake()
 		if self.dir == 0:
 			self.pos[0] = map(self.server.mapSize[0], self.pos[0] - 1)
 		elif self.dir == 1:
@@ -148,30 +179,51 @@ class IA(threading.Thread):
 			self.dir = map(4, self.dir + 1)
 
 	def lookAndTake(self):
-		ret = self.server.look()
-		if ret[0]["food"] > 0:
-			self.takeN("food", ret[0]["food"])
+		if self.look[0]["food"] > 0:
+			self.takeN("food", self.look[0]["food"])
+		if self.checkTileIncantation() == True:
+			return
 		for k, _ in self.inventory.items():
 			if k != "food":
-				self.takeN(k, incantationRequirements[self.level - 1][k] - self.inventory[k])
+				try:
+					self.takeN(k, incantationRequirements[self.level - 1][k] - self.inventory[k])
+				except (KeyError):
+					print("Key not in the dictionary", file=sys.stderr)
 
 	def takeN(self, object, n):
 		if n < 0:
 			return
 		for i in range(n):
 			ret = self.server.take(object)
-			if ret == "ok" and object != "food":
-				self.inventory[object] += 1
+			if ret == "ok":
+				try:
+					self.inventory[object] += 1
+					self.look[0][object] -= 1
+				except (KeyError):
+					print("Key not in the dictionary", file=sys.stderr)
 			else:
 				return
 
 	def incantation(self):
-		ret = self.server.look()
-		for k, _ in incantationRequirements[self.level - 1].items():
-			if k != "player":
-				for i in range(incantationRequirements[self.level - 1][k] - ret[0][k]):
-					self.server.set(k)
-		self.server.broadcast("Come here to get level " + str(self.level + 1) + "\n")
-		if self.server.incantation() == "ko":
-			if self.server.checkCmd(self.server.readTh.get_command()) == "ko":
+		try:
+			if int(self.server.connectNbr()) > 0:
 				self.server.fork()
+		except (ValueError):
+			pass
+		if self.checkTileIncantation() == False and self.look[0]["player"] < incantationRequirements[self.level - 1]["player"]:
+			if self.findPlayer() == False:
+				self.idle()
+				return
+		self.look = self.server.look()
+		if self.checkTileIncantation() == False:
+			for k, _ in incantationRequirements[self.level - 1].items():
+				if k != "player":
+					for i in range(incantationRequirements[self.level - 1][k] - self.look[0][k]):
+						self.server.set(k)
+		if self.inventory["food"] < 20:
+			self.lookAndTake()
+			self.state = "idle"
+		if incantationRequirements[self.level - 1]["player"] - self.look[0]["player"] > 0:
+			self.server.broadcast("Come here to get level " + str(self.level + 1) + "\n")
+		if self.server.incantation() == "ko":
+			self.server.checkCmd(self.server.readTh.get_command())

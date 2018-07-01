@@ -40,6 +40,7 @@ class IAServer(Server):
 		else:
 			if cmd.split(',')[0].split(' ')[0] == "message":
 				self.broadcasts.put(cmd)
+				cmd = self.checkCmd(self.readTh.get_command())
 		return cmd
 
 	def forward(self:object):
